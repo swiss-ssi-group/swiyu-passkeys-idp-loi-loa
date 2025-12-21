@@ -47,9 +47,24 @@ builder.Services.AddAuthentication(options =>
 
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
+    options.Scope.Add("scope2");
     options.TokenValidationParameters = new TokenValidationParameters
     {
         NameClaimType = "name"
+    };
+    options.Events = new OpenIdConnectEvents
+    {
+        //OnRedirectToIdentityProvider = context =>
+        //{
+        //    context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
+        //    return Task.FromResult(0);
+        //},
+        OnTokenResponseReceived = context =>
+        {
+            var idToken = context.TokenEndpointResponse.IdToken;
+            var accessToken = context.TokenEndpointResponse.AccessToken;
+            return Task.CompletedTask;
+        }
     };
 });
 

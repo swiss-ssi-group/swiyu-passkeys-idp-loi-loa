@@ -11,6 +11,7 @@ public class WeatherApiClient
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
         var httpClient = _httpClientFactory.CreateClient("dpop-api-client");
+        var token = httpClient.DefaultRequestHeaders.Authorization;
         List<WeatherForecast>? forecasts = null;
 
         await foreach (var forecast in httpClient.GetFromJsonAsAsyncEnumerable<WeatherForecast>("/weatherforecast", cancellationToken))
