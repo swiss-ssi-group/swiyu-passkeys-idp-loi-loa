@@ -18,11 +18,11 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
         options.Authority = "https://localhost:5001";
-        options.Audience = "https://localhost:5001/resources";
+        options.Audience = "dpop-api";
 
-        options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.ValidateAudience = true;
         options.TokenValidationParameters.ValidateIssuer = true;
-        //options.TokenValidationParameters.ValidAudience = "https://localhost:5001/resources";
+        options.TokenValidationParameters.ValidAudience = "dpop-api";
 
         options.MapInboundClaims = false;
         options.TokenValidationParameters.ValidTypes = ["at+jwt"];

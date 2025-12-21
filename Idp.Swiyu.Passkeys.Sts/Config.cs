@@ -18,6 +18,16 @@ public static class Config
             new ApiScope("scope2"),
         ];
 
+    public static IEnumerable<ApiResource> GetApiResources()
+    {
+        return new List<ApiResource>
+    {
+        new ApiResource("dpop-api", "DPoP API")
+        {
+            Scopes = { "scope2" }
+        }
+    };
+    }
     public static IEnumerable<Client> Clients =>
         [
             // interactive client using code flow + pkce
