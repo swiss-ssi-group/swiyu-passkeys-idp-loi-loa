@@ -87,7 +87,7 @@ builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
 
 builder.Services.AddUserAccessTokenHttpClient("dpop-api-client", configureClient: client =>
 {
-    client.BaseAddress = new("https://localhost:7412");
+    client.BaseAddress = new("https+http://apiservice");
 });
 
 builder.Services.AddSecurityHeaderPolicies()
