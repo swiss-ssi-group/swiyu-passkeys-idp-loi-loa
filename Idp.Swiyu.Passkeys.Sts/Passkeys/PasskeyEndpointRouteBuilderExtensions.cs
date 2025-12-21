@@ -1,12 +1,12 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using IdentityServerAspNetIdentityPasskeys.Models;
+using Idp.Swiyu.Passkeys.Sts.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServerAspNetIdentityPasskeys.Passkeys;
+namespace Idp.Swiyu.Passkeys.Sts.Passkeys;
 
 public static class PasskeyEndpointRouteBuilderExtensions
 {

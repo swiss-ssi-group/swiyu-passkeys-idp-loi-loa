@@ -3,7 +3,7 @@
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Account;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Account;
 
 public class AccessDeniedModel : PageModel
 {

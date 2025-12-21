@@ -7,13 +7,13 @@ using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Validation;
-using IdentityServerAspNetIdentityPasskeys.Pages.Consent;
+using Idp.Swiyu.Passkeys.Sts.Pages.Consent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Device;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Device;
 
 [SecurityHeaders]
 [Authorize]

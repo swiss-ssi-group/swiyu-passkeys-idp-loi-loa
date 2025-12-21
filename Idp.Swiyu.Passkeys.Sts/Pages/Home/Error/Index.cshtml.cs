@@ -5,7 +5,7 @@ using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Error;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Error;
 
 [AllowAnonymous]
 [SecurityHeaders]

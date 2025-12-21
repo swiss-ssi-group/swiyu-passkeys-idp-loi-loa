@@ -3,12 +3,12 @@
 
 using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
-using IdentityServerAspNetIdentityPasskeys.Models;
+using Idp.Swiyu.Passkeys.Sts.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Account;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Account;
 
 public class PasskeysModel : PageModel
 {

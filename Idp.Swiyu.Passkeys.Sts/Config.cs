@@ -3,7 +3,7 @@
 
 using Duende.IdentityServer.Models;
 
-namespace IdentityServerAspNetIdentityPasskeys;
+namespace Idp.Swiyu.Passkeys.Sts;
 
 public static class Config
 {

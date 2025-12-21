@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.ComponentModel.DataAnnotations;
-using IdentityServerAspNetIdentityPasskeys.Models;
+using Idp.Swiyu.Passkeys.Sts.Models;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Login;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Login;
 
 public class InputModel
 {

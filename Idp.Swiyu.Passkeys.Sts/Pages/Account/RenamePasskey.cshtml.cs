@@ -2,14 +2,14 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System.Buffers.Text;
-using IdentityServerAspNetIdentityPasskeys.Data;
-using IdentityServerAspNetIdentityPasskeys.Models;
+using Idp.Swiyu.Passkeys.Sts.Data;
+using Idp.Swiyu.Passkeys.Sts.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Account;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Account;
 
 public class RenamePasskeyModel : PageModel
 {

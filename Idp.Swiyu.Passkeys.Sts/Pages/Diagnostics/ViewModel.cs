@@ -7,7 +7,7 @@ using System.Text.Json;
 using Duende.IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Diagnostics;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Diagnostics;
 
 public class ViewModel
 {

@@ -3,16 +3,16 @@
 
 using System.Globalization;
 using Duende.IdentityServer;
-using IdentityServerAspNetIdentityPasskeys.Data;
-using IdentityServerAspNetIdentityPasskeys.Models;
-using IdentityServerAspNetIdentityPasskeys.Passkeys;
+using Idp.Swiyu.Passkeys.Sts.Data;
+using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Passkeys;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
 
-namespace IdentityServerAspNetIdentityPasskeys;
+namespace Idp.Swiyu.Passkeys.Sts;
 
 internal static class HostingExtensions
 {

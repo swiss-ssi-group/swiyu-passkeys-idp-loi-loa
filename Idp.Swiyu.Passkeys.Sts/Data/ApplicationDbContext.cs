@@ -1,11 +1,11 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using IdentityServerAspNetIdentityPasskeys.Models;
+using Idp.Swiyu.Passkeys.Sts.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace IdentityServerAspNetIdentityPasskeys.Data;
+namespace Idp.Swiyu.Passkeys.Sts.Data;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {

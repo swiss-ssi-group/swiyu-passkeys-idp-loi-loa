@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Grants;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Grants;
 
 [SecurityHeaders]
 [Authorize]

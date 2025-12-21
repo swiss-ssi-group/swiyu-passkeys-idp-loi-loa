@@ -4,7 +4,7 @@
 using System.Globalization;
 using System.Text;
 using Duende.IdentityServer.Licensing;
-using IdentityServerAspNetIdentityPasskeys;
+using Idp.Swiyu.Passkeys.Sts;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServerAspNetIdentityPasskeys.Pages.Consent;
+namespace Idp.Swiyu.Passkeys.Sts.Pages.Consent;
 
 [Authorize]
 [SecurityHeaders]
