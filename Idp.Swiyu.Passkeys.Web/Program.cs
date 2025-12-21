@@ -1,9 +1,13 @@
+using Duende.AccessTokenManagement.DPoP;
+using Duende.AccessTokenManagement.OpenIdConnect;
 using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,12 +51,42 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddHttpClient<WeatherApiClient>(client =>
-    {
-        // This URL uses "https+http://" to indicate HTTPS is preferred over HTTP.
-        // Learn more about service discovery scheme resolution at https://aka.ms/dotnet/sdschemes.
-        client.BaseAddress = new("https+http://apiservice");
-    });
+var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
+         "ecdsa384-private.pem"));
+var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
+    "ecdsa384-public.pem"));
+var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
+var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
+
+//var privatePem = File.ReadAllText(Path.Combine(_environment.ContentRootPath, 
+//    "rsa256-private.pem"));
+//var publicPem = File.ReadAllText(Path.Combine(_environment.ContentRootPath, 
+//    "rsa256-public.pem"));
+//var rsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
+//var rsaCertificateKey = new RsaSecurityKey(rsaCertificate.GetRSAPrivateKey());
+
+// add automatic token management
+builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
+{
+    // create and configure a DPoP JWK
+    //var rsaKey = new RsaSecurityKey(RSA.Create(2048));
+    //var jwk = JsonWebKeyConverter.ConvertFromSecurityKey(rsaKey);
+    //jwk.Alg = "PS256";
+    //options.DPoPJsonWebKey = JsonSerializer.Serialize(jwk);
+
+    //var jwk = JsonWebKeyConverter.ConvertFromSecurityKey(rsaCertificateKey);
+    //jwk.Alg = "PS256";
+    //options.DPoPJsonWebKey = JsonSerializer.Serialize(jwk);
+
+    var jwk = JsonWebKeyConverter.ConvertFromSecurityKey(ecdsaCertificateKey);
+    jwk.Alg = "ES384";
+    options.DPoPJsonWebKey = DPoPProofKey.ParseOrDefault(JsonSerializer.Serialize(jwk));
+});
+
+builder.Services.AddUserAccessTokenHttpClient("dpop-api-client", configureClient: client =>
+{
+    client.BaseAddress = new("https+http://apiservice");
+});
 
 var app = builder.Build();
 

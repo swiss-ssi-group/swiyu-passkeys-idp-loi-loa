@@ -1,9 +1,16 @@
 namespace Idp.Swiyu.Passkeys.Web;
 
-public class WeatherApiClient(HttpClient httpClient)
+public class WeatherApiClient
 {
+    private readonly IHttpClientFactory _httpClientFactory;
+    public WeatherApiClient(IHttpClientFactory httpClientFactory)
+    {
+        _httpClientFactory = httpClientFactory;
+    }
+
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
+        var httpClient = _httpClientFactory.CreateClient("dpop-api-client");
         List<WeatherForecast>? forecasts = null;
 
         await foreach (var forecast in httpClient.GetFromJsonAsAsyncEnumerable<WeatherForecast>("/weatherforecast", cancellationToken))
