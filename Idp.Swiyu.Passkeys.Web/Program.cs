@@ -4,6 +4,7 @@ using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
@@ -88,14 +89,32 @@ builder.Services.AddUserAccessTokenHttpClient("dpop-api-client", configureClient
     client.BaseAddress = new("https+http://apiservice");
 });
 
+builder.Services.AddSecurityHeaderPolicies()
+    .SetDefaultPolicy(SecurityHeadersDefinitions
+    .GetHeaderPolicyCollection(oidcConfig["Authority"],
+        builder.Environment.IsDevelopment()));
+
+builder.Services.AddAuthenticationCore();
+builder.Services.AddAuthorization();
+builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddHealthChecks();
+
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+else
+{
+    IdentityModelEventSource.ShowPII = true;
+    IdentityModelEventSource.LogCompleteSecurityArtifact = true;
+}
+
+app.UseSecurityHeaders();
 
 app.UseHttpsRedirection();
 
@@ -109,5 +128,9 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.MapDefaultEndpoints();
+
+app.MapLoginLogoutEndpoints();
+
+app.MapHealthChecks("/health");
 
 app.Run();
