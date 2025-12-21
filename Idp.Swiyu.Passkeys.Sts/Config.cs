@@ -26,6 +26,8 @@ public static class Config
                 ClientId = "web-client",
                 ClientSecrets = { new Secret("super-secret-$123".Sha256()) },
 
+                RequireDPoP = true,
+
                 AllowedGrantTypes = GrantTypes.Code,
 
                 RedirectUris = { "https://localhost:7019/signin-oidc" },
