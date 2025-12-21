@@ -1,3 +1,5 @@
+using Duende.AspNetCore.Authentication.JwtBearer.DPoP;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
@@ -8,6 +10,26 @@ builder.Services.AddProblemDetails();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.Audience = "https://localhost:5001/resources";
+
+        options.TokenValidationParameters.ValidateAudience = true;
+        options.TokenValidationParameters.ValidateIssuer = true;
+
+        options.MapInboundClaims = false;
+        options.TokenValidationParameters.ValidTypes = ["at+jwt"];
+    });
+
+// layers DPoP onto the "token" scheme above
+builder.Services.ConfigureDPoPTokensForScheme("Bearer", opt =>
+{
+    opt.ValidationMode = ExpirationValidationMode.IssuedAt; // IssuedAt is the default.
+});
 
 var app = builder.Build();
 
@@ -33,7 +55,8 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
-.WithName("GetWeatherForecast");
+.WithName("GetWeatherForecast")
+.RequireAuthorization();
 
 app.MapDefaultEndpoints();
 
