@@ -21,6 +21,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<WeatherApiClient>();
 
 var oidcConfig = builder.Configuration.GetSection("OpenIDConnectSettings");
 
