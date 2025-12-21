@@ -31,6 +31,8 @@ builder.Services.ConfigureDPoPTokensForScheme("Bearer", opt =>
     opt.ValidationMode = ExpirationValidationMode.IssuedAt; // IssuedAt is the default.
 });
 
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +42,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseAuthorization();
 
 string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
 
