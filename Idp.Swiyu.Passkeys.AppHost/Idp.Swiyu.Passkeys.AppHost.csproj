@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.ApiService\Idp.Swiyu.Passkeys.ApiService.csproj" />
+    <ProjectReference Include="..\Idp.Swiyu.Passkeys.Sts\Idp.Swiyu.Passkeys.Sts.csproj" />
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.Web\Idp.Swiyu.Passkeys.Web.csproj" />
   </ItemGroup>
 
