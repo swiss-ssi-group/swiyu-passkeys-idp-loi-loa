@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Idp.Swiyu.Passkeys.ApiService/Idp.Swiyu.Passkeys.ApiService.csproj" />
+  <Project Path="Idp.Swiyu.Passkeys.AppHost/Idp.Swiyu.Passkeys.AppHost.csproj" />
+  <Project Path="Idp.Swiyu.Passkeys.ServiceDefaults/Idp.Swiyu.Passkeys.ServiceDefaults.csproj" />
+  <Project Path="Idp.Swiyu.Passkeys.Web/Idp.Swiyu.Passkeys.Web.csproj" />
+</Solution>
