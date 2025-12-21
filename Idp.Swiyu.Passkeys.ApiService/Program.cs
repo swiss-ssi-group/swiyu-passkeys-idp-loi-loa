@@ -1,4 +1,6 @@
 using Duende.AspNetCore.Authentication.JwtBearer.DPoP;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +20,9 @@ builder.Services.AddAuthentication("Bearer")
         options.Authority = "https://localhost:5001";
         options.Audience = "https://localhost:5001/resources";
 
-        options.TokenValidationParameters.ValidateAudience = true;
+        options.TokenValidationParameters.ValidateAudience = false;
         options.TokenValidationParameters.ValidateIssuer = true;
+        //options.TokenValidationParameters.ValidAudience = "https://localhost:5001/resources";
 
         options.MapInboundClaims = false;
         options.TokenValidationParameters.ValidTypes = ["at+jwt"];
@@ -34,6 +37,9 @@ builder.Services.ConfigureDPoPTokensForScheme("Bearer", opt =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+IdentityModelEventSource.ShowPII = true;
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
