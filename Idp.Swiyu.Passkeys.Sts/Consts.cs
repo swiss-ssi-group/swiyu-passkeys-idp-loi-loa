@@ -3,6 +3,7 @@
 public static class Consts
 {
     // loa (Level of Authentication)
+    public const string LOA = "loa";
 
     //passkeys, (public/private key certificate authentication)
     public const string LOA_400 = "loa.400";
@@ -17,6 +18,7 @@ public static class Consts
     public const string LOA_100 = "loa.100";
 
     // loi (Level of Identification)
+    public const string LOI = "loi";
 
     // Offline Human identification by trusted official in trustworthy organisation.
     public const string LOI_500 = "loi.500";
