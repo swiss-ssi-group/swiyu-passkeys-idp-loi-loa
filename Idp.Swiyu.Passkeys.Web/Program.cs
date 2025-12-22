@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
-         "ecdsa384-private.pem"));
+    "ecdsa384-private.pem"));
 var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
     "ecdsa384-public.pem"));
 var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
