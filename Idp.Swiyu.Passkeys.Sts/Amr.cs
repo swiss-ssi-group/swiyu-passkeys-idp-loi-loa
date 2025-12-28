@@ -2,6 +2,7 @@
 
 /// <summary>
 /// https://tools.ietf.org/html/draft-ietf-oauth-amr-values-04
+/// https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
 /// </summary>
 public static class Amr
 {
@@ -119,4 +120,9 @@ public static class Amr
     /// Windows integrated authentication, as described in [MSDN]
     /// </summary>
     public static string Wia = "wia";
+
+    /// <summary>
+    /// Proof-of-possession of a key. Unlike the existing hwk and swk methods, it is unspecified whether the proof-of-possession key is hardware-secured or software-secured.
+    /// </summary>
+    public static string Pop = "pop";   
 }
