@@ -418,3 +418,4 @@ FodyWeavers.xsd
 *.msp
 /Idp.Swiyu.Passkeys.Sts/keys/**
 /Idp.Swiyu.Passkeys.Sts/AspIdUsers.db
+/Idp.Swiyu.Passkeys.Sts/AspIdUsers.db
