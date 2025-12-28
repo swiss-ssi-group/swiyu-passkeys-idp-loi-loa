@@ -1,7 +1,9 @@
 # swiyu-passkeys-idp-loi-loa
 
 ## Blogs
-- [Digital authentication and identityvalidation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
+- [Digital authentication and identity validation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
+- [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com)
+- [Implementing Level of Authentication (LoA) with ASP.NET Core](https://damienbod.com)
 
 ## loa (Level of Authentication)
 
