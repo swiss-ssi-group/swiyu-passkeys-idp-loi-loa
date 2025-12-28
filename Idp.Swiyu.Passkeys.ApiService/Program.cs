@@ -1,4 +1,5 @@
 using Duende.AspNetCore.Authentication.JwtBearer.DPoP;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Logging;
 
@@ -36,6 +37,13 @@ builder.Services.ConfigureDPoPTokensForScheme("Bearer", opt =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddSingleton<IAuthorizationHandler, AuthzLoaLoiHandler>();
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("authz_checks", policy => policy
+        .RequireAuthenticatedUser()
+        .AddRequirements(new AuthzLoaLoiRequirement()));
+
 var app = builder.Build();
 
 IdentityModelEventSource.ShowPII = true;
@@ -65,7 +73,7 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast")
-.RequireAuthorization();
+.RequireAuthorization("authz_checks");
 
 app.MapDefaultEndpoints();
 
