@@ -11,6 +11,8 @@
 - loa.200 : SMS, email, TOTP, 2-step
 - loa.100 : single factor, SAS key, API Keys, passwords, OTP
 
+![loa](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/authentication-levels.drawio.png)
+
 ## loi (Level of Identification)
 - loi.500 : Offline Human identification by trusted official in trustworthy organisation.
 - loi.400 : OpenID verifiable credentials (E-ID, swiyu), government issued.
@@ -18,6 +20,7 @@
 - loi.200 : Digital video without person
 - loi.100 : Email & SMS validation
 
+![loi](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/identity-levels.drawio.png)
 
 ## Links
 
