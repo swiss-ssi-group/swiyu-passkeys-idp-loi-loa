@@ -3,7 +3,7 @@
 ## Blogs
 - [Digital authentication and identity validation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
 - [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com)
-- [Implementing Level of Authentication (LoA) with ASP.NET Core](https://damienbod.com)
+- [Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com)
 
 ## loa (Level of Authentication)
 
