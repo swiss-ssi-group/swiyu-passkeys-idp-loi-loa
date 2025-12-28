@@ -47,6 +47,7 @@ builder.Services.AddAuthentication(options =>
 
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
+    options.MapInboundClaims = false;
     options.Scope.Add("scope2");
     options.TokenValidationParameters = new TokenValidationParameters
     {
