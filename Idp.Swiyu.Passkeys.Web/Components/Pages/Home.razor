@@ -5,9 +5,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <h1>User Claims</h1>
-        
-        <p>@context.User.Identity?.Name</p>
+        <p>Claims for: @context.User.Identity?.Name</p>
 
         @if (context.User.Claims.Any())
         {
