@@ -2,36 +2,58 @@
 
 public static class Consts
 {
-    // loa (Level of Authentication)
+    /// <summary>
+    /// loa (Level of Authentication)
+    /// </summary>
     public const string LOA = "loa";
 
-    //passkeys, (public/private key certificate authentication)
+    /// <summary>
+    /// passkeys, (public/private key certificate authentication)
+    /// </summary>
     public const string LOA_400 = "loa.400";
 
-    // authenticator apps, OpenID verifiable credentials(E-ID, swiyu)
+    /// <summary>
+    /// authenticator apps, OpenID verifiable credentials(E-ID, swiyu)
+    /// </summary>
     public const string LOA_300 = "loa.300";
 
-    // SMS, email, TOTP, 2-step
+    /// <summary>
+    /// SMS, email, TOTP, 2-step
+    /// </summary>
     public const string LOA_200 = "loa.200";
 
-    // single factor, SAS key, API Keys, passwords, OTP
+    /// <summary>
+    /// single factor, SAS key, API Keys, passwords, OTP
+    /// </summary>
     public const string LOA_100 = "loa.100";
 
-    // loi (Level of Identification)
+    /// <summary>
+    /// loi (Level of Identification)
+    /// </summary>
     public const string LOI = "loi";
 
-    // Offline Human identification by trusted official in trustworthy organisation.
+    /// <summary>
+    /// Offline Human identification by trusted official in trustworthy organisation.
+    /// </summary>
     public const string LOI_500 = "loi.500";
 
-    // OpenID verifiable credentials (E-ID, swiyu), government issued.
+    /// <summary>
+    /// OpenID verifiable credentials (E-ID, swiyu), government issued.
+    /// </summary>
     public const string LOI_400 = "loi.400";
 
-    // Digital online check with person
+    /// <summary>
+    /// Digital online check with person
+    /// </summary>
     public const string LOI_300 = "loi.300";
 
-    // Digital video without person
+    /// <summary>
+    /// Digital video without person
+    /// </summary>
     public const string LOI_200 = "loi.200";
 
-    // Email & SMS validation, or none
+    /// <summary>
+    /// Email 
+    /// </summary>& SMS validation, or none
     public const string LOI_100 = "loi.100";
 }

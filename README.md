@@ -14,3 +14,11 @@ loi.400 : OpenID verifiable credentials (E-ID, swiyu), government issued.
 loi.300 : Digital online check with person
 loi.200 : Digital video without person
 loi.100 : Email & SMS validation
+
+## Links
+
+https://github.com/dotnet/aspnetcore/issues/64881
+
+https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
+
+https://datatracker.ietf.org/doc/html/rfc8176
