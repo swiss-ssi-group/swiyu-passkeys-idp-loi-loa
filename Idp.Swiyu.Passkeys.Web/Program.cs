@@ -65,7 +65,9 @@ builder.Services.AddAuthentication(options =>
     {
         //OnRedirectToIdentityProvider = context =>
         //{
-        //    context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
+        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
+        //    context.ProtocolMessage.AcrValues = "phr"
+        //    // context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
         //    return Task.FromResult(0);
         //},
         OnTokenResponseReceived = context =>
