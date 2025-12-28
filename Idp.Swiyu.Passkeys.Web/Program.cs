@@ -65,7 +65,14 @@ builder.Services.AddAuthentication(options =>
         //OnRedirectToIdentityProvider = context =>
         //{
         //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-        //    context.ProtocolMessage.AcrValues = "phr"
+        //    context.ProtocolMessage.AcrValues = "phr";
+        //    // context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
+        //    return Task.FromResult(0);
+        //},
+        //OnPushAuthorization = context =>
+        //{
+        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
+        //    context.ProtocolMessage.AcrValues = "phr";
         //    // context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
         //    return Task.FromResult(0);
         //},
