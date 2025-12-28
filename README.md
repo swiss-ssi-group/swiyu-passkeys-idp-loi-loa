@@ -1,5 +1,8 @@
 # swiyu-passkeys-idp-loi-loa
 
+## Blogs
+- [Digital authentication and identityvalidation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
+
 ## loa (Level of Authentication)
 
 loa.400 : passkeys, (public/private key certificate authentication)
