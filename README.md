@@ -22,6 +22,10 @@
 
 ![loi](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/identity-levels.drawio.png)
 
+## Architecture
+
+![architecture](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/OIDC_LOI_LOA.drawio.png)
+
 ## Links
 
 https://github.com/dotnet/aspnetcore/issues/64881
