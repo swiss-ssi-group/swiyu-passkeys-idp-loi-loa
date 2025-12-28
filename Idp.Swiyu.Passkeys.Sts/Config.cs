@@ -39,6 +39,7 @@ public static class Config
                 RequireDPoP = true,
 
                 AllowedGrantTypes = GrantTypes.Code,
+                AlwaysIncludeUserClaimsInIdToken = true,
 
                 RedirectUris = { "https://localhost:7019/signin-oidc" },
                 FrontChannelLogoutUri = "https://localhost:7019/signout-oidc",
