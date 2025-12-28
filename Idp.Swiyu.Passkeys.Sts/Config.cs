@@ -37,6 +37,7 @@ public static class Config
                 ClientSecrets = { new Secret("super-secret-$123".Sha256()) },
 
                 RequireDPoP = true,
+                RequirePushedAuthorization = true,
 
                 AllowedGrantTypes = GrantTypes.Code,
                 AlwaysIncludeUserClaimsInIdToken = true,
