@@ -24,6 +24,8 @@
 
 ## Architecture
 
+The solution uses a web application which authenticates using OpenID Connect, OAuth PAR, OAuth DPoP. The IDP is implemented using Duende and ASP.NET Core Identity. When the user authenticates, passkeys are used for the user authentication. The server returns claims to the client application and the amr claim is returned with the "pop" value.
+
 ![architecture](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/OIDC_LOI_LOA.drawio.png)
 
 ## Links
