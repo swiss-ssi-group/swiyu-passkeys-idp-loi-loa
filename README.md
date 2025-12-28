@@ -24,3 +24,7 @@ https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
 https://datatracker.ietf.org/doc/html/rfc8176
 
 https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims
+
+https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/
+
+https://damienbod.com/2025/07/02/implement-asp-net-core-openid-connect-with-keykloak-to-implement-level-of-authentication-loa-requirements/
