@@ -12,6 +12,13 @@ public class AuthzLoaLoiHandler : AuthorizationHandler<AuthzLoaLoiRequirement>
             return Task.CompletedTask;
         }
 
+        // Lets require passkeys to use this API
+        // DPoP is required to use the API
+        if (loa.Value != "loa.400")
+        {
+            return Task.CompletedTask;
+        }
+
         context.Succeed(requirement);
 
         return Task.CompletedTask;
