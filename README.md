@@ -22,3 +22,5 @@ https://github.com/dotnet/aspnetcore/issues/64881
 https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
 
 https://datatracker.ietf.org/doc/html/rfc8176
+
+https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims

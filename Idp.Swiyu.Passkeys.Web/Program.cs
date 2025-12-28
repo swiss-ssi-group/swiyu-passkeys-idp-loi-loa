@@ -2,6 +2,7 @@ using Duende.AccessTokenManagement.DPoP;
 using Duende.AccessTokenManagement.OpenIdConnect;
 using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Logging;
@@ -48,6 +49,8 @@ builder.Services.AddAuthentication(options =>
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
     options.MapInboundClaims = false;
+    options.ClaimActions.MapUniqueJsonKey("loa", "loa");
+    options.ClaimActions.MapUniqueJsonKey("loi", "loi");
     options.Scope.Add("scope2");
     options.TokenValidationParameters = new TokenValidationParameters
     {
