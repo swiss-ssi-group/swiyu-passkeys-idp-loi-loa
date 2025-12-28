@@ -13,28 +13,12 @@ public class ProfileService: IProfileService
         // context.Subject.Claims is the claims collection from the user's session cookie at login time
         // context.IssuedClaims is the collection of claims that your logic has decided to return in the response
 
-        var loa = new Claim(Consts.LOA, Consts.LOA_100);
-        var loi = new Claim(Consts.LOI, Consts.LOI_100);
-        var amrClaim = context.Subject.Claims.FirstOrDefault(c => c.Type == "amr");
-
-        // TODO
-        //if (amrClaim != null && amrClaim.Value == Amr.Pwd)
-        //{
-            
-        //}
         if (context.Caller == IdentityServerConstants.ProfileDataCallers.ClaimsProviderAccessToken)
         {
-            // access_token
-            context.IssuedClaims.Add(loa);
-            context.IssuedClaims.Add(loi);
         }
 
         if (context.Caller == IdentityServerConstants.ProfileDataCallers.ClaimsProviderIdentityToken)
         {
-            // id_token
-            context.IssuedClaims.Add(loa);
-            context.IssuedClaims.Add(loi);
-
             var oid = context.Subject.Claims.FirstOrDefault(t => t.Type == "oid");
 
             if(oid != null)

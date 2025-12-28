@@ -1,6 +1,7 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Duende.IdentityModel;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Idp.Swiyu.Passkeys.Sts.Pages.Login;
@@ -106,6 +108,20 @@ public class Index : PageModel
             if (result.Succeeded)
             {
                 user = await _userManager.GetUserAsync(User);
+
+                // Sign out first to clear the existing cookie
+                await _signInManager.SignOutAsync();
+
+                // Create additional claims
+                var additionalClaims = new List<Claim>
+                {
+                    new Claim(Consts.LOA, Consts.LOA_400),
+                    new Claim(Consts.LOI, Consts.LOI_100),
+                    new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop)
+                };
+
+                // Sign in again with the additional claims
+                await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
             }
         }
         else if (ModelState.IsValid)
@@ -117,6 +133,19 @@ public class Index : PageModel
             if (result.Succeeded)
             {
                 user = await _userManager.FindByNameAsync(Input.Username!);
+
+                // Sign out first to clear the existing cookie
+                await _signInManager.SignOutAsync();
+
+                // Create additional claims
+                var additionalClaims = new List<Claim>
+                {
+                    new Claim(Consts.LOA, Consts.LOA_100),
+                    new Claim(Consts.LOI, Consts.LOI_100)
+                };
+
+                // Sign in again with the additional claims
+                await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
             }
         }
 
