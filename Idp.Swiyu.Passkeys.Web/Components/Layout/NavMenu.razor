@@ -1,4 +1,5 @@
 ﻿@inject NavigationManager NavigationManager
+@inject IConfiguration Configuration
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -28,6 +29,12 @@
                     <NavLink class="nav-link" href="weather">
                         <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
                     </NavLink>
+                </div>
+
+                <div class="nav-item px-3">
+                    <a class="nav-link" href="@GetPasskeysUrl()" target="_blank">
+                        <span class="bi bi-key-fill-nav-menu" aria-hidden="true"></span> Edit Passkeys
+                    </a>
                 </div>
 
                 <div class="nav-item px-3">
@@ -66,6 +73,12 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
         StateHasChanged();
+    }
+
+    private string GetPasskeysUrl()
+    {
+        var authority = Configuration["OpenIDConnectSettings:Authority"] ?? "https://localhost:5001";
+        return $"{authority}/Account/passkeys";
     }
 
     public void Dispose()
