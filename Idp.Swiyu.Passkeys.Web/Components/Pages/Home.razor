@@ -7,7 +7,22 @@
     <Authorized>
         <h1>User Claims</h1>
         
-        <p>Welcome, @context.User.Identity?.Name</p>
+        <p>@context.User.Identity?.Name</p>
+
+        @if (context.User.Claims.Any())
+        {
+            <div class="alert alert-info">
+                <h5>Security Level</h5>
+                @if (context.User.Claims.Any(c => c.Type == "loa"))
+                {
+                    <p><strong>Level of Authentication (LOA):</strong> @context.User.Claims.First(c => c.Type == "loa").Value</p>
+                }
+                @if (context.User.Claims.Any(c => c.Type == "loi"))
+                {
+                    <p><strong>Level of Identification (LOI):</strong> @context.User.Claims.First(c => c.Type == "loi").Value</p>
+                }
+            </div>
+        }
 
         @if (context.User.Claims.Any())
         {
