@@ -15,34 +15,71 @@ main {
 .top-row {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
-    justify-content: flex-end;
+    justify-content: space-between;
     height: 3.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-info {
+    flex: 1;
     display: flex;
     align-items: center;
 }
 
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        white-space: nowrap;
-        margin-left: 1.5rem;
-        text-decoration: none;
-    }
+.user-name {
+    font-weight: 500;
+    color: #333;
+}
 
-    .top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
+.logout-form {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn {
+    padding: 0.5rem 1rem;
+    margin: 0;
+    color: #0066cc;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+    .logout-btn:hover {
         text-decoration: underline;
+        color: #0052a3;
     }
 
-    .top-row ::deep a:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
+.login-link {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+    .login-link:hover {
+        text-decoration: underline;
+        color: #0052a3;
     }
 
 @media (max-width: 640.98px) {
     .top-row {
         justify-content: space-between;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
-    .top-row ::deep a, .top-row ::deep .btn-link {
-        margin-left: 0;
+    .user-name {
+        font-size: 0.9rem;
+    }
+
+    .logout-btn {
+        font-size: 0.9rem;
+        padding: 0.5rem;
     }
 }
 
@@ -62,12 +99,6 @@ main {
         position: sticky;
         top: 0;
         z-index: 1;
-    }
-
-    .top-row.auth ::deep a:first-child {
-        flex: 1;
-        text-align: right;
-        width: 0;
     }
 
     .top-row, article {
