@@ -30,7 +30,7 @@ public static class Config
     }
     public static IEnumerable<Client> Clients =>
         [
-            // interactive client using code flow + pkce
+            // interactive client using code flow + pkce + par + DPoP
             new Client
             {
                 ClientId = "web-client",
