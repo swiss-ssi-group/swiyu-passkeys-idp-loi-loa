@@ -1,5 +1,6 @@
 using Duende.AccessTokenManagement.DPoP;
 using Duende.AccessTokenManagement.OpenIdConnect;
+using Duende.IdentityModel;
 using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
 using Microsoft.AspNetCore.Authentication;
