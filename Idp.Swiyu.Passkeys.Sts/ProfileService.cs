@@ -83,19 +83,6 @@ public class ProfileService : IProfileService
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.Name, name.Value));
         }
 
-        // Add other standard profile claims if they exist
-        var givenName = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.GivenName);
-        if (givenName != null)
-        {
-            context.IssuedClaims.Add(new Claim(JwtClaimTypes.GivenName, givenName.Value));
-        }
-
-        var familyName = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.FamilyName);
-        if (familyName != null)
-        {
-            context.IssuedClaims.Add(new Claim(JwtClaimTypes.FamilyName, familyName.Value));
-        }
-
         var email = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.Email);
         if (email != null)
         {

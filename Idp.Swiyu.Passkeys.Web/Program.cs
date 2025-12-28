@@ -53,8 +53,6 @@ builder.Services.AddAuthentication(options =>
 
     options.ClaimActions.MapUniqueJsonKey("loa", "loa");
     options.ClaimActions.MapUniqueJsonKey("loi", "loi");
-    options.ClaimActions.MapUniqueJsonKey(JwtClaimTypes.GivenName, JwtClaimTypes.GivenName);
-    options.ClaimActions.MapUniqueJsonKey(JwtClaimTypes.FamilyName, JwtClaimTypes.FamilyName);
     options.ClaimActions.MapUniqueJsonKey(JwtClaimTypes.Email, JwtClaimTypes.Email);
 
     options.Scope.Add("scope2");
