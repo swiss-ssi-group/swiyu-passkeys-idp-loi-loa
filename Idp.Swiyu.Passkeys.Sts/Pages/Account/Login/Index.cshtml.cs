@@ -117,6 +117,8 @@ public class Index : PageModel
                 {
                     new Claim(Consts.LOA, Consts.LOA_400),
                     new Claim(Consts.LOI, Consts.LOI_100),
+                    // ASP.NET Core bug workaround:
+                    // https://github.com/dotnet/aspnetcore/issues/64881
                     new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop)
                 };
 
