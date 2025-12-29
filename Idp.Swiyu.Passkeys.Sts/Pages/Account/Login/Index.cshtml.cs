@@ -116,7 +116,7 @@ public class Index : PageModel
 
                 // Sign out first to clear the existing cookie
                 await _signInManager.SignOutAsync();
-                var additionalClaims = GetAdditionalClaims(swiyuVerifiedIdentity, Consts.LOA_400);
+                var additionalClaims = GetAdditionalClaims(swiyuVerifiedIdentity, Consts.LOA_400, Amr.Pop);
 
                 // Sign in again with the additional claims
                 await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
@@ -137,7 +137,7 @@ public class Index : PageModel
                 await _signInManager.SignOutAsync();
 
                 // Create additional claims
-                var additionalClaims = GetAdditionalClaims(swiyuVerifiedIdentity, Consts.LOA_100);
+                var additionalClaims = GetAdditionalClaims(swiyuVerifiedIdentity, Consts.LOA_100, Amr.Pwd);
 
                 // Sign in again with the additional claims
                 await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
@@ -191,7 +191,7 @@ public class Index : PageModel
         return Page();
     }
 
-    private static List<Claim> GetAdditionalClaims(SwiyuIdentity? swiyuVerifiedIdentity, string loaValue)
+    private static List<Claim> GetAdditionalClaims(SwiyuIdentity? swiyuVerifiedIdentity, string loaValue, string amr)
     {
         List<Claim> additionalClaims;
         if (swiyuVerifiedIdentity != null)
@@ -202,7 +202,7 @@ public class Index : PageModel
                 new Claim(Consts.LOI, Consts.LOI_400),
                 // ASP.NET Core bug workaround:
                 // https://github.com/dotnet/aspnetcore/issues/64881
-                new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop),
+                new Claim(JwtClaimTypes.AuthenticationMethod, amr),
 
                 new Claim(JwtClaimTypes.GivenName, swiyuVerifiedIdentity.GivenName),
                 new Claim(JwtClaimTypes.FamilyName, swiyuVerifiedIdentity.FamilyName),
@@ -218,7 +218,7 @@ public class Index : PageModel
                 new Claim(Consts.LOI, Consts.LOI_100),
                 // ASP.NET Core bug workaround:
                 // https://github.com/dotnet/aspnetcore/issues/64881
-                new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop)
+                new Claim(JwtClaimTypes.AuthenticationMethod, amr)
             };
         }
 
