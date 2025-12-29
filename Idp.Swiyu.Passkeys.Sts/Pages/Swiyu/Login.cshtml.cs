@@ -1,3 +1,4 @@
+using Duende.IdentityModel;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Idp.Swiyu.Passkeys.Sts.Data;
@@ -113,14 +114,6 @@ public class LoginModel : PageModel
 
             if (ModelState.IsValid)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim("name", verificationClaims.GivenName),
-                    new Claim("family_name", verificationClaims.FamilyName),
-                    new Claim("birth_place", verificationClaims.BirthPlace),
-                    new Claim("birth_date", verificationClaims.BirthDate)
-                };
-
                 var exists = _applicationDbContext.SwiyuIdentity.FirstOrDefault(c =>
                     c.BirthDate == verificationClaims.BirthDate &&
                     c.BirthPlace == verificationClaims.BirthPlace &&
@@ -137,8 +130,9 @@ public class LoginModel : PageModel
                         throw new ArgumentNullException("error in authentication");
                     }
 
+                    var additionalClaims = GetAdditionalClaims(exists);
                     // issue authentication cookie for user
-                    await _signInManager.SignInWithClaimsAsync(user, null, claims);
+                    await _signInManager.SignInWithClaimsAsync(user, null, additionalClaims);
 
                     if (context != null)
                     {
@@ -181,4 +175,24 @@ public class LoginModel : PageModel
             }
         }
     }
+
+    private static List<Claim> GetAdditionalClaims(SwiyuIdentity swiyuVerifiedIdentity)
+    {
+        var additionalClaims = new List<Claim>
+        {
+            new Claim(Consts.LOA, Consts.LOA_300),
+            new Claim(Consts.LOI, Consts.LOI_400),
+            // ASP.NET Core bug workaround:
+            // https://github.com/dotnet/aspnetcore/issues/64881
+            new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Mfa),
+
+            new Claim(JwtClaimTypes.GivenName, swiyuVerifiedIdentity.GivenName),
+            new Claim(JwtClaimTypes.FamilyName, swiyuVerifiedIdentity.FamilyName),
+            new Claim(JwtClaimTypes.BirthDate, swiyuVerifiedIdentity.BirthDate),
+            new Claim("birth_place", swiyuVerifiedIdentity.BirthPlace)
+        };
+
+        return additionalClaims;
+    }
+
 }
