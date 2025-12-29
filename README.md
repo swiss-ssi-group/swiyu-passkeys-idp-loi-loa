@@ -32,6 +32,10 @@ The solution uses a web application which authenticates using OpenID Connect, OA
 
 ![architecture](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/OIDC_LOI_LOA.drawio.png)
 
+## Podman
+
+https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman
+
 ## Links
 
 https://github.com/dotnet/aspnetcore/issues/64881
