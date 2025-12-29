@@ -36,6 +36,12 @@ The solution uses a web application which authenticates using OpenID Connect, OA
 
 https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman
 
+## ef DB Migrations
+```bash
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
 ## Links
 
 https://github.com/dotnet/aspnetcore/issues/64881
