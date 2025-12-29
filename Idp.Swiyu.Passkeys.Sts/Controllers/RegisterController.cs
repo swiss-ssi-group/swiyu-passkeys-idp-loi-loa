@@ -58,7 +58,7 @@ public class RegisterController : ControllerBase
                     throw new Exception("swiyu already in use and connected to an account...");
                 }
 
-                if (user != null && user.SwiyuIdentityId == null)
+                if (user != null && (user.SwiyuIdentityId == null || user.SwiyuIdentityId <= 0))
                 {
                     var swiyuIdentity = new SwiyuIdentity
                     {
@@ -74,8 +74,10 @@ public class RegisterController : ControllerBase
 
                     // Save to DB
                     user.SwiyuIdentityId = swiyuIdentity.Id;
-
                     await _applicationDbContext.SaveChangesAsync();
+
+                    // remove demo claims
+                    await _userManager.RemoveClaimsAsync(user, await _userManager.GetClaimsAsync(user));
                 }
             }
 
