@@ -7,6 +7,7 @@ using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
+using Idp.Swiyu.Passkeys.Sts.Data;
 using Idp.Swiyu.Passkeys.Sts.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,7 @@ public class Index : PageModel
     private readonly IEventService _events;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
+    private readonly ApplicationDbContext _applicationDbContext;
 
     public ViewModel View { get; set; } = default!;
 
@@ -39,7 +41,8 @@ public class Index : PageModel
         IIdentityProviderStore identityProviderStore,
         IEventService events,
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager,
+        ApplicationDbContext applicationDbContext)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -47,6 +50,7 @@ public class Index : PageModel
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
         _events = events;
+        _applicationDbContext = applicationDbContext;
     }
 
     public async Task<IActionResult> OnGet(string? returnUrl)
@@ -108,19 +112,11 @@ public class Index : PageModel
             if (result.Succeeded)
             {
                 user = await _userManager.GetUserAsync(User);
+                var swiyuVerifiedIdentity = _applicationDbContext.SwiyuIdentity.FirstOrDefault(si => si.UserId == user!.Id);
 
                 // Sign out first to clear the existing cookie
                 await _signInManager.SignOutAsync();
-
-                // Create additional claims
-                var additionalClaims = new List<Claim>
-                {
-                    new Claim(Consts.LOA, Consts.LOA_400),
-                    new Claim(Consts.LOI, Consts.LOI_100),
-                    // ASP.NET Core bug workaround:
-                    // https://github.com/dotnet/aspnetcore/issues/64881
-                    new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop)
-                };
+                var additionalClaims = GetAdditionalClaims(swiyuVerifiedIdentity, Consts.LOA_400);
 
                 // Sign in again with the additional claims
                 await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
@@ -135,16 +131,13 @@ public class Index : PageModel
             if (result.Succeeded)
             {
                 user = await _userManager.FindByNameAsync(Input.Username!);
+                var swiyuVerifiedIdentity = _applicationDbContext.SwiyuIdentity.FirstOrDefault(si => si.UserId == user!.Id);
 
                 // Sign out first to clear the existing cookie
                 await _signInManager.SignOutAsync();
 
                 // Create additional claims
-                var additionalClaims = new List<Claim>
-                {
-                    new Claim(Consts.LOA, Consts.LOA_100),
-                    new Claim(Consts.LOI, Consts.LOI_100)
-                };
+                var additionalClaims = GetAdditionalClaims(swiyuVerifiedIdentity, Consts.LOA_100);
 
                 // Sign in again with the additional claims
                 await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
@@ -196,6 +189,40 @@ public class Index : PageModel
         // something went wrong, show form with error
         await BuildModelAsync(Input.ReturnUrl);
         return Page();
+    }
+
+    private static List<Claim> GetAdditionalClaims(SwiyuIdentity? swiyuVerifiedIdentity, string loaValue)
+    {
+        List<Claim> additionalClaims;
+        if (swiyuVerifiedIdentity != null)
+        {
+            additionalClaims = new List<Claim>
+            {
+                new Claim(Consts.LOA, loaValue),
+                new Claim(Consts.LOI, Consts.LOI_400),
+                // ASP.NET Core bug workaround:
+                // https://github.com/dotnet/aspnetcore/issues/64881
+                new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop),
+
+                new Claim(JwtClaimTypes.GivenName, swiyuVerifiedIdentity.GivenName),
+                new Claim(JwtClaimTypes.FamilyName, swiyuVerifiedIdentity.FamilyName),
+                new Claim(JwtClaimTypes.BirthDate, swiyuVerifiedIdentity.BirthDate),
+                new Claim("birth_place", swiyuVerifiedIdentity.BirthPlace)
+            };
+        }
+        else
+        {
+            additionalClaims = new List<Claim>
+            {
+                new Claim(Consts.LOA, loaValue),
+                new Claim(Consts.LOI, Consts.LOI_100),
+                // ASP.NET Core bug workaround:
+                // https://github.com/dotnet/aspnetcore/issues/64881
+                new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Pop)
+            };
+        }
+
+        return additionalClaims;
     }
 
     private async Task BuildModelAsync(string? returnUrl)
