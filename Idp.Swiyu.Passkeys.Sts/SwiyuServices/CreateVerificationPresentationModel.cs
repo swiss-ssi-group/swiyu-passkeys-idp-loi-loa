@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Idp.Swiyu.Passkeys.Sts.Swiyu.IdentityProvider.SwiyuServices;
+namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 
 public class CreateVerificationPresentationModel
 {

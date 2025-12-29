@@ -6,6 +6,7 @@ using Duende.IdentityServer;
 using Idp.Swiyu.Passkeys.Sts.Data;
 using Idp.Swiyu.Passkeys.Sts.Models;
 using Idp.Swiyu.Passkeys.Sts.Passkeys;
+using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -54,7 +55,13 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<VerificationService>();
+
+        builder.Services.AddHttpClient();
+        builder.Services.AddOptions();
+        // Add services to the container.
         builder.Services.AddRazorPages();
+        builder.Services.AddControllers();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -138,6 +145,8 @@ internal static class HostingExtensions
 
         app.MapRazorPages()
             .RequireAuthorization();
+
+        app.MapControllers();
 
         return app;
     }
