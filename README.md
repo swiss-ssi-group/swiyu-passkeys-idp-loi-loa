@@ -1,9 +1,13 @@
 # Implement swiyu identification & passkeys authentication using Duende IDP 
 
+Example fo Aspire implementing Level of Identification (LoI) and Level of Authentication (LoA) using swiyu passkeys authentication in Duende IdentityServer with ASP.NET Core Identity.
+
 ## Blogs
 - [Digital authentication and identity validation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
 - [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com)
-- [Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com)
+- [Planned: Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com)
+- [Planned: Implementing Level of Identification (LoI) with ASP.NET Core Identity and Duende](https://damienbod.com)
+- [Planned: Force step authentication for incorrect level](https://damienbod.com)
 
 ## loa (Level of Authentication)
 - loa.400 : passkeys, (public/private key certificate authentication)
