@@ -38,6 +38,8 @@ public class RegisterController : ControllerBase
 
             var verificationModel = await _verificationService.GetVerificationStatus(id);
 
+            // TODO after a successful identity verification, do not process again for the same user for 60 secs
+
             if (verificationModel != null && verificationModel.state == "SUCCESS")
             {
                 // In a business app we can use the data from the verificationModel
