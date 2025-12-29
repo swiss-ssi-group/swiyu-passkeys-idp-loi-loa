@@ -58,7 +58,7 @@ public class RegisterController : ControllerBase
                     throw new Exception("swiyu already in use and connected to an account...");
                 }
 
-                if (user != null && user.SwiyuIdentityId <= 0)
+                if (user != null && user.SwiyuIdentityId == null)
                 {
                     var swiyuIdentity = new SwiyuIdentity
                     {
