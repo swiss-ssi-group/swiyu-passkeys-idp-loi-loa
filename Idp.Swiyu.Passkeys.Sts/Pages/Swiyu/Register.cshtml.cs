@@ -1,3 +1,4 @@
+using Duende.IdentityModel;
 using Idp.Swiyu.Passkeys.Sts.Data;
 using Idp.Swiyu.Passkeys.Sts.Data.Migrations;
 using Idp.Swiyu.Passkeys.Sts.Models;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Net.Codecrete.QrCodeGenerator;
+using System.Net.Mail;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace Idp.Swiyu.Passkeys.Sts.Pages.Swiyu;
@@ -46,7 +49,7 @@ public class RegisterModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
+        var user = await _userManager.FindByEmailAsync(GetEmail(User.Claims)!);
         var swiyuVerifiedIdentity = _applicationDbContext.SwiyuIdentity.FirstOrDefault(si => si.UserId == user!.Id);
 
         if(swiyuVerifiedIdentity != null)
@@ -98,7 +101,10 @@ public class RegisterModel : PageModel
                     // This should return a user message with no info what went wrong.
                     throw new ArgumentNullException("error in authentication");
                 }
-
+            }
+            else
+            {
+                await ConnectAccountWithIdentity(verificationClaims);
                 return Redirect("/Swiyu/IdentityCheckComplete");
             }
 
@@ -129,5 +135,95 @@ public class RegisterModel : PageModel
                 await Task.Delay(interval * 1000);
             }
         }
+    }
+
+    private async Task ConnectAccountWithIdentity(VerificationClaims verificationClaims)
+    {
+        var user = await _userManager.FindByEmailAsync(GetEmail(User.Claims)!);
+
+        var exists = _applicationDbContext.SwiyuIdentity.FirstOrDefault(c =>
+            c.BirthDate == verificationClaims.BirthDate &&
+            c.BirthPlace == verificationClaims.BirthPlace &&
+            c.GivenName == verificationClaims.GivenName &&
+            c.FamilyName == verificationClaims.FamilyName);
+
+        if (exists != null)
+        {
+            throw new Exception("swiyu already in use and connected to an account...");
+        }
+
+        if (user != null && (user.SwiyuIdentityId == null || user.SwiyuIdentityId <= 0))
+        {
+            var swiyuIdentity = new SwiyuIdentity
+            {
+                UserId = user.Id,
+                BirthDate = verificationClaims.BirthDate,
+                FamilyName = verificationClaims.FamilyName,
+                BirthPlace = verificationClaims.BirthPlace,
+                GivenName = verificationClaims.GivenName,
+                Email = user.Email!
+            };
+
+            _applicationDbContext.SwiyuIdentity.Add(swiyuIdentity);
+
+            // Save to DB
+            user.SwiyuIdentityId = swiyuIdentity.Id;
+            await _applicationDbContext.SaveChangesAsync();
+
+            // remove demo claims
+            await _userManager.RemoveClaimsAsync(user, await _userManager.GetClaimsAsync(user));
+        }     
+    }
+
+    public static string? GetEmail(IEnumerable<Claim> claims)
+    {
+        var email = claims.FirstOrDefault(t => t.Type == ClaimTypes.Email);
+
+        if (email != null)
+        {
+            return email.Value;
+        }
+
+        email = claims.FirstOrDefault(t => t.Type == JwtClaimTypes.Email);
+
+        if (email != null)
+        {
+            return email.Value;
+        }
+
+        email = claims.FirstOrDefault(t => t.Type == "preferred_username");
+
+        if (email != null)
+        {
+            var isNameAndEmail = IsEmailValid(email.Value);
+            if (isNameAndEmail)
+            {
+                return email.Value;
+            }
+        }
+
+        return null;
+    }
+
+    public static bool IsEmailValid(string email)
+    {
+        if (!MailAddress.TryCreate(email, out var mailAddress))
+            return false;
+
+        // And if you want to be more strict:
+        var hostParts = mailAddress.Host.Split('.');
+        if (hostParts.Length == 1)
+            return false; // No dot.
+        if (hostParts.Any(p => p == string.Empty))
+            return false; // Double dot.
+        if (hostParts[^1].Length < 2)
+            return false; // TLD only one letter.
+
+        if (mailAddress.User.Contains(' '))
+            return false;
+        if (mailAddress.User.Split('.').Any(p => p == string.Empty))
+            return false; // Double dot or dot at end of user part.
+
+        return true;
     }
 }
