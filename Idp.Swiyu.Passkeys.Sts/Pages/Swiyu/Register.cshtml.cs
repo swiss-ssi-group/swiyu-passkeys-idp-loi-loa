@@ -1,6 +1,5 @@
 using Duende.IdentityModel;
 using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Data.Migrations;
 using Idp.Swiyu.Passkeys.Sts.Models;
 using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using ImageMagick;
