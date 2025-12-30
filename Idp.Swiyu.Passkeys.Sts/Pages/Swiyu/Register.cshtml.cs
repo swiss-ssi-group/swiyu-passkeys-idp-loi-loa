@@ -52,7 +52,7 @@ public class RegisterModel : PageModel
         if(swiyuVerifiedIdentity != null)
         {
             // User already has a verified Swiyu identity, redirect to complete page
-            Response.Redirect("/IdentityAlreadyVerified");
+            Response.Redirect("/Swiyu/IdentityAlreadyVerified");
             return;
         }
    
@@ -99,7 +99,7 @@ public class RegisterModel : PageModel
                     throw new ArgumentNullException("error in authentication");
                 }
 
-                return Redirect("/IdentityCheckComplete");
+                return Redirect("/Swiyu/IdentityCheckComplete");
             }
 
         }
