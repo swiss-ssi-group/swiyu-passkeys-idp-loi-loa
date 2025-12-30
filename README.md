@@ -32,6 +32,11 @@ The solution uses a web application which authenticates using OpenID Connect, OA
 
 ![architecture](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/blob/main/images/OIDC_LOI_LOA.drawio.png)
 
+## Getting started:
+
+- [swiyu](https://swiyu-admin-ch.github.io/cookbooks/onboarding-base-and-trust-registry/)
+- [Duende](https://duendesoftware.com/)
+
 ## Podman
 
 https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman
