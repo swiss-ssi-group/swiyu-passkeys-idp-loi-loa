@@ -42,6 +42,14 @@ dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
 
+## Used OSS packages, containers, repositories 
+
+- ImageMagick: https://github.com/manuelbl/QrCodeGenerator/tree/master/Demo-ImageMagick
+- Microsoft Aspire: https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview
+- Net.Codecrete.QrCodeGenerator: https://github.com/manuelbl/QrCodeGenerator/
+- swiyu
+  - https://github.com/swiyu-admin-ch/swiyu-verifier
+
 ## Links
 
 https://github.com/dotnet/aspnetcore/issues/64881
@@ -55,3 +63,36 @@ https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims
 https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/
 
 https://damienbod.com/2025/07/02/implement-asp-net-core-openid-connect-with-keykloak-to-implement-level-of-authentication-loa-requirements/
+
+## SSI
+
+https://www.eid.admin.ch/en/public-beta-e
+
+https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview
+
+https://www.npmjs.com/package/ngrok
+
+https://swiyu-admin-ch.github.io/specifications/interoperability-profile/
+
+https://andrewlock.net/converting-a-docker-compose-file-to-aspire/
+
+https://swiyu-admin-ch.github.io/cookbooks/onboarding-generic-verifier/
+
+https://github.com/orgs/swiyu-admin-ch/projects/2/views/2
+
+### SSI Standards
+
+https://identity.foundation/trustdidweb/
+
+https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html
+
+https://openid.net/specs/openid-4-verifiable-presentations-1_0.html
+
+https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/
+
+https://datatracker.ietf.org/doc/draft-ietf-oauth-sd-jwt-vc/
+
+https://datatracker.ietf.org/doc/draft-ietf-oauth-status-list/
+
+https://www.w3.org/TR/vc-data-model-2.0/
+
