@@ -180,11 +180,11 @@ public class LoginModel : PageModel
     {
         var additionalClaims = new List<Claim>
         {
-            new Claim(Consts.LOA, Consts.LOA_300),
+            new Claim(Consts.LOA, Consts.LOA_200),
             new Claim(Consts.LOI, Consts.LOI_400),
             // ASP.NET Core bug workaround:
             // https://github.com/dotnet/aspnetcore/issues/64881
-            new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Mfa),
+            new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Mca),
 
             new Claim(JwtClaimTypes.GivenName, swiyuVerifiedIdentity.GivenName),
             new Claim(JwtClaimTypes.FamilyName, swiyuVerifiedIdentity.FamilyName),
