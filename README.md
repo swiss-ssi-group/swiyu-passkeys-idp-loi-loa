@@ -75,6 +75,10 @@ https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/
 
 https://damienbod.com/2025/07/02/implement-asp-net-core-openid-connect-with-keykloak-to-implement-level-of-authentication-loa-requirements/
 
+https://github.com/DuendeSoftware/samples/tree/main/IdentityServer/v7/UserInteraction/StepUp
+
+https://datatracker.ietf.org/doc/rfc9470/
+
 ## SSI
 
 https://www.eid.admin.ch/en/public-beta-e
