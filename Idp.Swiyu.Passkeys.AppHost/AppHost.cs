@@ -1,12 +1,17 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 
-var IDENTITY_PROVIDER = "identityProvider";
-var WEB_CLIENT = "webClient";
-var API_SERVICE = "apiService";
-var CACHE = "cache";
+const string IDENTITY_PROVIDER = "identityProvider";
+const string WEB_CLIENT = "webClient";
+const string API_SERVICE = "apiService";
+const string CACHE = "cache";
 
 const string HTTP = "http";
+int VERIFIER_PORT = 80;
+if (builder.ExecutionContext.IsRunMode)
+{
+    VERIFIER_PORT = 8084;
+}
 
 // management
 IResourceBuilder<ContainerResource>? swiyuVerifier = null;
@@ -48,8 +53,7 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-    .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP)  // local development
-    //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP) // for deployment 
+    .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP)
     .WithExternalHttpEndpoints();
 
 identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
