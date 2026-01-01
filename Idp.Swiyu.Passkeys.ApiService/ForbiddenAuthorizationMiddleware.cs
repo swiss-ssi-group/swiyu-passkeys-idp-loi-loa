@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Authorization.Policy;
 
 namespace Idp.Swiyu.Passkeys.ApiService;
 
+/// <summary>
+/// https://datatracker.ietf.org/doc/rfc9470/ 
+/// implementation for step-up authorization requirements
+/// </summary>
 public class ForbiddenAuthorizationMiddleware : IAuthorizationMiddlewareResultHandler
 {
     private readonly AuthorizationMiddlewareResultHandler defaultHandler = new();
