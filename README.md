@@ -41,6 +41,10 @@ The solution uses a web application which authenticates using OpenID Connect, OA
 
 https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman
 
+```bash
+podman machine start
+```
+
 ## ef DB Migrations
 ```bash
 dotnet ef migrations add InitialCreate
