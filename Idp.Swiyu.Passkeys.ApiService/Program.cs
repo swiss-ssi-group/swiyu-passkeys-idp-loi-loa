@@ -1,4 +1,5 @@
 using Duende.AspNetCore.Authentication.JwtBearer.DPoP;
+using Idp.Swiyu.Passkeys.ApiService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Logging;
@@ -34,12 +35,14 @@ builder.Services.ConfigureDPoPTokensForScheme("Bearer", opt =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddSingleton<IAuthorizationHandler, AuthzLoaLoiHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, LoiHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, LoaHandler>();
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, ForbiddenAuthorizationMiddleware>();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("authz_checks", policy => policy
         .RequireAuthenticatedUser()
-        .AddRequirements(new AuthzLoaLoiRequirement()));
+        .AddRequirements([new LoaRequirement(), new LoiRequirement()]));
 
 var app = builder.Build();
 

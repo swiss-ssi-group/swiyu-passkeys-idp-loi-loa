@@ -1,21 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-public class AuthzLoaLoiHandler : AuthorizationHandler<AuthzLoaLoiRequirement>
+public class LoiHandler : AuthorizationHandler<LoiRequirement>
 {
-    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthzLoaLoiRequirement requirement)
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, LoiRequirement requirement)
     {
         // DPoP is required to use the API
-
-        var loa = context.User.FindFirst(c => c.Type == "loa");
         var loi = context.User.FindFirst(c => c.Type == "loi");
 
-        if (loa is null || loi is null)
-        {
-            return Task.CompletedTask;
-        }
-
-        // Lets require passkeys to use this API
-        if (loa.Value != "loa.400")
+        if (loi is null)
         {
             return Task.CompletedTask;
         }
