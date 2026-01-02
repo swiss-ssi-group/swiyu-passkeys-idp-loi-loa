@@ -32,7 +32,6 @@ public class ForbiddenAuthorizationMiddleware : IAuthorizationMiddlewareResultHa
                 var header = new CreateWWWAuthenticateHeader();
                 if (loaFailed != null)
                 {
-                    header.AcrValues = "pop";
                     header.Loa = "loa.400";
                 }
                 if (loiFailed != null)
@@ -67,17 +66,12 @@ public class CreateWWWAuthenticateHeader
             {
                 ret += "insufficient level of authentication. ";
             }
-            if (AcrValues != null)
-            {
-                ret += "Passkeys authentication is required.";
-            }
             return ret;
         }
     }
 
     public string? Loi { get; set; }
     public string? Loa { get; set; }
-    public string? AcrValues { get; set; }
 
     public override string ToString()
     {
@@ -92,10 +86,6 @@ public class CreateWWWAuthenticateHeader
         if (Loa != null)
         {
             props.Add($"loa={Loa}");
-        }
-        if (AcrValues != null)
-        {
-            props.Add($"acr_values={AcrValues}");
         }
         return string.Join(',', props);
     }
