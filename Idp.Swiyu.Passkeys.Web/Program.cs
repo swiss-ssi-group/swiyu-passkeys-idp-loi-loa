@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
@@ -70,14 +71,23 @@ builder.Services.AddAuthentication(options =>
         //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
         //    context.ProtocolMessage.AcrValues = "phr";
         //    // context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
+        //    if (context.Properties.Items.ContainsKey("acr_values"))
+        //    {
+        //        context.ProtocolMessage.AcrValues = context.Properties.Items["acr_values"];
+        //    }
         //    return Task.FromResult(0);
         //},
-        //OnPushAuthorization = context =>
-        //{
-        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-        //    context.ProtocolMessage.AcrValues = "phr";
-        //    return Task.FromResult(0);
-        //},
+        OnPushAuthorization = context =>
+        {
+            // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
+            if (context.Properties.Items.ContainsKey("acr_values"))
+            {
+                context.ProtocolMessage.AcrValues = context.Properties.Items["acr_values"];
+            }
+            return Task.FromResult(0);
+        },
+
+
         OnTokenResponseReceived = context =>
         {
             var idToken = context.TokenEndpointResponse.IdToken;

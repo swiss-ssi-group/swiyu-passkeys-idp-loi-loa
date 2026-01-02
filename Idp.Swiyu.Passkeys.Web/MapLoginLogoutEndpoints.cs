@@ -29,7 +29,7 @@ public static class LoginLogoutEndpoints
                 await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
                 {
                     RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
-                    Items = { ["arc_values"] = "phr" }
+                    Items = { ["acr_values"] = "phr" }
                 });
             }
             else
@@ -37,7 +37,7 @@ public static class LoginLogoutEndpoints
                 await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
                 {
                     RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
-                    Items = { ["arc_values"] = "mfa" }
+                    Items = { ["acr_values"] = "mfa" }
                 });
             }
  
