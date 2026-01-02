@@ -1,5 +1,4 @@
-﻿using Duende.IdentityModel;
-using Idp.Swiyu.Passkeys.Sts.Domain.Models;
+﻿using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
