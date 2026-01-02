@@ -1,9 +1,12 @@
 ﻿@page "/weather"
 @using Idp.Swiyu.Passkeys.Web.WeatherServices
+@using Microsoft.AspNetCore.Components
+@using System.Text.RegularExpressions
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
 @inject WeatherApiClient WeatherApi
+@inject NavigationManager NavigationManager
 
 <PageTitle>Weather</PageTitle>
 
@@ -15,6 +18,30 @@
 {
     <div class="alert alert-danger" role="alert">
         <strong>Error:</strong> @errorMessage
+        @if (errorMessage.Contains("loi", StringComparison.OrdinalIgnoreCase))
+        {
+            var loiValue = ExtractParameterValue(errorMessage, "loi");
+            if (!string.IsNullOrEmpty(loiValue))
+            {
+                var returnUrl = NavigationManager.Uri;
+                var stepUpUrl = $"/stepuploi?loi={Uri.EscapeDataString(loiValue)}&returnUrl={Uri.EscapeDataString(returnUrl)}";
+                <div class="mt-2">
+                    <a href="@stepUpUrl" class="btn btn-primary">Step up identification</a>
+                </div>
+            }
+        }
+        @if (errorMessage.Contains("loa", StringComparison.OrdinalIgnoreCase))
+        {
+            var loaValue = ExtractParameterValue(errorMessage, "loa");
+            if (!string.IsNullOrEmpty(loaValue))
+            {
+                var returnUrl = NavigationManager.Uri;
+                var stepUpUrl = $"/stepuploa?loa={Uri.EscapeDataString(loaValue)}&returnUrl={Uri.EscapeDataString(returnUrl)}";
+                <div class="mt-2">
+                    <a href="@stepUpUrl" class="btn btn-primary">Step up authentication</a>
+                </div>
+            }
+        }
     </div>
 }
 else if (forecasts == null)
@@ -60,5 +87,22 @@ else
         {
             errorMessage = ex.Message;
         }
+    }
+
+    private string? ExtractParameterValue(string message, string parameterName)
+    {
+        if (string.IsNullOrEmpty(message))
+            return null;
+
+        // Try to extract parameter value using regex pattern like: loi="value" or loa="value"
+        var pattern = $@"{parameterName}=""?([^""\s,]+)""?";
+        var match = Regex.Match(message, pattern, RegexOptions.IgnoreCase);
+        
+        if (match.Success && match.Groups.Count > 1)
+        {
+            return match.Groups[1].Value;
+        }
+
+        return null;
     }
 }
