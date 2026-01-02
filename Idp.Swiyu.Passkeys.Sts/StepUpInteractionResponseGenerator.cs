@@ -25,7 +25,7 @@ public class StepUpInteractionResponseGenerator : AuthorizeInteractionResponseGe
 
         if (!result.IsLogin && !result.IsError)
         {
-            if (!AuthenticatedWithPasskeys(request.Subject!))
+            if (PasskeysRequired(request) && !AuthenticatedWithPasskeys(request.Subject!))
             {
                 if (UserDeclinedMfa(request.Subject!))
                 {
@@ -33,7 +33,19 @@ public class StepUpInteractionResponseGenerator : AuthorizeInteractionResponseGe
                 }
                 else
                 {
+                    // passkeys can be completed here
                     result.RedirectUrl = "/Account/Login";
+                }
+            }
+            else if (MfaRequired(request) && !AuthenticatedWithMfa(request.Subject!))
+            {
+                if (UserDeclinedMfa(request.Subject!))
+                {
+                    result.Error = OidcConstants.AuthorizeErrors.UnmetAuthenticationRequirements;
+                }
+                else
+                {
+                    result.RedirectUrl = "/Account/Mfa";
                 }
             }
         }
@@ -49,8 +61,13 @@ public class StepUpInteractionResponseGenerator : AuthorizeInteractionResponseGe
         return request.AuthenticationContextReferenceClasses!.Contains("phr");
     }
 
-    private bool AuthenticatedWithOpenIDVP(ClaimsPrincipal user) =>
-        user.Claims.Any(c => c.Type == "amr" && c.Value ==  Amr.Mca);
+    private bool MfaRequired(ValidatedAuthorizeRequest request) =>
+       MfaRequestedByClient(request);
+
+    private bool MfaRequestedByClient(ValidatedAuthorizeRequest request)
+    {
+        return request.AuthenticationContextReferenceClasses!.Contains("mfa");
+    }
 
     private bool AuthenticatedWithMfa(ClaimsPrincipal user) =>
         user.Claims.Any(c => c.Type == "amr" && (c.Value == Amr.Pop || c.Value ==  Amr.Mfa));
