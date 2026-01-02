@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
+using System.Text;
 
 namespace Idp.Swiyu.Passkeys.ApiService;
 
@@ -29,18 +30,19 @@ public class ForbiddenAuthorizationMiddleware : IAuthorizationMiddlewareResultHa
 
             if (loaFailed != null || loiFailed != null)
             {
-                var header = new CreateWWWAuthenticateHeader();
+                var errorMessage = new CreateErrorMessage();
                 if (loaFailed != null)
                 {
-                    header.Loa = "loa.400";
+                    errorMessage.Loa = "loa.400";
                 }
                 if (loiFailed != null)
                 {
-                    header.Loi = "loi.400";
+                    errorMessage.Loi = "loi.400";
                 }
 
-                context.Response.Headers.WWWAuthenticate = header.ToString();
+                context.Response.Headers.WWWAuthenticate = errorMessage.GetErrorMessage();
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
                 return;
             }
         }
@@ -50,43 +52,47 @@ public class ForbiddenAuthorizationMiddleware : IAuthorizationMiddlewareResultHa
     }
 }
 
-public class CreateWWWAuthenticateHeader
+public class CreateErrorMessage
 {
     private readonly string Error = "insufficient_user_authentication";
     private string ErrorDescription
     {
         get
         {
-            var ret = string.Empty;
-            if (Loi != null)
-            {
-                ret += "insufficient level of identification. ";
-            }
+            var errorDescription = new StringBuilder();
             if (Loa != null)
             {
-                ret += "insufficient level of authentication. ";
+                errorDescription.Append("insufficient level of authentication");
             }
-            return ret;
+
+            if (Loi != null)
+            {
+                errorDescription.Append("insufficient level of identification");
+            }
+
+            return errorDescription.ToString();
         }
     }
 
     public string? Loi { get; set; }
     public string? Loa { get; set; }
 
-    public override string ToString()
+    public string GetErrorMessage()
     {
-        var props = new List<string> {
-            $"error=\"{Error}\"",
-            $"error_description=\"{ErrorDescription}\""
-        };
+        var props = new StringBuilder();
+        props.Append($"Bearer error=\"{Error}\",");
+        props.Append($"error_description=\"{ErrorDescription}\", ");
+
         if (Loi != null)
         {
-            props.Add($"loi=\"{Loi}\"");
+            props.Append($"loi=\"{Loi}\"");
         }
+
         if (Loa != null)
         {
-            props.Add($"loa=\"{Loa}\"");
+            props.Append($"loa=\"{Loa}\"");
         }
-        return string.Join(',', props);
+
+        return props.ToString();
     }
 }
