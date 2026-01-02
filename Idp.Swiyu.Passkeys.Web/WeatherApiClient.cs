@@ -44,12 +44,6 @@ public class WeatherApiClient
             
             return forecasts ?? [];
         }
-        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
-        {
-            // Fallback for any other 401 errors
-            var errorDescription = ParseErrorDescriptionFromException(ex);
-            throw new WeatherApiException(errorDescription ?? "Unauthorized access to weather API.", ex);
-        }
         finally
         {
             response?.Dispose();
@@ -72,21 +66,6 @@ public class WeatherApiClient
                     return match.Groups[1].Value;
                 }
             }
-        }
-
-        return null;
-    }
-
-    private static string? ParseErrorDescriptionFromException(HttpRequestException ex)
-    {
-        // The error details might be in the message
-        var message = ex.Message;
-        
-        // Try to extract error_description using regex
-        var match = Regex.Match(message, @"error_description=""([^""]+)""");
-        if (match.Success)
-        {
-            return match.Groups[1].Value;
         }
 
         return null;
