@@ -76,16 +76,16 @@ public class CreateWWWAuthenticateHeader
     public override string ToString()
     {
         var props = new List<string> {
-            $"Bearer error=\"{Error}\"",
+            $"error=\"{Error}\"",
             $"error_description=\"{ErrorDescription}\""
         };
         if (Loi != null)
         {
-            props.Add($"loi={Loi}");
+            props.Add($"loi=\"{Loi}\"");
         }
         if (Loa != null)
         {
-            props.Add($"loa={Loa}");
+            props.Add($"loa=\"{Loa}\"");
         }
         return string.Join(',', props);
     }
