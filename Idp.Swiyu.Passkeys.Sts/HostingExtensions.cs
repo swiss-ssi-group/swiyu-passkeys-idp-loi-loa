@@ -3,8 +3,8 @@
 
 using Duende.IdentityServer;
 using Duende.IdentityServer.ResponseHandling;
-using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Domain;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Idp.Swiyu.Passkeys.Sts.Passkeys;
 using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using Microsoft.AspNetCore.Identity;

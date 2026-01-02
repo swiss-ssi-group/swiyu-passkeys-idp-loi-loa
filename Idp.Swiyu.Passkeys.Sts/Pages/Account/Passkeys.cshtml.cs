@@ -3,7 +3,7 @@
 
 using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

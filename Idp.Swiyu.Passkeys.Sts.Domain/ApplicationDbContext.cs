@@ -1,11 +1,8 @@
-// Copyright (c) Duende Software. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Idp.Swiyu.Passkeys.Sts.Data;
+namespace Idp.Swiyu.Passkeys.Sts.Domain;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {

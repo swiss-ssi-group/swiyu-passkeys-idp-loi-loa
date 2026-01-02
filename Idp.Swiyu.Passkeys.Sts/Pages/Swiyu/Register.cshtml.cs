@@ -1,6 +1,6 @@
 using Duende.IdentityModel;
-using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Domain;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using ImageMagick;
 using Microsoft.AspNetCore.Authorization;

@@ -5,6 +5,7 @@
   <Project Path="Idp.Swiyu.Passkeys.ApiService/Idp.Swiyu.Passkeys.ApiService.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.AppHost/Idp.Swiyu.Passkeys.AppHost.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.ServiceDefaults/Idp.Swiyu.Passkeys.ServiceDefaults.csproj" />
+  <Project Path="Idp.Swiyu.Passkeys.Sts.Domain/Idp.Swiyu.Passkeys.Sts.Domain.csproj" Id="f5a63b68-ee60-44cf-bc67-3cfdc958744e" />
   <Project Path="Idp.Swiyu.Passkeys.Sts/Idp.Swiyu.Passkeys.Sts.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.Web/Idp.Swiyu.Passkeys.Web.csproj" />
 </Solution>

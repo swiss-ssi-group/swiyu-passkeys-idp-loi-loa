@@ -9,8 +9,6 @@
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" version="7.4.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
 
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.1">
@@ -24,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.ServiceDefaults\Idp.Swiyu.Passkeys.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Idp.Swiyu.Passkeys.Sts.Domain\Idp.Swiyu.Passkeys.Sts.Domain.csproj" />
   </ItemGroup>
 
 </Project>

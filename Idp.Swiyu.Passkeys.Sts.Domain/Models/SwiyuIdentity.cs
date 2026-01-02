@@ -1,4 +1,4 @@
-﻿namespace Idp.Swiyu.Passkeys.Sts.Models;
+﻿namespace Idp.Swiyu.Passkeys.Sts.Domain.Models;
 
 public class SwiyuIdentity
 {
