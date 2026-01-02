@@ -6,8 +6,10 @@ using Duende.IdentityServer.ResponseHandling;
 using Idp.Swiyu.Passkeys.Sts.Domain;
 using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Idp.Swiyu.Passkeys.Sts.Passkeys;
+using Idp.Swiyu.Passkeys.Sts.Services;
 using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -64,6 +66,9 @@ internal static class HostingExtensions
         builder.Services.AddHttpClient();
         builder.Services.AddOptions();
         builder.Services.AddRazorPages();
+
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+        builder.Services.AddTransient<IEmailSender, EmailSender>();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("database")));
