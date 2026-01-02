@@ -59,8 +59,7 @@ internal static class HostingExtensions
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.AddServiceDefaults();
-        //builder.AddApplicationDbContext("database");
-
+     
         builder.Services.AddScoped<VerificationService>();
 
         builder.Services.AddHttpClient();
