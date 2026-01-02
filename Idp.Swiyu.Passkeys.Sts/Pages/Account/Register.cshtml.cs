@@ -1,4 +1,5 @@
-﻿using Idp.Swiyu.Passkeys.Sts.Domain.Models;
+﻿using Duende.IdentityModel;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 
@@ -93,7 +95,15 @@ public class RegisterModel : PageModel
                 }
                 else
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var additionalClaims = new List<Claim>
+                    {
+                        new Claim(Consts.LOA, Consts.LOA_100),
+                        new Claim(Consts.LOI, Consts.LOI_100)
+                    };
+
+                    // Sign in again with the additional claims
+                    await _signInManager.SignInWithClaimsAsync(user!, isPersistent: false, additionalClaims);
+
                     return LocalRedirect(returnUrl);
                 }
             }
