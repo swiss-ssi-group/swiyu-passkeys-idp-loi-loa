@@ -22,22 +22,26 @@ public static class LoginLogoutEndpoints
         app.MapGet("/stepuploi", async context =>
         {
             var returnUrl = context.Request.Query["returnUrl"];
+            var loi = context.Request.Query["loi"];
 
             await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
             {
-                RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString()
+                RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
+                Items = { ["loi"] = loi.FirstOrDefault() ?? string.Empty }
             });
-        });
+        }).AllowAnonymous();
 
         app.MapGet("/stepuploa", async context =>
         {
             var returnUrl = context.Request.Query["returnUrl"];
+            var loa = context.Request.Query["loa"];
 
             await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
             {
-                RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString()
+                RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
+                Items = { ["loa"] = loa.FirstOrDefault() ?? string.Empty }
             });
-        });
+        }).AllowAnonymous();
 
         app.MapPost("/logout", async context =>
         {
