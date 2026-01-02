@@ -3,7 +3,6 @@ using Idp.Swiyu.Passkeys.Sts.Domain.Migrations;
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddServiceDefaults();
-
 builder.AddApplicationDbContext("database");
 
 builder.Services.AddHostedService<Worker>();
