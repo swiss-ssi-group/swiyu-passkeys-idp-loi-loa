@@ -1,8 +1,8 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Globalization;
 using Duende.IdentityServer;
+using Duende.IdentityServer.ResponseHandling;
 using Idp.Swiyu.Passkeys.Sts.Data;
 using Idp.Swiyu.Passkeys.Sts.Models;
 using Idp.Swiyu.Passkeys.Sts.Passkeys;
@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
+using System.Globalization;
 
 namespace Idp.Swiyu.Passkeys.Sts;
 
@@ -80,6 +81,8 @@ internal static class HostingExtensions
                     context.Origin == "https://localhost:5001");
             });
         }
+
+        builder.Services.AddTransient<IAuthorizeInteractionResponseGenerator, StepUpInteractionResponseGenerator>();
 
         builder.Services
             .AddIdentityServer(options =>

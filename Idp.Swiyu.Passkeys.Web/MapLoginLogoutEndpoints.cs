@@ -24,11 +24,23 @@ public static class LoginLogoutEndpoints
             var returnUrl = context.Request.Query["returnUrl"];
             var loa = context.Request.Query["loa"];
 
-            await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+            if (string.IsNullOrEmpty(loa) && loa == "loi.400")
             {
-                RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
-                Items = { ["loa"] = loa.FirstOrDefault() ?? string.Empty }
-            });
+                await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+                {
+                    RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
+                    Items = { ["arc_values"] = "phr" }
+                });
+            }
+            else
+            {
+                await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+                {
+                    RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
+                    Items = { ["arc_values"] = "mfa" }
+                });
+            }
+ 
         }).AllowAnonymous();
 
         app.MapPost("/logout", async context =>
