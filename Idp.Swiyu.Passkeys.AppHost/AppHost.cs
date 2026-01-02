@@ -2,7 +2,6 @@ using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
-
 const string IDENTITY_PROVIDER = "identityProvider";
 const string WEB_CLIENT = "webClient";
 const string API_SERVICE = "apiService";

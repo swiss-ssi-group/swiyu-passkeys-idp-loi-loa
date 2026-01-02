@@ -1,6 +1,9 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-
+@inject IConfiguration Configuration
+@{
+    var profileManagement = $"{Configuration["OpenIDConnectSettings:Authority"]}/Account/Manage";
+}
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -11,7 +14,7 @@
             <Authorized>
                 <div class="top-row px-4">
                     <div class="user-info">
-                        <span class="user-name">@context.User.Identity?.Name</span>
+                        <a class="login-link" href="@profileManagement">@context.User.Identity?.Name</a>
                     </div>
                     <form action="logout" method="post" class="logout-form">
                         <AntiforgeryToken />
