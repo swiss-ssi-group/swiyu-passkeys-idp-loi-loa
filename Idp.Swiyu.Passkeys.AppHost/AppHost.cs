@@ -1,3 +1,7 @@
+using Azure.Provisioning.Resources;
+using Azure.Provisioning.Sql;
+using Projects;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 
@@ -16,6 +20,13 @@ if (builder.ExecutionContext.IsRunMode)
 // management
 IResourceBuilder<ContainerResource>? swiyuVerifier = null;
 IResourceBuilder<ProjectResource>? identityProvider = null;
+
+var sqlServer = builder.AddAzureSqlServer("sqlserver");
+var database = sqlServer.AddDatabase("database", "IdpSwiyuPasskeysSts");
+
+var migrationService = builder.AddProject<Idp_Swiyu_Passkeys_Sts_Domain_Migrations>("migrations")
+    .WithReference(database)
+    .WaitFor(sqlServer);
 
 var postGresUser = builder.AddParameter("postgresuser");
 var postGresPassword = builder.AddParameter("postgrespassword", secret: true);
@@ -60,6 +71,8 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WaitFor(cache)
+    .WithReference(database)
+    .WaitForCompletion(migrationService)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
     .WithEnvironment("ISSUER_ID", issuerId)
@@ -76,4 +89,15 @@ builder.AddProject<Projects.Idp_Swiyu_Passkeys_Web>(WEB_CLIENT)
     .WithReference(apiService)
     .WaitFor(apiService);
 
+if (builder.ExecutionContext.IsRunMode)
+{
+    sqlServer.RunAsContainer(container =>
+    {
+        container.WithDataVolume();
+    });
+}
+else
+{
+    // TODO setup production SQL server configuration
+}
 builder.Build().Run();

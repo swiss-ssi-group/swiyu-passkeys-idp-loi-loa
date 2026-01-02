@@ -14,7 +14,7 @@ public static class HostApplicationBuilderExtensions
         {
             options.UseSqlServer(o =>
             {
-                o.MigrationsAssembly("Idp.Swiyu.Passkeys.Sts.Domain.MigrationService");
+                o.MigrationsAssembly("Idp.Swiyu.Passkeys.Sts.Domain.Migrations");
                 o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
         });
