@@ -79,6 +79,8 @@ https://github.com/DuendeSoftware/samples/tree/main/IdentityServer/v7/UserIntera
 
 https://datatracker.ietf.org/doc/rfc9470/
 
+https://duendesoftware.com/blog/20250708-step-up-challenges-with-duende-identityserver-and-aspnet-core-apis
+
 ## SSI
 
 https://www.eid.admin.ch/en/public-beta-e
