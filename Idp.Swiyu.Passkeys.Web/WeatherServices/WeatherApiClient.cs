@@ -26,8 +26,8 @@ public class WeatherApiClient
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Parse the WWW-Authenticate header to extract error_description
-                var errorDescription = ParseErrorDescriptionFromResponse(response);
-                throw new WeatherApiException(errorDescription ?? "Unauthorized access to weather API.");
+                var errorMessage = ApiErrorHandling.ParseErrorDescriptionFromResponse(response);
+                throw new ApiErrorHandlingException(errorMessage);
             }
             
             // Ensure success status code
@@ -48,27 +48,6 @@ public class WeatherApiClient
         {
             response?.Dispose();
         }
-    }
-
-    private static string? ParseErrorDescriptionFromResponse(HttpResponseMessage response)
-    {
-        // Get the WWW-Authenticate header
-        if (response.Headers.WwwAuthenticate.Any())
-        {
-            foreach (var authHeader in response.Headers.WwwAuthenticate)
-            {
-                var headerValue = authHeader.ToString();
-                
-                // Try to extract error_description using regex
-                var match = Regex.Match(headerValue, @"error_description=""([^""]+)""");
-                if (match.Success)
-                {
-                    return match.Groups[1].Value;
-                }
-            }
-        }
-
-        return null;
     }
 }
 

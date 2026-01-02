@@ -56,7 +56,7 @@ else
         {
             forecasts = await WeatherApi.GetWeatherAsync();
         }
-        catch (WeatherApiException ex)
+        catch (ApiErrorHandlingException ex)
         {
             errorMessage = ex.Message;
         }
