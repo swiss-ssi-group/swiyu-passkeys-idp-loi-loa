@@ -45,7 +45,10 @@ public class StepUpInteractionResponseGenerator : AuthorizeInteractionResponseGe
                 }
                 else
                 {
-                    result.RedirectUrl = "/Account/Mfa";
+                    result.RedirectUrl = "/Account/Login";
+
+                    // if you support the default Identity setup with MFA,
+                    //result.RedirectUrl = "/Account/Mfa";
                 }
             }
         }
