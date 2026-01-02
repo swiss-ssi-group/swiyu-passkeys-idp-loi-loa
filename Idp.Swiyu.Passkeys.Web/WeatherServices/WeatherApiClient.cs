@@ -1,6 +1,4 @@
 using System.Net;
-using System.Net.Http.Json;
-using System.Text.RegularExpressions;
 
 namespace Idp.Swiyu.Passkeys.Web.WeatherServices;
 
@@ -15,13 +13,13 @@ public class WeatherApiClient
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
         var httpClient = _httpClientFactory.CreateClient("dpop-api-client");
-        
+
         HttpResponseMessage? response = null;
         try
         {
             // Make a direct request to check for 401 first
             response = await httpClient.GetAsync("/weatherforecast", cancellationToken);
-            
+
             // Check if we got a 401 response
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
@@ -29,19 +27,19 @@ public class WeatherApiClient
                 var errorMessage = ApiErrorHandling.ParseErrorDescriptionFromResponse(response);
                 throw new ApiErrorHandlingException(errorMessage);
             }
-            
+
             // Ensure success status code
             response.EnsureSuccessStatusCode();
-            
+
             // Read the response as an array
             var forecasts = await response.Content.ReadFromJsonAsync<WeatherForecast[]>(cancellationToken);
-            
+
             // Take only maxItems
             if (forecasts != null && forecasts.Length > maxItems)
             {
                 return forecasts.Take(maxItems).ToArray();
             }
-            
+
             return forecasts ?? [];
         }
         finally

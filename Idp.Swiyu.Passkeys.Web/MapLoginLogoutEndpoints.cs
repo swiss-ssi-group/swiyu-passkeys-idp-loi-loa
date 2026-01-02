@@ -40,7 +40,7 @@ public static class LoginLogoutEndpoints
                     Items = { ["acr_values"] = "mfa" }
                 });
             }
- 
+
         }).AllowAnonymous();
 
         app.MapPost("/logout", async context =>

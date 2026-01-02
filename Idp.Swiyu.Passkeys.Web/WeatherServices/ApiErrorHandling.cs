@@ -24,7 +24,7 @@ public static class ApiErrorHandling
             errorMessage.Append("Unauthorized access to API, WWW-Authenticate header not set");
         }
 
-            
+
         return errorMessage.ToString();
     }
 }

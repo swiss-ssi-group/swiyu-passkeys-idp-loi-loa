@@ -124,5 +124,5 @@ public static class Amr
     /// <summary>
     /// Proof-of-possession of a key. Unlike the existing hwk and swk methods, it is unspecified whether the proof-of-possession key is hardware-secured or software-secured.
     /// </summary>
-    public static string Pop = "pop";   
+    public static string Pop = "pop";
 }

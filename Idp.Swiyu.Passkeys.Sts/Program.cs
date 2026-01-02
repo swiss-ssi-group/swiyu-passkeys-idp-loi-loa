@@ -1,11 +1,11 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Globalization;
-using System.Text;
 using Duende.IdentityServer.Licensing;
 using Idp.Swiyu.Passkeys.Sts;
 using Serilog;
+using System.Globalization;
+using System.Text;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)

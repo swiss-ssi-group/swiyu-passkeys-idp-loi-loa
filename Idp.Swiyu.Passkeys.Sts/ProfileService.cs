@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using Duende.IdentityModel;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
+using System.Security.Claims;
 
 namespace Idp.Swiyu.Passkeys.Sts;
 
@@ -89,7 +89,7 @@ public class ProfileService : IProfileService
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.GivenName, givenName.Value));
         }
 
-        var familyName  = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.FamilyName);
+        var familyName = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.FamilyName);
         if (familyName != null)
         {
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.FamilyName, familyName.Value));

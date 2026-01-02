@@ -73,7 +73,7 @@ public class StepUpInteractionResponseGenerator : AuthorizeInteractionResponseGe
     }
 
     private bool AuthenticatedWithMfa(ClaimsPrincipal user) =>
-        user.Claims.Any(c => c.Type == "amr" && (c.Value == Amr.Pop || c.Value ==  Amr.Mfa));
+        user.Claims.Any(c => c.Type == "amr" && (c.Value == Amr.Pop || c.Value == Amr.Mfa));
 
     private bool AuthenticatedWithPasskeys(ClaimsPrincipal user) =>
         user.Claims.Any(c => c.Type == "amr" && c.Value == Amr.Pop);

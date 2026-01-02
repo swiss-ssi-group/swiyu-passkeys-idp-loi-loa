@@ -51,13 +51,13 @@ public class RegisterModel : PageModel
         var user = await _userManager.FindByEmailAsync(GetEmail(User.Claims)!);
         var swiyuVerifiedIdentity = _applicationDbContext.SwiyuIdentity.FirstOrDefault(si => si.UserId == user!.Id);
 
-        if(swiyuVerifiedIdentity != null)
+        if (swiyuVerifiedIdentity != null)
         {
             // User already has a verified Swiyu identity, redirect to complete page
             Response.Redirect("/Swiyu/IdentityAlreadyVerified");
             return;
         }
-   
+
         var presentation = await _verificationService
            .CreateBetaIdVerificationPresentationAsync();
 
@@ -171,7 +171,7 @@ public class RegisterModel : PageModel
 
             // remove demo claims
             await _userManager.RemoveClaimsAsync(user, await _userManager.GetClaimsAsync(user));
-        }     
+        }
     }
 
     public static string? GetEmail(IEnumerable<Claim> claims)

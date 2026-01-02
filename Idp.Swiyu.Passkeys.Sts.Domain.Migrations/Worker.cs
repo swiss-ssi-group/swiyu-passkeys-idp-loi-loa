@@ -1,11 +1,8 @@
-using System.Diagnostics;
 using Idp.Swiyu.Passkeys.Sts.Domain.Migrations.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace Idp.Swiyu.Passkeys.Sts.Domain.Migrations;
 

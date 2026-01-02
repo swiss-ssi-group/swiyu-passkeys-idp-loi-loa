@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-public class LoaRequirement: IAuthorizationRequirement
+public class LoaRequirement : IAuthorizationRequirement
 {
 }

@@ -1,5 +1,3 @@
-using Azure.Provisioning.Resources;
-using Azure.Provisioning.Sql;
 using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
@@ -83,7 +81,7 @@ var apiService = builder.AddProject<Projects.Idp_Swiyu_Passkeys_ApiService>(API_
 
 builder.AddProject<Projects.Idp_Swiyu_Passkeys_Web>(WEB_CLIENT)
     .WithExternalHttpEndpoints()
- //   .WithHttpHealthCheck("/health")
+    //   .WithHttpHealthCheck("/health")
     .WithReference(cache)
     .WaitFor(cache)
     .WithReference(apiService)
