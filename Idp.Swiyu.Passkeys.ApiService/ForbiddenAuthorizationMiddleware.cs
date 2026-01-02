@@ -60,15 +60,22 @@ public class CreateErrorMessage
         get
         {
             var errorDescription = new StringBuilder();
-            if (Loa != null)
+
+            if (Loi != null && Loa != null)
+            {
+                errorDescription.Append("insufficient level of identification and authentication");
+            }
+
+            if (Loi != null && Loa == null)
+            {
+                errorDescription.Append("insufficient level of identification");
+            }
+
+            if (Loa != null && Loi == null)
             {
                 errorDescription.Append("insufficient level of authentication");
             }
 
-            if (Loi != null)
-            {
-                errorDescription.Append("insufficient level of identification");
-            }
 
             return errorDescription.ToString();
         }
@@ -83,12 +90,18 @@ public class CreateErrorMessage
         props.Append($"Bearer error=\"{Error}\",");
         props.Append($"error_description=\"{ErrorDescription}\", ");
 
-        if (Loi != null)
+        if (Loi != null && Loa != null)
+        {
+            props.Append($"loi=\"{Loi}\", ");
+            props.Append($"loa=\"{Loa}\"");
+        }
+
+        if (Loi != null && Loa == null)
         {
             props.Append($"loi=\"{Loi}\"");
         }
 
-        if (Loa != null)
+        if (Loa != null && Loi == null)
         {
             props.Append($"loa=\"{Loa}\"");
         }
