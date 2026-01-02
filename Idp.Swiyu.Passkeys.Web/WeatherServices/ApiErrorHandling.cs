@@ -6,8 +6,8 @@ public static class ApiErrorHandling
 {
     public static string ParseErrorDescriptionFromResponse(HttpResponseMessage response)
     {
-        var errorMeassage = new StringBuilder();
-        errorMeassage.Append($"Reason: {response.ReasonPhrase}, ");
+        var errorMessage = new StringBuilder();
+        errorMessage.Append($"Reason: {response.ReasonPhrase}, ");
 
         // Get the WWW-Authenticate header
         if (response.Headers.WwwAuthenticate.Any())
@@ -16,15 +16,15 @@ public static class ApiErrorHandling
             {
                 var headerValue = authHeader.ToString();
 
-                errorMeassage.Append(headerValue);
+                errorMessage.Append(headerValue);
             }
         }
         else
         {
-            errorMeassage.Append("Unauthorized access to weather API, incorrect WwwAuthenticate header returned");
+            errorMessage.Append("Unauthorized access to API, WWW-Authenticate no returned");
         }
 
             
-        return errorMeassage.ToString();
+        return errorMessage.ToString();
     }
 }
