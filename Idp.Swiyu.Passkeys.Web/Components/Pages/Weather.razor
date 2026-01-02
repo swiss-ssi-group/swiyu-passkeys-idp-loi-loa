@@ -5,6 +5,7 @@
 @attribute [StreamRendering(true)]
 @attribute [OutputCache(Duration = 5)]
 
+@inject IConfiguration Configuration
 @inject WeatherApiClient WeatherApi
 @inject NavigationManager NavigationManager
 
@@ -21,14 +22,20 @@
         <strong>Error:</strong> @errorMessage
         @if (errorMessage.Contains("loi", StringComparison.OrdinalIgnoreCase))
         {
-            var loiValue = ExtractParameterValue(errorMessage, "loi");
+            @* var loiValue = ExtractParameterValue(errorMessage, "loi");
             if (!string.IsNullOrEmpty(loiValue))
             {
                 var stepUpUrl = $"/stepuploi?loi={Uri.EscapeDataString(loiValue)}&returnUrl={Uri.EscapeDataString(returnUrl)}";
                 <div class="mt-2">
                     <a href="@stepUpUrl" class="btn btn-primary">Step up identification</a>
                 </div>
-            }
+            } *@
+
+            <div class="mt-2">
+                <a class="btn btn-primary" href="@GetRegisterSwiyuUrl()" target="_blank">
+                    <span class="bi bi-key-fill-nav-menu" aria-hidden="true"></span> Step up identification
+                </a>
+            </div>
         }
         @if (errorMessage.Contains("loa", StringComparison.OrdinalIgnoreCase))
         {
@@ -103,5 +110,11 @@ else
         }
 
         return null;
+    }
+
+    private string GetRegisterSwiyuUrl()
+    {
+        var authority = Configuration["OpenIDConnectSettings:Authority"] ?? "https://localhost:5001";
+        return $"{authority}/Swiyu/Register";
     }
 }
