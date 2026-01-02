@@ -22,15 +22,6 @@
         <strong>Error:</strong> @errorMessage
         @if (errorMessage.Contains("loi", StringComparison.OrdinalIgnoreCase))
         {
-            @* var loiValue = ExtractParameterValue(errorMessage, "loi");
-            if (!string.IsNullOrEmpty(loiValue))
-            {
-                var stepUpUrl = $"/stepuploi?loi={Uri.EscapeDataString(loiValue)}&returnUrl={Uri.EscapeDataString(returnUrl)}";
-                <div class="mt-2">
-                    <a href="@stepUpUrl" class="btn btn-primary">Step up identification</a>
-                </div>
-            } *@
-
             <div class="mt-2">
                 <a class="btn btn-primary" href="@GetRegisterSwiyuUrl()" target="_blank">
                     <span class="bi bi-key-fill-nav-menu" aria-hidden="true"></span> Step up identification
