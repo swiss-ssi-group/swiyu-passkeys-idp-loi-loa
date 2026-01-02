@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 
-namespace Idp.Swiyu.Passkeys.Web;
+namespace Idp.Swiyu.Passkeys.Web.WeatherServices;
 
 public class WeatherApiClient
 {
@@ -69,17 +69,6 @@ public class WeatherApiClient
         }
 
         return null;
-    }
-}
-
-public class WeatherApiException : Exception
-{
-    public WeatherApiException(string message) : base(message)
-    {
-    }
-
-    public WeatherApiException(string message, Exception innerException) : base(message, innerException)
-    {
     }
 }
 
