@@ -24,7 +24,7 @@ public static class LoginLogoutEndpoints
             var returnUrl = context.Request.Query["returnUrl"];
             var loa = context.Request.Query["loa"];
 
-            if (string.IsNullOrEmpty(loa) && loa == "loi.400")
+            if (!string.IsNullOrEmpty(loa) && loa == "loa.400")
             {
                 await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
                 {
