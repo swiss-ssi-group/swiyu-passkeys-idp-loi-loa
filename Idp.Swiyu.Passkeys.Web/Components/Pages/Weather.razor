@@ -16,6 +16,7 @@
 
 @if (errorMessage != null)
 {
+    var returnUrl = NavigationManager.Uri;
     <div class="alert alert-danger" role="alert">
         <strong>Error:</strong> @errorMessage
         @if (errorMessage.Contains("loi", StringComparison.OrdinalIgnoreCase))
@@ -23,7 +24,6 @@
             var loiValue = ExtractParameterValue(errorMessage, "loi");
             if (!string.IsNullOrEmpty(loiValue))
             {
-                var returnUrl = NavigationManager.Uri;
                 var stepUpUrl = $"/stepuploi?loi={Uri.EscapeDataString(loiValue)}&returnUrl={Uri.EscapeDataString(returnUrl)}";
                 <div class="mt-2">
                     <a href="@stepUpUrl" class="btn btn-primary">Step up identification</a>
@@ -35,7 +35,6 @@
             var loaValue = ExtractParameterValue(errorMessage, "loa");
             if (!string.IsNullOrEmpty(loaValue))
             {
-                var returnUrl = NavigationManager.Uri;
                 var stepUpUrl = $"/stepuploa?loa={Uri.EscapeDataString(loaValue)}&returnUrl={Uri.EscapeDataString(returnUrl)}";
                 <div class="mt-2">
                     <a href="@stepUpUrl" class="btn btn-primary">Step up authentication</a>

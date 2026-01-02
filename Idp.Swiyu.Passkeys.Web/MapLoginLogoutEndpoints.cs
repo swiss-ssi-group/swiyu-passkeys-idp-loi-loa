@@ -27,7 +27,7 @@ public static class LoginLogoutEndpoints
             await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
             {
                 RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
-                Items = { ["loi"] = loi.ToString() }
+                Items = { ["loi"] = loi.FirstOrDefault() ?? string.Empty }
             });
         }).AllowAnonymous();
 
@@ -39,7 +39,7 @@ public static class LoginLogoutEndpoints
             await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
             {
                 RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
-                Items = { ["loa"] = loa.ToString() }
+                Items = { ["loa"] = loa.FirstOrDefault() ?? string.Empty }
             });
         }).AllowAnonymous();
 
