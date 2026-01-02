@@ -7,6 +7,8 @@ public static class ApiErrorHandling
     public static string ParseErrorDescriptionFromResponse(HttpResponseMessage response)
     {
         var errorMeassage = new StringBuilder();
+        errorMeassage.Append($"Reason: {response.ReasonPhrase}, ");
+
         // Get the WWW-Authenticate header
         if (response.Headers.WwwAuthenticate.Any())
         {
@@ -19,7 +21,7 @@ public static class ApiErrorHandling
         }
         else
         {
-            errorMeassage.Append("Unauthorized access to weather API., incorrect WwwAuthenticate header returned");
+            errorMeassage.Append("Unauthorized access to weather API, incorrect WwwAuthenticate header returned");
         }
 
             
