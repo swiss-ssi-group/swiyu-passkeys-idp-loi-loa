@@ -1,3 +1,7 @@
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.RegularExpressions;
+
 namespace Idp.Swiyu.Passkeys.Web;
 
 public class WeatherApiClient
@@ -11,23 +15,71 @@ public class WeatherApiClient
     public async Task<WeatherForecast[]> GetWeatherAsync(int maxItems = 10, CancellationToken cancellationToken = default)
     {
         var httpClient = _httpClientFactory.CreateClient("dpop-api-client");
-        var token = httpClient.DefaultRequestHeaders.Authorization;
-        List<WeatherForecast>? forecasts = null;
-
-        await foreach (var forecast in httpClient.GetFromJsonAsAsyncEnumerable<WeatherForecast>("/weatherforecast", cancellationToken))
+        
+        HttpResponseMessage? response = null;
+        try
         {
-            if (forecasts?.Count >= maxItems)
+            // Make a direct request to check for 401 first
+            response = await httpClient.GetAsync("/weatherforecast", cancellationToken);
+            
+            // Check if we got a 401 response
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                break;
+                // Parse the WWW-Authenticate header to extract error_description
+                var errorDescription = ParseErrorDescriptionFromResponse(response);
+                throw new WeatherApiException(errorDescription ?? "Unauthorized access to weather API.");
             }
-            if (forecast is not null)
+            
+            // Ensure success status code
+            response.EnsureSuccessStatusCode();
+            
+            // Read the response as an array
+            var forecasts = await response.Content.ReadFromJsonAsync<WeatherForecast[]>(cancellationToken);
+            
+            // Take only maxItems
+            if (forecasts != null && forecasts.Length > maxItems)
             {
-                forecasts ??= [];
-                forecasts.Add(forecast);
+                return forecasts.Take(maxItems).ToArray();
+            }
+            
+            return forecasts ?? [];
+        }
+        finally
+        {
+            response?.Dispose();
+        }
+    }
+
+    private static string? ParseErrorDescriptionFromResponse(HttpResponseMessage response)
+    {
+        // Get the WWW-Authenticate header
+        if (response.Headers.WwwAuthenticate.Any())
+        {
+            foreach (var authHeader in response.Headers.WwwAuthenticate)
+            {
+                var headerValue = authHeader.ToString();
+                
+                // Try to extract error_description using regex
+                var match = Regex.Match(headerValue, @"error_description=""([^""]+)""");
+                if (match.Success)
+                {
+                    return match.Groups[1].Value;
+                }
             }
         }
 
-        return forecasts?.ToArray() ?? [];
+        return null;
+    }
+}
+
+public class WeatherApiException : Exception
+{
+    public WeatherApiException(string message) : base(message)
+    {
+    }
+
+    public WeatherApiException(string message, Exception innerException) : base(message, innerException)
+    {
     }
 }
 
