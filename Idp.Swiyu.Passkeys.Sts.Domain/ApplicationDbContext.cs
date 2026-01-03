@@ -1,4 +1,5 @@
 using Idp.Swiyu.Passkeys.Sts.Domain.Models;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,12 +14,21 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public DbSet<SwiyuIdentity> SwiyuIdentity => Set<SwiyuIdentity>();
 
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<SwiyuIdentity>().HasKey(m => m.Id);
-        builder.Entity<SwiyuIdentity>().Property(b => b.Id).ValueGeneratedOnAdd();
-
         base.OnModelCreating(builder);
+
+        // Configure SwiyuIdentity
+        builder.Entity<SwiyuIdentity>(entity =>
+        {
+            entity.HasKey(m => m.Id);
+            entity.Property(b => b.Id).ValueGeneratedOnAdd();
+        });
+    }
+    
+    // Override to include passkey model
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
     }
 }
