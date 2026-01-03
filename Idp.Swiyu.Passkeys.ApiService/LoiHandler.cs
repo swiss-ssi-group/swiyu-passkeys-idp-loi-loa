@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Idp.Swiyu.Passkeys.ApiService;
+using Microsoft.AspNetCore.Authorization;
 
 public class LoiHandler : AuthorizationHandler<LoiRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, LoiRequirement requirement)
     {
         // DPoP is required to use the API
-        var loi = context.User.FindFirst(c => c.Type == "loi");
+        var loi = context.User.FindFirst(c => c.Type == Consts.LOI);
 
         if (loi is null)
         {
@@ -13,7 +14,7 @@ public class LoiHandler : AuthorizationHandler<LoiRequirement>
         }
 
         // Lets require swiyu identified to use this API
-        if (loi.Value != "loi.400")
+        if (loi.Value != Consts.LOI_400)
         {
             return Task.CompletedTask;
         }

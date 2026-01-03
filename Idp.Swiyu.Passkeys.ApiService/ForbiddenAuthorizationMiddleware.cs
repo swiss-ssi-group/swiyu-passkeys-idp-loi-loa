@@ -33,11 +33,11 @@ public class ForbiddenAuthorizationMiddleware : IAuthorizationMiddlewareResultHa
                 var errorMessage = new CreateErrorMessage();
                 if (loaFailed != null)
                 {
-                    errorMessage.Loa = "loa.400";
+                    errorMessage.Loa = Consts.LOA_400;
                 }
                 if (loiFailed != null)
                 {
-                    errorMessage.Loi = "loi.400";
+                    errorMessage.Loi = Consts.LOI_400;
                 }
 
                 context.Response.Headers.WWWAuthenticate = errorMessage.GetErrorMessage();
@@ -92,18 +92,18 @@ public class CreateErrorMessage
 
         if (Loi != null && Loa != null)
         {
-            props.Append($"loi=\"{Loi}\", ");
-            props.Append($"loa=\"{Loa}\"");
+            props.Append($"{Consts.LOI}=\"{Loi}\", ");
+            props.Append($"{Consts.LOA}=\"{Loa}\"");
         }
 
         if (Loi != null && Loa == null)
         {
-            props.Append($"loi=\"{Loi}\"");
+            props.Append($"{Consts.LOI}=\"{Loi}\"");
         }
 
         if (Loa != null && Loi == null)
         {
-            props.Append($"loa=\"{Loa}\"");
+            props.Append($"{Consts.LOA}=\"{Loa}\"");
         }
 
         return props.ToString();
