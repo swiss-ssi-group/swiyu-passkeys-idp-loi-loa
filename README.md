@@ -81,6 +81,12 @@ https://datatracker.ietf.org/doc/rfc9470/
 
 https://duendesoftware.com/blog/20250708-step-up-challenges-with-duende-identityserver-and-aspnet-core-apis
 
+https://www.rfc-editor.org/rfc/rfc8485.html
+
+https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63-2.pdf
+
+https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63-3.pdf
+
 ## SSI
 
 https://www.eid.admin.ch/en/public-beta-e
