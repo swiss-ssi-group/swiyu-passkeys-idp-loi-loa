@@ -35,6 +35,7 @@ public static class Config
             new Client
             {
                 ClientId = "web-client",
+                // Use client assertions in production deployments
                 ClientSecrets = { new Secret("super-secret-$123".Sha256()) },
 
                 RequireDPoP = true,
