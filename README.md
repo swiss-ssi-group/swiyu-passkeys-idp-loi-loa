@@ -1,10 +1,12 @@
 # Implement swiyu identification & passkeys authentication using Duende IDP 
 
+[![.NET](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/actions/workflows/dotnet.yml/badge.svg)](https://github.com/swiss-ssi-group/swiyu-passkeys-idp-loi-loa/actions/workflows/dotnet.yml)
+
 Example fo Aspire implementing Level of Identification (LoI) and Level of Authentication (LoA) using swiyu passkeys authentication in Duende IdentityServer with ASP.NET Core Identity.
 
 ## Blogs
 - [Digital authentication and identity validation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
-- [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com)
+- [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com/2026/01/05/set-the-amr-claim-when-using-passkeys-authentication-in-asp-net-core/)
 - [Planned: Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com)
 - [Planned: Implementing Level of Identification (LoI) with ASP.NET Core Identity and Duende](https://damienbod.com)
 - [Planned: Force step up authentication in web applications](https://damienbod.com)
