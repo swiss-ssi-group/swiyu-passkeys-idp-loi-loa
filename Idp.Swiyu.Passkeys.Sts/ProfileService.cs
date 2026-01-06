@@ -8,6 +8,12 @@ namespace Idp.Swiyu.Passkeys.Sts;
 
 public class ProfileService : IProfileService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public ProfileService(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
     public Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
         // context.Subject is the user for whom the result is being made
@@ -78,7 +84,7 @@ public class ProfileService : IProfileService
         if (vot != null)
         {
             context.IssuedClaims.Add(new Claim(RFC8485.VOT, vot.Value));
-            context.IssuedClaims.Add(new Claim("vtm", "https://localhost:5001/vot.json"));
+            context.IssuedClaims.Add(new Claim("vtm", $"{GetCurrentAbsoluteUrl()}/vot.json"));
         }
     }
 
@@ -109,4 +115,15 @@ public class ProfileService : IProfileService
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, email.Value));
         }
     }
+
+
+    private string? GetCurrentAbsoluteUrl()
+    {
+        var ctx = _httpContextAccessor.HttpContext;
+        if (ctx is null) return null; // no request context (e.g., background task)
+
+        var req = ctx.Request;
+        return $"{req.Scheme}://{req.Host}{req.PathBase}";
+    }
+
 }
