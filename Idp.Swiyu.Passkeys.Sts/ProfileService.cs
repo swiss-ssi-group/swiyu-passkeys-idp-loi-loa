@@ -78,6 +78,7 @@ public class ProfileService : IProfileService
         if (vot != null)
         {
             context.IssuedClaims.Add(new Claim(RFC8485.VOT, vot.Value));
+            context.IssuedClaims.Add(new Claim("vtm", "https://localhost:5001/vot.json"));
         }
     }
 
