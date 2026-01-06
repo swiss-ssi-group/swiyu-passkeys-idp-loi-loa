@@ -72,6 +72,13 @@ public class ProfileService : IProfileService
         {
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.AuthenticationMethod, amr.Value));
         }
+
+        // Add LOI (Level of Identification) claim
+        var vot = context.Subject.Claims.FirstOrDefault(t => t.Type == RFC8485.VOT);
+        if (vot != null)
+        {
+            context.IssuedClaims.Add(new Claim(RFC8485.VOT, vot.Value));
+        }
     }
 
     private void AddProfileClaims(ProfileDataRequestContext context)

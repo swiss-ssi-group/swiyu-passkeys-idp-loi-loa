@@ -200,6 +200,7 @@ public class Index : PageModel
             {
                 new Claim(Consts.LOA, loaValue),
                 new Claim(Consts.LOI, Consts.LOI_400),
+                new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_400, loaValue, amr)),
                 // ASP.NET Core bug workaround:
                 // https://github.com/dotnet/aspnetcore/issues/64881
                 new Claim(JwtClaimTypes.AuthenticationMethod, amr),
@@ -216,6 +217,7 @@ public class Index : PageModel
             {
                 new Claim(Consts.LOA, loaValue),
                 new Claim(Consts.LOI, Consts.LOI_100),
+                new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_100, loaValue, amr)),
                 // ASP.NET Core bug workaround:
                 // https://github.com/dotnet/aspnetcore/issues/64881
                 new Claim(JwtClaimTypes.AuthenticationMethod, amr)

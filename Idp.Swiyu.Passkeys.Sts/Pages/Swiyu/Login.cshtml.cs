@@ -182,6 +182,7 @@ public class LoginModel : PageModel
         {
             new Claim(Consts.LOA, Consts.LOA_200),
             new Claim(Consts.LOI, Consts.LOI_400),
+            new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_400, Consts.LOA_200, Amr.Mca)),
             // ASP.NET Core bug workaround:
             // https://github.com/dotnet/aspnetcore/issues/64881
             new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Mca),

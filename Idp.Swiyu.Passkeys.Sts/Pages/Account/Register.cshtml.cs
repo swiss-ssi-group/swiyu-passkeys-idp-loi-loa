@@ -97,7 +97,8 @@ public class RegisterModel : PageModel
                     var additionalClaims = new List<Claim>
                     {
                         new Claim(Consts.LOA, Consts.LOA_100),
-                        new Claim(Consts.LOI, Consts.LOI_100)
+                        new Claim(Consts.LOI, Consts.LOI_100),
+                        new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_100, Consts.LOA_100, Amr.Pwd)),
                     };
 
                     // Sign in again with the additional claims
