@@ -3,6 +3,7 @@
     <File Path="README.md" />
     <File Path="README_VOT_RFC_8485.md" />
   </Folder>
+  <Project Path="GenerateCertiticate/GenerateCertiticate.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.ApiService/Idp.Swiyu.Passkeys.ApiService.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.AppHost/Idp.Swiyu.Passkeys.AppHost.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.ServiceDefaults/Idp.Swiyu.Passkeys.ServiceDefaults.csproj" />

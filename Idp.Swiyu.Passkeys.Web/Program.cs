@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
@@ -27,6 +29,19 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<WeatherApiClient>();
 
 var oidcConfig = builder.Configuration.GetSection("OpenIDConnectSettings");
+
+var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-private.pem"));
+var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-public.pem"));
+var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
+var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
+
+//var clientToken = CreateClientToken(signingCredentials, "web-client","https://localhost:5001");
+
+//        ClientAssertion =
+//        {
+//            Type = OidcConstants.ClientAssertionTypes.JwtBearer,
+//            Value = clientToken
+//        },
 
 builder.Services.AddAuthentication(options =>
 {
@@ -99,13 +114,6 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
-
-var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
-    "ecdsa384-private.pem"));
-var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
-    "ecdsa384-public.pem"));
-var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
-var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
 
 //var privatePem = File.ReadAllText(Path.Combine(_environment.ContentRootPath, 
 //    "rsa256-private.pem"));
@@ -182,3 +190,27 @@ app.MapLoginLogoutEndpoints();
 app.MapHealthChecks("/health");
 
 app.Run();
+
+
+static string CreateClientToken(SigningCredentials credential, string clientId, string audience)
+{
+    var now = DateTimeOffset.UtcNow;
+
+    var token = new JwtSecurityToken(
+        clientId,
+        audience,
+        new List<Claim>()
+        {
+                new Claim(JwtClaimTypes.JwtId, Guid.NewGuid().ToString()),
+                new Claim(JwtClaimTypes.Subject, clientId),
+                new Claim(JwtClaimTypes.IssuedAt, now.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
+        },
+        now.DateTime,
+        now.AddMinutes(1).DateTime,
+        credential
+    );
+
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var clientToken = tokenHandler.WriteToken(token);
+    return clientToken;
+}
