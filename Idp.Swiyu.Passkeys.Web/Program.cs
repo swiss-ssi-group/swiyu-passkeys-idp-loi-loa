@@ -75,9 +75,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// add service to create assertions for token management
-//builder.Services.AddTransient<IClientAssertionService, ClientAssertionService>();
-
 // add automatic token management
 builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
 {
