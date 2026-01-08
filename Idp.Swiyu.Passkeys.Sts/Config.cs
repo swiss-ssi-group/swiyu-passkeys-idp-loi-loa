@@ -41,10 +41,9 @@ public static class Config
             new Client
             {
                 ClientId = "webclient",
-                // Use client assertions in production deployments
-                //ClientSecrets = { new Secret("super-secret-$123".Sha256()) },            
                 ClientSecrets =
                 {
+                        //new Secret("test".Sha256()),
                         new Secret
                         {
                             // X509 cert base64-encoded
@@ -52,7 +51,7 @@ public static class Config
                             Value = Convert.ToBase64String(rsaCertificate.GetRawCertData())
                         }
                 },
-                RequireDPoP = false,
+                RequireDPoP = true,
                 RequirePushedAuthorization = false,
 
                 AllowedGrantTypes = GrantTypes.Code,

@@ -8,22 +8,15 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Client;
+namespace Idp.Swiyu.Passkeys.Web;
 
-public class AssertionService
+public static class AssertionService
 {
-    private readonly IConfiguration _configuration;
-
-    public AssertionService(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
-
-    public string CreateClientToken()
+    public static string CreateClientToken(IConfiguration configuration)
     {
         var now = DateTime.UtcNow;
-        var clientId = _configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
-        var authority = _configuration.GetValue<string>("OpenIDConnectSettings:Authority");
+        var clientId = configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
+        var authority = configuration.GetValue<string>("OpenIDConnectSettings:Authority");
 
         var privatePem = File.ReadAllText(Path.Combine("", "rsa256-private.pem"));
         var publicPem = File.ReadAllText(Path.Combine("", "rsa256-public.pem"));
@@ -53,11 +46,11 @@ public class AssertionService
         return tokenHandler.WriteToken(token);
     }
 
-    public string SignAuthorizationRequest(OpenIdConnectMessage message)
+    public static string SignAuthorizationRequest(OpenIdConnectMessage message, IConfiguration configuration)
     {
         var now = DateTime.UtcNow;
-        var clientId = _configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
-        var authority = _configuration.GetValue<string>("OpenIDConnectSettings:Authority");
+        var clientId = configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
+        var authority = configuration.GetValue<string>("OpenIDConnectSettings:Authority");
 
         var privatePem = File.ReadAllText(Path.Combine("", "rsa256-private.pem"));
         var publicPem = File.ReadAllText(Path.Combine("", "rsa256-public.pem"));

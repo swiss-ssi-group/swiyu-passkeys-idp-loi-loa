@@ -1,24 +1,17 @@
-using Client;
-using Duende.AccessTokenManagement;
 using Duende.AccessTokenManagement.DPoP;
 using Duende.AccessTokenManagement.OpenIdConnect;
 using Duende.IdentityModel;
-using Duende.IdentityModel.Client;
 using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
 using Idp.Swiyu.Passkeys.Web.WeatherServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
-using static Duende.AccessTokenManagement.AccessTokenRequestHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,11 +50,12 @@ builder.Services.AddAuthentication(options =>
 {
     builder.Configuration.GetSection("OpenIDConnectSettings").Bind(options);
 
-    // needed to add JWR / private_key_jwt support
-    options.EventsType = typeof(OidcEvents);
+    options.Events = OidcEventHandlers.OidcEvents(builder.Configuration);
 
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.ResponseType = OpenIdConnectResponseType.Code;
+
+    //options.ClientSecret = "test";
 
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
@@ -80,14 +74,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// add service to create JWTs
-builder.Services.AddSingleton<AssertionService>();
-
-// add event handler for OIDC events
-builder.Services.AddTransient<OidcEvents>();
-
 // add service to create assertions for token management
-builder.Services.AddTransient<IClientAssertionService, ClientAssertionService>();
+//builder.Services.AddTransient<IClientAssertionService, ClientAssertionService>();
 
 // add automatic token management
 builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
@@ -122,7 +110,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddHealthChecks();
-
 
 var app = builder.Build();
 
