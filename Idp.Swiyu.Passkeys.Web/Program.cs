@@ -1,3 +1,4 @@
+using Client;
 using Duende.AccessTokenManagement;
 using Duende.AccessTokenManagement.DPoP;
 using Duende.AccessTokenManagement.OpenIdConnect;
@@ -39,8 +40,6 @@ var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPat
 var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
 var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
 
-var clientAssertionJwt = CreateClientToken("web-client", "https://localhost:5001");
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -57,6 +56,9 @@ builder.Services.AddAuthentication(options =>
 .AddOpenIdConnect(options =>
 {
     builder.Configuration.GetSection("OpenIDConnectSettings").Bind(options);
+
+    // needed to add JWR / private_key_jwt support
+    options.EventsType = typeof(OidcEvents);
 
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.ResponseType = OpenIdConnectResponseType.Code;
@@ -76,57 +78,16 @@ builder.Services.AddAuthentication(options =>
     {
         NameClaimType = "name"
     };
-
-    options.Events = new OpenIdConnectEvents
-    {
-        // Add client_assertion            
-        OnAuthorizationCodeReceived = context =>
-        {
-            // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-            if (context.Properties.Items.ContainsKey("acr_values"))
-            {
-                context.ProtocolMessage.AcrValues = context.Properties.Items["acr_values"];
-            }
-
-            context.TokenEndpointRequest!.ClientAssertion = clientAssertionJwt;
-            context.TokenEndpointRequest.ClientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer";
-
-            return Task.CompletedTask;
-        },
-        //OnRedirectToIdentityProvider = context =>
-        //{
-        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-        //    context.ProtocolMessage.AcrValues = "phr";
-        //    // context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
-        //    if (context.Properties.Items.ContainsKey("acr_values"))
-        //    {
-        //        context.ProtocolMessage.AcrValues = context.Properties.Items["acr_values"];
-        //    }
-        //    return Task.CompletedTask;
-        //},
-        //OnPushAuthorization = context =>
-        //{
-        //    context.ProtocolMessage.Parameters.Add("client_assertion", clientAssertion);
-        //    context.ProtocolMessage.Parameters.Add("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer");
-        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-        //    if (context.Properties.Items.ContainsKey("acr_values"))
-        //    {
-        //        context.ProtocolMessage.AcrValues = context.Properties.Items["acr_values"];
-        //    }
-        //    return Task.CompletedTask;
-        //},
-        OnTokenResponseReceived = context =>
-        {
-            var idToken = context.TokenEndpointResponse.IdToken;
-            var accessToken = context.TokenEndpointResponse.AccessToken;
-            return Task.CompletedTask;
-        },
-        OnUserInformationReceived = context =>
-        {
-            return Task.CompletedTask;
-        }
-    };
 });
+
+// add service to create JWTs
+builder.Services.AddSingleton<AssertionService>();
+
+// add event handler for OIDC events
+builder.Services.AddTransient<OidcEvents>();
+
+// add service to create assertions for token management
+builder.Services.AddTransient<IClientAssertionService, ClientAssertionService>();
 
 // add automatic token management
 builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
@@ -196,35 +157,3 @@ app.MapLoginLogoutEndpoints();
 app.MapHealthChecks("/health");
 
 app.Run();
-
-string CreateClientToken(string clientId, string audience)
-{
-    var now = DateTime.UtcNow;
-    // client assertion
-    var privatePem = File.ReadAllText(Path.Combine("", "rsa256-private.pem"));
-    var publicPem = File.ReadAllText(Path.Combine("", "rsa256-public.pem"));
-    var rsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
-    var rsaCertificateKey = new RsaSecurityKey(rsaCertificate.GetRSAPrivateKey());
-    var signingCredentials = new SigningCredentials(new X509SecurityKey(rsaCertificate), "RS256");
-
-    var token = new JwtSecurityToken(
-        clientId,
-        audience,
-        new List<Claim>()
-        {
-                new Claim(JwtClaimTypes.JwtId, Guid.NewGuid().ToString()),
-                new Claim(JwtClaimTypes.Subject, clientId),
-                new Claim(JwtClaimTypes.IssuedAt, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
-        },
-        now,
-        now.AddMinutes(1),
-        signingCredentials
-    );
-
-    token.Header[JwtClaimTypes.TokenType] = "client-authentication+jwt";
-
-    var tokenHandler = new JwtSecurityTokenHandler();
-    tokenHandler.OutboundClaimTypeMap.Clear();
-
-    return tokenHandler.WriteToken(token);
-}

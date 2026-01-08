@@ -40,19 +40,31 @@ public static class Config
         return [
             new Client
             {
-                ClientId = "web-client",
+                ClientId = "webclient",
                 // Use client assertions in production deployments
                 //ClientSecrets = { new Secret("super-secret-$123".Sha256()) },            
                 ClientSecrets =
                 {
+                        //new Secret
+                        //{
+                        //    // base64 encoded X.509 certificate
+                        //    Type = IdentityServerConstants.SecretTypes.X509CertificateBase64,
+                        //    Value = Convert.ToBase64String(rsaPublicCertificate.GetRawCertData())
+                        //},
                         new Secret
                         {
-                            // base64 encoded X.509 certificate
-                            Type = IdentityServerConstants.SecretTypes.X509CertificateBase64,
-                            Value = Convert.ToBase64String(rsaPublicCertificate.GetRawCertData())
+                            Type = IdentityServerConstants.SecretTypes.JsonWebKey,
+                            Value = """
+                            {
+                                "e":"AQAB",
+                                "kid":"ZzAjSnraU3bkWGnnAqLapYGpTyNfLbjbzgAPbbW2GEA",
+                                "kty":"RSA",
+                                "n":"wWwQFtSzeRjjerpEM5Rmqz_DsNaZ9S1Bw6UbZkDLowuuTCjBWUax0vBMMxdy6XjEEK4Oq9lKMvx9JzjmeJf1knoqSNrox3Ka0rnxXpNAz6sATvme8p9mTXyp0cX4lF4U2J54xa2_S9NF5QWvpXvBeC4GAJx7QaSw4zrUkrc6XyaAiFnLhQEwKJCwUw4NOqIuYvYp_IXhw-5Ti_icDlZS-282PcccnBeOcX7vc21pozibIdmZJKqXNsL1Ibx5Nkx1F1jLnekJAmdaACDjYRLL_6n3W4wUp19UvzB1lGtXcJKLLkqB6YDiZNu16OSiSprfmrRXvYmvD8m6Fnl5aetgKw"
+                            }
+                            """
                         }
                 },
-                RequireDPoP = true,
+                RequireDPoP = false,
                 RequirePushedAuthorization = false,
 
                 AllowedGrantTypes = GrantTypes.Code,
