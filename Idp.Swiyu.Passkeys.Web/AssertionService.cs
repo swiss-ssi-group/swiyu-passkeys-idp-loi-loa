@@ -23,7 +23,6 @@ public class AssertionService
     {
         var now = DateTime.UtcNow;
         var clientId = _configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
-        //var key = _configuration.GetValue<string>("OpenIDConnectSettings:Secrets:Key");
         var authority = _configuration.GetValue<string>("OpenIDConnectSettings:Authority");
 
         var privatePem = File.ReadAllText(Path.Combine("", "rsa256-private.pem"));
@@ -58,7 +57,6 @@ public class AssertionService
     {
         var now = DateTime.UtcNow;
         var clientId = _configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
-        //var key = _configuration.GetValue<string>("OpenIDConnectSettings:Secrets:Key");
         var authority = _configuration.GetValue<string>("OpenIDConnectSettings:Authority");
 
         var privatePem = File.ReadAllText(Path.Combine("", "rsa256-private.pem"));
