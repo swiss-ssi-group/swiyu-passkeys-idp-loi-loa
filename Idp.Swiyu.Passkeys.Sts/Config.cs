@@ -52,7 +52,7 @@ public static class Config
                         }
                 },
                 RequireDPoP = true,
-                RequirePushedAuthorization = false,
+                RequirePushedAuthorization = true,
 
                 AllowedGrantTypes = GrantTypes.Code,
                 AlwaysIncludeUserClaimsInIdToken = true,
