@@ -55,6 +55,7 @@ builder.Services.AddAuthentication(options =>
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.ResponseType = OpenIdConnectResponseType.Code;
 
+    // client_assertion used, set in oidc events
     //options.ClientSecret = "test";
 
     options.SaveTokens = true;
@@ -65,7 +66,7 @@ builder.Services.AddAuthentication(options =>
     options.ClaimActions.MapUniqueJsonKey("loi", "loi");
     options.ClaimActions.MapUniqueJsonKey(JwtClaimTypes.Email, JwtClaimTypes.Email);
 
-    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Disable;
+    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Require;
 
     options.Scope.Add("scope2");
     options.TokenValidationParameters = new TokenValidationParameters
