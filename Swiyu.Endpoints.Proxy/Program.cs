@@ -5,7 +5,8 @@ builder.AddServiceDefaults();
 
 builder.Services.AddReverseProxy()
     .LoadFromMemory(YarpConfigurations.GetVerifierRoutes(),
-        YarpConfigurations.GetVerifierClusters(builder.Configuration["SwiyuVerifierMgmtUrl"]!));
+        YarpConfigurations.GetVerifierClusters(
+            builder.Configuration["SwiyuVerifierMgmtUrl"]!));
 
 //builder.Services.AddReverseProxy()
 //    .LoadFromMemory(YarpConfigurations.GetAllRoutes(),
