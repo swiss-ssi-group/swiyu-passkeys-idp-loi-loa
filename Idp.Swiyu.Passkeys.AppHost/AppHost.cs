@@ -17,6 +17,7 @@ if (builder.ExecutionContext.IsRunMode)
 // management
 IResourceBuilder<ContainerResource>? swiyuVerifier = null;
 IResourceBuilder<ProjectResource>? identityProvider = null;
+IResourceBuilder<ProjectResource>? swiyuProxy = null;
 
 var sqlServer = builder.AddAzureSqlServer("sqlserver");
 var database = sqlServer.AddDatabase("database", "IdpSwiyuPasskeysSts");
@@ -61,7 +62,11 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-    .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP)
+    .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP);
+
+swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints-proxy")
+    .WaitFor(swiyuVerifier)
+    .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithExternalHttpEndpoints();
 
 identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
@@ -73,7 +78,8 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
     .WithEnvironment("ISSUER_ID", issuerId)
-    .WaitFor(swiyuVerifier);
+    .WaitFor(swiyuVerifier)
+    .WaitFor(swiyuProxy);
 
 var apiService = builder.AddProject<Projects.Idp_Swiyu_Passkeys_ApiService>(API_SERVICE)
     .WithHttpHealthCheck("/health");
