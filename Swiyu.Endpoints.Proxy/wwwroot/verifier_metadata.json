@@ -1,0 +1,18 @@
+{
+  "client_id": "did:tdw:QmUUDG5WgyjmfJdbhbFT5PbVHkN4hNzHYCnH3BrYPztXoH:identifier-reg.trust-infra.swiyu-int.admin.ch:api:v1:did:ddd8c7ee-0b38-41e3-84c3-b161e82d2801",
+  "client_name#en": "swiyu damienbod Verfifier",
+  "client_name#fr": "Vérificateur de démonstration de développement",
+  "client_name#de-DE": "damienbod Verifizierer",
+  "client_name#de-CH": "damienbod Verifizier",
+  "client_name#de": "damienbod Verifizierer (Fallback DE)",
+  "client_name": "damienbod Verifier (Base)",
+  "logo_uri": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/logo.png",
+  "logo_uri#fr": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/logo.png",
+  "vp_formats": {
+    "jwt_vp": {
+      "alg": [
+        "ES256"
+      ]
+    }
+  }
+}

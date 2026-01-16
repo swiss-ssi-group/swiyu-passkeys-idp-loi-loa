@@ -1,0 +1,4 @@
+{
+	"issuer": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io",
+	"token_endpoint": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/oid4vci/api/token"
+}
