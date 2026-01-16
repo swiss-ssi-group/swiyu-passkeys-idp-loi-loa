@@ -5,6 +5,10 @@ namespace Swiyu.Endpoints.Proxy;
 
 public static class YarpConfigurations
 {
+    /// <summary>
+    /// Default returns only verifier routes
+    /// </summary>
+    /// <param name="verifierOnly">When set to false, verifier and issuer routes are supported.</param>
     public static RouteConfig[] GetRoutes(bool verifierOnly = true)
     {
         if (verifierOnly)
@@ -61,6 +65,10 @@ public static class YarpConfigurations
         }
     }
 
+    /// <summary>
+    /// Default returns only verifier clusters
+    /// </summary>
+    /// <param name="verifierOnly">When set to false, verifier and issuer clusters are supported.</param>
     public static ClusterConfig[] GetClusters(string issuer, string verifier, bool verifierOnly = true)
     {
         if (verifierOnly)
