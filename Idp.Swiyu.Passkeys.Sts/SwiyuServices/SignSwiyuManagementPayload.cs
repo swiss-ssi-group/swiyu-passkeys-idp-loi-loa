@@ -6,7 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 
 /// <summary>
-/// If the JWT based authentication is activated, all calls must be wrapped in a signed JWT with the claim "data" other calls will be rejected. 
+/// Issuer: If the JWT based authentication is activated, all calls must be wrapped in a signed JWT with the claim "data" other calls will be rejected. 
 /// The value of the data claim will contain the full json body of the normal request.
 ///
 /// Note that this is only affects writing calls.
