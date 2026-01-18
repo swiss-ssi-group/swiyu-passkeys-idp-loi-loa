@@ -67,8 +67,10 @@ public class Index : PageModel
         // check if we are in the context of an authorization request
         var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
 
+        var passkeySubmit = Input.Passkey != null && Input.Passkey.CredentialJson != null;
+
         // the user clicked the "cancel" button
-        if (Input.Button != "login" && Input.Button != "__passkeySubmit" && Input.Button != null)
+        if (Input.Button != "login" && !passkeySubmit)
         {
             if (context != null)
             {
