@@ -11,6 +11,7 @@ namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 ///
 /// Note that this is only affects writing calls.
 /// https://github.com/swiyu-admin-ch/swiyu-issuer?tab=readme-ov-file#security
+/// https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /// </summary>
 public static class SignSwiyuManagementPayload
 {
