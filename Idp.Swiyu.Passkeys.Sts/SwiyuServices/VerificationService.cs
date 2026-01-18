@@ -39,6 +39,8 @@ public class VerificationService
         var json = GetBetaIdVerificationPresentationBody(inputDescriptorsId,
             presentationDefinitionId, acceptedIssuerDid, "betaid-sdjwt");
 
+        // TODO sign the payload if JWT authentication is enabled on Swiyu  
+
         return await SendCreateVerificationPostRequest(json);
     }
 

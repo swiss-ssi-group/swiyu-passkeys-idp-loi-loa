@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Idp.Swiyu.Passkeys.Web;
+namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 
 /// <summary>
 /// If the JWT based authentication is activated, all calls must be wrapped in a signed JWT with the claim "data" other calls will be rejected. 
@@ -12,13 +12,11 @@ namespace Idp.Swiyu.Passkeys.Web;
 /// Note that this is only affects writing calls.
 /// https://github.com/swiyu-admin-ch/swiyu-issuer?tab=readme-ov-file#security
 /// </summary>
-public class SignSwiyuManagementPayload
+public static class SignSwiyuManagementPayload
 {
     public static string SignRequest(IConfiguration configuration, string data)
     {
         var now = DateTime.UtcNow;
-        var clientId = configuration.GetValue<string>("OpenIDConnectSettings:ClientId");
-        var authority = configuration.GetValue<string>("OpenIDConnectSettings:Authority");
 
         var privatePem = File.ReadAllText(Path.Combine("", "ecdsa384-private.pem"));
         var publicPem = File.ReadAllText(Path.Combine("", "ecdsa384-public.pem"));
@@ -32,8 +30,8 @@ public class SignSwiyuManagementPayload
         };
 
         var token = new JwtSecurityToken(
-            clientId,
-            authority,
+            null,
+            null,
             claims,
             now,
             now.AddMinutes(1),
