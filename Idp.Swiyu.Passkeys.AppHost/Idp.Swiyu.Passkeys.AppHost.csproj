@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.5.0" />
 
@@ -7,7 +7,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UserSecretsId>4a2ddb54-cc46-4487-83ec-fee53c5c677a</UserSecretsId>
+    <UserSecretsId>07f1b37a-3aeb-4c21-b180-d50932b40a6f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

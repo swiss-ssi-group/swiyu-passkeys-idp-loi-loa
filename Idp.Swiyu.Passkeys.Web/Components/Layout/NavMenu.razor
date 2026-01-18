@@ -38,6 +38,12 @@
                 </div>
 
                 <div class="nav-item px-3">
+                    <a class="nav-link" href="@GetRegisterSwiyuUrl()" target="_blank">
+                        <span class="bi bi-key-fill-nav-menu" aria-hidden="true"></span> Link Identity to account
+                    </a>
+                </div>
+
+                <div class="nav-item px-3">
                     <form action="logout" method="post">
                         <AntiforgeryToken />
                         <input type="hidden" name="ReturnUrl" value="@currentUrl" />
@@ -79,6 +85,12 @@
     {
         var authority = Configuration["OpenIDConnectSettings:Authority"] ?? "https://localhost:5001";
         return $"{authority}/Account/passkeys";
+    }
+
+    private string GetRegisterSwiyuUrl()
+    {
+        var authority = Configuration["OpenIDConnectSettings:Authority"] ?? "https://localhost:5001";
+        return $"{authority}/Swiyu/Register";
     }
 
     public void Dispose()
