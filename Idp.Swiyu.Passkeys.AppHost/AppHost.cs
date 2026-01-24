@@ -1,3 +1,4 @@
+using Aspire.Hosting;
 using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
@@ -33,6 +34,9 @@ var postGresJdbcIssuer = builder.AddParameter("postgresjdbcissuer");
 var postGresDbVerifier = builder.AddParameter("postgresdbverifier");
 var postGresJdbcVerifier = builder.AddParameter("postgresjdbcverifier");
 
+var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
+var idpJwksUri = builder.AddParameter("idpjwksuri");
+
 var cache = builder.AddRedis(CACHE);
 
 var issuerId = builder.AddParameter("issuerid");
@@ -62,6 +66,9 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
+    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", idpWellKnownEndpoint)
+    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI", idpJwksUri)
+    
     .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP);
 
 swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints-proxy")
