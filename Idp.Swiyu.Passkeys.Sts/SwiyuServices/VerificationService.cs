@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using Duende.IdentityModel.Client;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.Json;
 using System.Web;
 
@@ -99,9 +102,12 @@ public class VerificationService
     }
     private async Task<string> SendCreateVerificationPostRequest(string json)
     {
+        var responseTokenReq = await VerificationServiceSecurityClient.RequestTokenAsync();
+
         var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync(
-                    $"{_swiyuVerifierMgmtUrl}/management/api/verifications", jsonContent);
+        _httpClient.SetBearerToken(responseTokenReq.AccessToken!);
+        var response = await _httpClient.PostAsync($"{_swiyuVerifierMgmtUrl}/management/api/verifications", jsonContent);
+
         if (response.IsSuccessStatusCode)
         {
             var jsonResponse = await response.Content.ReadAsStringAsync();

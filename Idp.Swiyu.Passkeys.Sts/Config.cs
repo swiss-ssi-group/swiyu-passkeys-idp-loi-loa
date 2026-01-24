@@ -72,18 +72,10 @@ public static class Config
             new Client
             {
                 ClientId = "swiyu-client",
-                ClientName = "swiyu client",
-
+                ClientName = "swiyu client", 
+       
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets =
-                [
-                    new Secret
-                    {
-                        // X509 cert base64-encoded
-                        Type = IdentityServerConstants.SecretTypes.X509CertificateBase64,
-                        Value = Convert.ToBase64String(rsaCertificate.GetRawCertData())
-                    }
-                ],
+                ClientSecrets = { new Secret("SLlwqdedF4f289k$3eDa23ed0iTk4RaDtttk23d08nhzd".Sha256()) },
 
                 AllowedScopes = { "swiyu" }
             },
