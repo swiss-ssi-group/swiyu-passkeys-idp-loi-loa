@@ -19,6 +19,30 @@ public static class LoginLogoutEndpoints
             });
         }).AllowAnonymous();
 
+        app.MapGet("/stepuploa", async context =>
+        {
+            var returnUrl = context.Request.Query["returnUrl"];
+            var loa = context.Request.Query["loa"];
+
+            if (!string.IsNullOrEmpty(loa) && loa == "loa.400")
+            {
+                await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+                {
+                    RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
+                    Items = { ["acr_values"] = "phr" }
+                });
+            }
+            else
+            {
+                await context.ChallengeAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
+                {
+                    RedirectUri = returnUrl == StringValues.Empty ? "/" : returnUrl.ToString(),
+                    Items = { ["acr_values"] = "mfa" }
+                });
+            }
+
+        }).AllowAnonymous();
+
         app.MapPost("/logout", async context =>
         {
             if (context.User.Identity?.IsAuthenticated ?? false)

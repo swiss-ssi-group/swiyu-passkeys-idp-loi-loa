@@ -1,17 +1,25 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Globalization;
+using Duende.IdentityModel;
 using Duende.IdentityServer;
-using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Duende.IdentityServer.ResponseHandling;
+using Idp.Swiyu.Passkeys.Sts.Domain;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Idp.Swiyu.Passkeys.Sts.Passkeys;
+using Idp.Swiyu.Passkeys.Sts.Services;
 using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
+using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Idp.Swiyu.Passkeys.Sts;
 
@@ -55,14 +63,19 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.AddServiceDefaults();
+
         builder.Services.AddScoped<VerificationService>();
 
         builder.Services.AddHttpClient();
         builder.Services.AddOptions();
         builder.Services.AddRazorPages();
 
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+        builder.Services.AddTransient<IEmailSender, EmailSender>();
+
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("database")));
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -81,7 +94,9 @@ internal static class HostingExtensions
             });
         }
 
-        builder.Services
+        builder.Services.AddTransient<IAuthorizeInteractionResponseGenerator, StepUpInteractionResponseGenerator>();
+
+        var idsvrBuilder = builder.Services
             .AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -97,11 +112,13 @@ internal static class HostingExtensions
             })
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            .AddInMemoryClients(Config.Clients(builder.Environment))
             .AddInMemoryApiResources(Config.GetApiResources())
             .AddAspNetIdentity<ApplicationUser>()
             .AddLicenseSummary()
             .AddProfileService<ProfileService>();
+
+        idsvrBuilder.AddJwtBearerClientAuthentication();
 
         builder.Services.AddAuthentication()
             .AddOpenIdConnect("oidc", "Sign-in with demo.duendesoftware.com", options =>
@@ -127,6 +144,9 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        IdentityModelEventSource.ShowPII = true;
+        IdentityModelEventSource.LogCompleteSecurityArtifact = true;
+
         app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())

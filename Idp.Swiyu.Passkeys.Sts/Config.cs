@@ -1,7 +1,9 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Idp.Swiyu.Passkeys.Sts;
 
@@ -29,14 +31,26 @@ public static class Config
         ];
     }
 
-    public static IEnumerable<Client> Clients =>
-        [
-            // interactive client using code flow + pkce + par + DPoP
+    public static IEnumerable<Client> Clients(IWebHostEnvironment environment)
+    {
+        var publicPem = File.ReadAllText(Path.Combine(environment.ContentRootPath, "rsa256-public.pem"));
+        var rsaCertificate = X509Certificate2.CreateFromPem(publicPem);
+
+        // interactive client using code flow + pkce + par + DPoP
+        return [
             new Client
             {
-                ClientId = "web-client",
-                ClientSecrets = { new Secret("super-secret-$123".Sha256()) },
-
+                ClientId = "webclient",
+                ClientSecrets =
+                {
+                        //new Secret("test".Sha256()),
+                        new Secret
+                        {
+                            // X509 cert base64-encoded
+                            Type = IdentityServerConstants.SecretTypes.X509CertificateBase64,
+                            Value = Convert.ToBase64String(rsaCertificate.GetRawCertData())
+                        }
+                },
                 RequireDPoP = true,
                 RequirePushedAuthorization = true,
 
@@ -51,4 +65,5 @@ public static class Config
                 AllowedScopes = { "openid", "profile", "scope2" }
             },
         ];
+    }
 }

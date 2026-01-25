@@ -1,11 +1,11 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Globalization;
-using System.Text;
 using Duende.IdentityServer.Licensing;
 using Idp.Swiyu.Passkeys.Sts;
 using Serilog;
+using System.Globalization;
+using System.Text;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
@@ -21,16 +21,6 @@ try
         .ConfigureLogging()
         .ConfigureServices()
         .ConfigurePipeline();
-
-    // this seeding is only for the template to bootstrap the DB and users.
-    // in production you will likely want a different approach.
-    if (args.Contains("/seed"))
-    {
-        Log.Information("Seeding database...");
-        SeedData.EnsureSeedData(app);
-        Log.Information("Done seeding database. Exiting.");
-        return;
-    }
 
     if (app.Environment.IsDevelopment())
     {

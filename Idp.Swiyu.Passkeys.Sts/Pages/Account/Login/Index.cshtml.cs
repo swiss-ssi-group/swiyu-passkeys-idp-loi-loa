@@ -7,8 +7,8 @@ using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
-using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Domain;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -202,6 +202,7 @@ public class Index : PageModel
             {
                 new Claim(Consts.LOA, loaValue),
                 new Claim(Consts.LOI, Consts.LOI_400),
+                new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_400, loaValue, amr)),
                 // ASP.NET Core bug workaround:
                 // https://github.com/dotnet/aspnetcore/issues/64881
                 new Claim(JwtClaimTypes.AuthenticationMethod, amr),
@@ -218,6 +219,7 @@ public class Index : PageModel
             {
                 new Claim(Consts.LOA, loaValue),
                 new Claim(Consts.LOI, Consts.LOI_100),
+                new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_100, loaValue, amr)),
                 // ASP.NET Core bug workaround:
                 // https://github.com/dotnet/aspnetcore/issues/64881
                 new Claim(JwtClaimTypes.AuthenticationMethod, amr)

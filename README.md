@@ -9,6 +9,7 @@ Example fo Aspire implementing Level of Identification (LoI) and Level of Authen
 - [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com/2026/01/05/set-the-amr-claim-when-using-passkeys-authentication-in-asp-net-core/)
 - [Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com/2026/01/12/implementing-level-of-authentication-loa-with-asp-net-core-identity-and-duende/)
 - [Implementing Level of Identification (LoI) with ASP.NET Core Identity and Duende](https://damienbod.com/2026/01/18/implementing-level-of-identification-loi-with-asp-net-core-identity-and-duende/)
+- [Force step up authentication in web applications](https://damienbod.com)
 
 ## loa (Level of Authentication)
 - loa.400 : passkeys, (public/private key certificate authentication)
@@ -42,6 +43,10 @@ The solution uses a web application which authenticates using OpenID Connect, OA
 
 https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman
 
+```bash
+podman machine start
+```
+
 ## ef DB Migrations
 ```bash
 dotnet ef migrations add InitialCreate
@@ -69,6 +74,18 @@ https://learn.microsoft.com/en-us/aspnet/core/security/authentication/claims
 https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/
 
 https://damienbod.com/2025/07/02/implement-asp-net-core-openid-connect-with-keykloak-to-implement-level-of-authentication-loa-requirements/
+
+https://github.com/DuendeSoftware/samples/tree/main/IdentityServer/v7/UserInteraction/StepUp
+
+https://datatracker.ietf.org/doc/rfc9470/
+
+https://duendesoftware.com/blog/20250708-step-up-challenges-with-duende-identityserver-and-aspnet-core-apis
+
+https://www.rfc-editor.org/rfc/rfc8485.html
+
+https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63-2.pdf
+
+https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63-3.pdf
 
 ## SSI
 

@@ -57,11 +57,25 @@
 
                           <hr />
 
-                        <a class="btn btn-outline-primary"
+                          <a class="btn btn-outline-primary"
                                asp-page="/Swiyu/Login"
                                asp-route-returnUrl="@Model.Input.ReturnUrl">
                                 Log in with E-ID
                           </a>
+
+                          <hr />
+
+                          <div>
+                            <p>
+                                <a id="forgot-password" asp-page="/Account/ForgotPassword">Forgot your password?</a>
+                            </p>
+                            <p>
+                                <a asp-page="/Account/Register" asp-route-returnUrl="@Model.Input.ReturnUrl">Register as a new user</a>
+                            </p>
+                            <p>
+                                <a id="resend-confirmation" asp-page="/Account/ResendEmailConfirmation">Resend email confirmation</a>
+                            </p>
+                          </div>
                     </div>
                 </div>
             </div>

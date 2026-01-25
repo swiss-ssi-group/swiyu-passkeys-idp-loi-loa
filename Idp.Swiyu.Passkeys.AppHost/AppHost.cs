@@ -1,16 +1,29 @@
+using Projects;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-
-var IDENTITY_PROVIDER = "identityProvider";
-var WEB_CLIENT = "webClient";
-var API_SERVICE = "apiService";
-var CACHE = "cache";
+const string IDENTITY_PROVIDER = "identityProvider";
+const string WEB_CLIENT = "webClient";
+const string API_SERVICE = "apiService";
+const string CACHE = "cache";
 
 const string HTTP = "http";
+int VERIFIER_PORT = 80;
+if (builder.ExecutionContext.IsRunMode)
+{
+    VERIFIER_PORT = 8084;
+}
 
 // management
 IResourceBuilder<ContainerResource>? swiyuVerifier = null;
 IResourceBuilder<ProjectResource>? identityProvider = null;
+
+var sqlServer = builder.AddAzureSqlServer("sqlserver");
+var database = sqlServer.AddDatabase("database", "IdpSwiyuPasskeysSts");
+
+var migrationService = builder.AddProject<Idp_Swiyu_Passkeys_Sts_Domain_Migrations>("migrations")
+    .WithReference(database)
+    .WaitFor(sqlServer);
 
 var postGresUser = builder.AddParameter("postgresuser");
 var postGresPassword = builder.AddParameter("postgrespassword", secret: true);
@@ -48,14 +61,15 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-    .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP)  // local development
-    //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP) // for deployment 
+    .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP)
     .WithExternalHttpEndpoints();
 
 identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WaitFor(cache)
+    .WithReference(database)
+    .WaitForCompletion(migrationService)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
     .WithEnvironment("ISSUER_ID", issuerId)
@@ -66,10 +80,21 @@ var apiService = builder.AddProject<Projects.Idp_Swiyu_Passkeys_ApiService>(API_
 
 builder.AddProject<Projects.Idp_Swiyu_Passkeys_Web>(WEB_CLIENT)
     .WithExternalHttpEndpoints()
- //   .WithHttpHealthCheck("/health")
+    //   .WithHttpHealthCheck("/health")
     .WithReference(cache)
     .WaitFor(cache)
     .WithReference(apiService)
     .WaitFor(apiService);
 
+if (builder.ExecutionContext.IsRunMode)
+{
+    sqlServer.RunAsContainer(container =>
+    {
+        container.WithDataVolume();
+    });
+}
+else
+{
+    // TODO setup production SQL server configuration
+}
 builder.Build().Run();

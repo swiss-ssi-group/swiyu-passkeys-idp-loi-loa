@@ -1,7 +1,9 @@
 using Duende.AspNetCore.Authentication.JwtBearer.DPoP;
+using Idp.Swiyu.Passkeys.ApiService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,16 +32,29 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.ConfigureDPoPTokensForScheme("Bearer", opt =>
 {
     opt.ValidationMode = ExpirationValidationMode.IssuedAt; // IssuedAt is the default.
+
+    opt.ProofTokenValidationParameters.ValidAlgorithms =
+    [
+        SecurityAlgorithms.RsaSsaPssSha256,
+            SecurityAlgorithms.RsaSsaPssSha384,
+            SecurityAlgorithms.RsaSsaPssSha512,
+
+            SecurityAlgorithms.EcdsaSha256,
+            SecurityAlgorithms.EcdsaSha384,
+            SecurityAlgorithms.EcdsaSha512
+    ];
 });
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddSingleton<IAuthorizationHandler, AuthzLoaLoiHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, LoiHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, LoaHandler>();
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, ForbiddenAuthorizationMiddleware>();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("authz_checks", policy => policy
         .RequireAuthenticatedUser()
-        .AddRequirements(new AuthzLoaLoiRequirement()));
+        .AddRequirements([new LoaRequirement(), new LoiRequirement()]));
 
 var app = builder.Build();
 

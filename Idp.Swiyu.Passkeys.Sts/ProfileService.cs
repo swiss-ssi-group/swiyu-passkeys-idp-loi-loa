@@ -1,13 +1,19 @@
-using System.Security.Claims;
 using Duende.IdentityModel;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
+using System.Security.Claims;
 
 namespace Idp.Swiyu.Passkeys.Sts;
 
 public class ProfileService : IProfileService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public ProfileService(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
     public Task GetProfileDataAsync(ProfileDataRequestContext context)
     {
         // context.Subject is the user for whom the result is being made
@@ -72,6 +78,14 @@ public class ProfileService : IProfileService
         {
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.AuthenticationMethod, amr.Value));
         }
+
+        // Add LOI (Level of Identification) claim
+        var vot = context.Subject.Claims.FirstOrDefault(t => t.Type == RFC8485.VOT);
+        if (vot != null)
+        {
+            context.IssuedClaims.Add(new Claim(RFC8485.VOT, vot.Value));
+            context.IssuedClaims.Add(new Claim("vtm", $"{GetCurrentAbsoluteUrl()}/vot.json"));
+        }
     }
 
     private void AddProfileClaims(ProfileDataRequestContext context)
@@ -89,7 +103,7 @@ public class ProfileService : IProfileService
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.GivenName, givenName.Value));
         }
 
-        var familyName  = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.FamilyName);
+        var familyName = context.Subject.Claims.FirstOrDefault(t => t.Type == JwtClaimTypes.FamilyName);
         if (familyName != null)
         {
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.FamilyName, familyName.Value));
@@ -101,4 +115,15 @@ public class ProfileService : IProfileService
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, email.Value));
         }
     }
+
+
+    private string? GetCurrentAbsoluteUrl()
+    {
+        var ctx = _httpContextAccessor.HttpContext;
+        if (ctx is null) return null; // no request context (e.g., background task)
+
+        var req = ctx.Request;
+        return $"{req.Scheme}://{req.Host}{req.PathBase}";
+    }
+
 }

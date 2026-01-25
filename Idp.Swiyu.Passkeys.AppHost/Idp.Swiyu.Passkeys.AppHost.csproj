@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.ApiService\Idp.Swiyu.Passkeys.ApiService.csproj" />
+    <ProjectReference Include="..\Idp.Swiyu.Passkeys.Sts.Domain.Migrations\Idp.Swiyu.Passkeys.Sts.Domain.Migrations.csproj" />
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.Sts\Idp.Swiyu.Passkeys.Sts.csproj" />
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.Web\Idp.Swiyu.Passkeys.Web.csproj" />
   </ItemGroup>
@@ -19,6 +20,9 @@
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" Version="13.1.0" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="13.1.0" />
+
+    <PackageReference Include="Aspire.Hosting.Azure.Sql" Version="13.1.0" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.1.0" />
   </ItemGroup>
 
 </Project>

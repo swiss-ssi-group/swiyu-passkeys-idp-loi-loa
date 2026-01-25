@@ -3,6 +3,7 @@ using Duende.AccessTokenManagement.OpenIdConnect;
 using Duende.IdentityModel;
 using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
+using Idp.Swiyu.Passkeys.Web.WeatherServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -27,6 +28,11 @@ builder.Services.AddScoped<WeatherApiClient>();
 
 var oidcConfig = builder.Configuration.GetSection("OpenIDConnectSettings");
 
+var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-private.pem"));
+var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-public.pem"));
+var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
+var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -44,8 +50,13 @@ builder.Services.AddAuthentication(options =>
 {
     builder.Configuration.GetSection("OpenIDConnectSettings").Bind(options);
 
+    options.Events = OidcEventHandlers.OidcEvents(builder.Configuration);
+
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.ResponseType = OpenIdConnectResponseType.Code;
+
+    // client_assertion used, set in oidc events
+    //options.ClientSecret = "test";
 
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
@@ -62,47 +73,7 @@ builder.Services.AddAuthentication(options =>
     {
         NameClaimType = "name"
     };
-    options.Events = new OpenIdConnectEvents
-    {
-        //OnRedirectToIdentityProvider = context =>
-        //{
-        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-        //    context.ProtocolMessage.AcrValues = "phr";
-        //    // context.ProtocolMessage.AcrValues = "http://schemas.openid.net/pape/policies/2007/06/multi-factor";
-        //    return Task.FromResult(0);
-        //},
-        //OnPushAuthorization = context =>
-        //{
-        //    // https://openid.net/specs/openid-connect-eap-acr-values-1_0-final.html
-        //    context.ProtocolMessage.AcrValues = "phr";
-        //    return Task.FromResult(0);
-        //},
-        OnTokenResponseReceived = context =>
-        {
-            var idToken = context.TokenEndpointResponse.IdToken;
-            var accessToken = context.TokenEndpointResponse.AccessToken;
-            return Task.CompletedTask;
-        },
-        OnUserInformationReceived = context =>
-        {
-            return Task.CompletedTask;
-        }
-    };
 });
-
-var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
-    "ecdsa384-private.pem"));
-var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath,
-    "ecdsa384-public.pem"));
-var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
-var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
-
-//var privatePem = File.ReadAllText(Path.Combine(_environment.ContentRootPath, 
-//    "rsa256-private.pem"));
-//var publicPem = File.ReadAllText(Path.Combine(_environment.ContentRootPath, 
-//    "rsa256-public.pem"));
-//var rsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
-//var rsaCertificateKey = new RsaSecurityKey(rsaCertificate.GetRSAPrivateKey());
 
 // add automatic token management
 builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
@@ -137,7 +108,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddHealthChecks();
-
 
 var app = builder.Build();
 

@@ -1,8 +1,8 @@
 using Duende.IdentityModel;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
-using Idp.Swiyu.Passkeys.Sts.Data;
-using Idp.Swiyu.Passkeys.Sts.Models;
+using Idp.Swiyu.Passkeys.Sts.Domain;
+using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using ImageMagick;
 using Microsoft.AspNetCore.Authentication;
@@ -182,6 +182,7 @@ public class LoginModel : PageModel
         {
             new Claim(Consts.LOA, Consts.LOA_200),
             new Claim(Consts.LOI, Consts.LOI_400),
+            new Claim(RFC8485.VOT, RFC8485.BuildVoTFromLoiLoaAmr(Consts.LOI_400, Consts.LOA_200, Amr.Mca)),
             // ASP.NET Core bug workaround:
             // https://github.com/dotnet/aspnetcore/issues/64881
             new Claim(JwtClaimTypes.AuthenticationMethod, Amr.Mca),
