@@ -9,7 +9,7 @@ Example fo Aspire implementing Level of Identification (LoI) and Level of Authen
 - [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com/2026/01/05/set-the-amr-claim-when-using-passkeys-authentication-in-asp-net-core/)
 - [Implementing Level of Authentication (LoA) with ASP.NET Core Identity and Duende](https://damienbod.com/2026/01/12/implementing-level-of-authentication-loa-with-asp-net-core-identity-and-duende/)
 - [Implementing Level of Identification (LoI) with ASP.NET Core Identity and Duende](https://damienbod.com)
-- [Planned: Force step up authentication in web applications](https://damienbod.com)
+- [Force step up authentication in web applications](https://damienbod.com/2026/01/26/force-step-up-authentication-in-web-applications/)
 - [Planned: Use client assertions in ASP.NET Core using OpenID Connect, OAuth DPoP and OAuth PAR](https://damienbod.com)
 - [Planned: Secure the swiyu container using a YARP proxy](https://damienbod.com)
 - [Planned: Secure the swiyu container using OAuth](https://damienbod.com)
