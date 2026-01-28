@@ -34,6 +34,10 @@ var postGresJdbcIssuer = builder.AddParameter("postgresjdbcissuer");
 var postGresDbVerifier = builder.AddParameter("postgresdbverifier");
 var postGresJdbcVerifier = builder.AddParameter("postgresjdbcverifier");
 
+// local dev
+var postgres = builder.AddPostgres("postgres", postGresUser, postGresPassword, 5432);
+var postgresdb = postgres.AddDatabase("postgresdb", "verifier_db");
+
 var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
 var idpJwksUri = builder.AddParameter("idpjwksuri");
 
@@ -62,10 +66,13 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("VERIFIER_DID", verifierDid)
     .WithEnvironment("DID_VERIFICATION_METHOD", didVerifierMethod)
     .WithEnvironment("SIGNING_KEY", verifierSigningKey)
+    .WithReference(postgres)
+    .WaitFor(postgres)
     .WithEnvironment("POSTGRES_USER", postGresUser)
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
-    .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
+    .WithEnvironment("POSTGRES_JDBC", postgresdb.Resource.JdbcConnectionString)
+    // .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier) // production
     .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", idpWellKnownEndpoint)
     .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI", idpJwksUri)
     .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP);
