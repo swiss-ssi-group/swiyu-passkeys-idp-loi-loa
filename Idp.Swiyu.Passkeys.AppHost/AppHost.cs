@@ -81,8 +81,8 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-    //.WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", $"{identityProvider.GetEndpoint(HTTP)}/.well-known/openid-configuration")
-    //.WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI", idpJwksUri)
+    //.WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", identityProvider.GetEndpoint(HTTP))
+    //.WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI", $"{identityProvider.GetEndpoint(HTTP)}/{idpJwksUri}")
     .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP);
 
 swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints-proxy")
