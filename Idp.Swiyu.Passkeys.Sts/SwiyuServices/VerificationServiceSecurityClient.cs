@@ -11,12 +11,12 @@ public class VerificationServiceSecurityClient
     {
         // 1. Client client credentials client
         var app = ConfidentialClientApplicationBuilder
-            .Create(configuration["AzureADServiceApi:ClientId"])
-            .WithClientSecret(configuration["AzureADServiceApi:ClientSecret"])
-            .WithAuthority(configuration["AzureADServiceApi:Authority"])
+            .Create(configuration["SwiyuManagementClientId"])
+            .WithClientSecret(configuration["SwiyuManagementClientSecret"])
+            .WithAuthority(configuration["SwiyuManagementAuthority"])
             .Build();
 
-        var scopes = new[] { configuration["AzureADServiceApi:Scope"] };
+        var scopes = new[] { configuration["SwiyuManagementScope"] };
 
         // 2. Get access token
         var authResult = await app.AcquireTokenForClient(scopes)
