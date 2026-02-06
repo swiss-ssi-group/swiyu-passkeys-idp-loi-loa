@@ -49,18 +49,6 @@ var didVerifierMethod = builder.AddParameter("didverifiermethod");
 var verifierName = builder.AddParameter("verifiername");
 var verifierSigningKey = builder.AddParameter("verifiersigningkey", true);
 
-identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
-    .WithExternalHttpEndpoints()
-    .WithReference(cache)
-    .WaitFor(cache)
-    .WithReference(database)
-    .WaitForCompletion(migrationService)
-   // .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
-    .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
-    .WithEnvironment("ISSUER_ID", issuerId);
-//.WaitFor(swiyuVerifier)
-//.WaitFor(swiyuProxy);
-
 
 /////////////////////////////////////////////////////////////////
 // Verifier OpenID Endpoint: Must be deployed to a public URL
@@ -88,6 +76,18 @@ swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints
     .WaitFor(swiyuVerifier)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithExternalHttpEndpoints();
+
+identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
+    .WithExternalHttpEndpoints()
+    .WithReference(cache)
+    .WaitFor(cache)
+    .WithReference(database)
+    .WaitForCompletion(migrationService)
+    .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
+    .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
+    .WithEnvironment("ISSUER_ID", issuerId)
+    .WaitFor(swiyuVerifier)
+    .WaitFor(swiyuProxy);
 
 var apiService = builder.AddProject<Projects.Idp_Swiyu_Passkeys_ApiService>(API_SERVICE)
     .WithHttpHealthCheck("/health");

@@ -19,7 +19,7 @@ public class VerificationService
     public VerificationService(IHttpClientFactory httpClientFactory,
         ILoggerFactory loggerFactory, IConfiguration configuration)
     {
-        _swiyuVerifierMgmtUrl = "https://localhost:8084"; // configuration["SwiyuVerifierMgmtUrl"];
+        _swiyuVerifierMgmtUrl = configuration["SwiyuVerifierMgmtUrl"];
         _issuerId = configuration["ISSUER_ID"];
         _httpClient = httpClientFactory.CreateClient();
         _logger = loggerFactory.CreateLogger<VerificationService>();
