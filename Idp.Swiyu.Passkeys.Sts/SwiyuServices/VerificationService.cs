@@ -50,7 +50,6 @@ public class VerificationService
         return await SendCreateVerificationPostRequest(json);
     }
 
-
     public async Task<VerificationManagementModel?> GetVerificationStatus(string verificationId)
     {
         var idEncoded = HttpUtility.UrlEncode(verificationId);
