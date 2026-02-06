@@ -1,4 +1,5 @@
 ﻿using Duende.IdentityModel.Client;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 public class VerificationService
 {
     private readonly ILogger<VerificationService> _logger;
+    private readonly IConfiguration _configuration;
     private readonly string? _swiyuVerifierMgmtUrl;
     private readonly string? _issuerId;
     private readonly HttpClient _httpClient;
@@ -21,6 +23,7 @@ public class VerificationService
         _issuerId = configuration["ISSUER_ID"];
         _httpClient = httpClientFactory.CreateClient();
         _logger = loggerFactory.CreateLogger<VerificationService>();
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -102,10 +105,10 @@ public class VerificationService
     }
     private async Task<string> SendCreateVerificationPostRequest(string json)
     {
-        var responseTokenReq = await VerificationServiceSecurityClient.RequestTokenAsync();
+        var accessToken = await VerificationServiceSecurityClient.RequestTokenAsync(_configuration);
 
         var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
-        _httpClient.SetBearerToken(responseTokenReq.AccessToken!);
+        _httpClient.SetBearerToken(accessToken);
         var response = await _httpClient.PostAsync($"{_swiyuVerifierMgmtUrl}/management/api/verifications", jsonContent);
 
         if (response.IsSuccessStatusCode)

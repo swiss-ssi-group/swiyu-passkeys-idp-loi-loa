@@ -1,27 +1,51 @@
 ﻿using Duende.IdentityModel.Client;
+using Microsoft.Identity.Client;
 
 namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 public class VerificationServiceSecurityClient
 {
-    public static async Task<TokenResponse> RequestTokenAsync()
+    /// <summary>
+    /// MSAL
+    /// </summary>
+    public static async Task<string> RequestTokenAsync(IConfiguration configuration)
     {
-        var client = new HttpClient();
+        // 1. Client client credentials client
+        var app = ConfidentialClientApplicationBuilder
+            .Create(configuration["AzureADServiceApi:ClientId"])
+            .WithClientSecret(configuration["AzureADServiceApi:ClientSecret"])
+            .WithAuthority(configuration["AzureADServiceApi:Authority"])
+            .Build();
 
-        // TODO use address
-        var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
-        
-        if (disco.IsError) throw new Exception(disco.Error);
+        var scopes = new[] { configuration["AzureADServiceApi:Scope"] };
 
-        var response = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
-        {
-            Address = disco.TokenEndpoint,
-            ClientId = "swiyu-client",
-            ClientSecret = "SLlwqdedF4f289k$3eDa23ed0iTk4RaDtttk23d08nhzd",
-            Scope = "swiyu", 
-        });
+        // 2. Get access token
+        var authResult = await app.AcquireTokenForClient(scopes)
+            .ExecuteAsync();
 
-        if (response.IsError) throw new Exception(response.Error);
+        return authResult.AccessToken;
 
-        return response;
     }
+
+    // OAuth
+    //public static async Task<TokenResponse> RequestTokenAsync()
+    //{
+    //    var client = new HttpClient();
+
+    //    // TODO use address
+    //    var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+
+    //    if (disco.IsError) throw new Exception(disco.Error);
+
+    //    var response = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+    //    {
+    //        Address = disco.TokenEndpoint,
+    //        ClientId = "swiyu-client",
+    //        ClientSecret = "SLlwqdedF4f289k$3eDa23ed0iTk4RaDtttk23d08nhzd",
+    //        Scope = "swiyu", 
+    //    });
+
+    //    if (response.IsError) throw new Exception(response.Error);
+
+    //    return response;
+    //}
 }
