@@ -1,5 +1,4 @@
-﻿using Duende.IdentityModel.Client;
-using Microsoft.Identity.Client;
+﻿using Microsoft.Identity.Client;
 
 namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 public class VerificationServiceSecurityClient
