@@ -31,14 +31,14 @@ public class VerificationServiceSecurityClient
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<TokenResponse> RequestTokenOAuthAsync()
+    public static async Task<TokenResponse> RequestTokenOAuthAsync(IConfiguration configuration)
     {
         var client = new HttpClient();
 
         // TODO use address
-        var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");
+        var disco = await client.GetDiscoveryDocumentAsync(configuration["Isser"]);
 
-            if (disco.IsError) throw new Exception(disco.Error);
+        if (disco.IsError) throw new Exception(disco.Error);
 
         var response = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
         {
