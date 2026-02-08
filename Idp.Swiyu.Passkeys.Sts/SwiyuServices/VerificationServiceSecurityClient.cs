@@ -29,8 +29,6 @@ public class VerificationServiceSecurityClient
     /// <summary>
     /// OAuth
     /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
     public static async Task<TokenResponse> RequestTokenOAuthAsync(IConfiguration configuration)
     {
         var client = new HttpClient();
