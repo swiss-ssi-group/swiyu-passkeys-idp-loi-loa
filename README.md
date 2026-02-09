@@ -11,7 +11,7 @@ Example fo Aspire implementing Level of Identification (LoI) and Level of Authen
 - [Implementing Level of Identification (LoI) with ASP.NET Core Identity and Duende](https://damienbod.com/2026/01/18/implementing-level-of-identification-loi-with-asp-net-core-identity-and-duende/)
 - [Force step up authentication in web applications](https://damienbod.com/2026/01/26/force-step-up-authentication-in-web-applications/)
 - [Use client assertions in ASP.NET Core using OpenID Connect, OAuth DPoP and OAuth PAR](https://damienbod.com/2026/02/02/use-client-assertions-in-asp-net-core-using-openid-connect-oauth-dpop-and-oauth-par/)
-- [Planned: Secure the swiyu container using a YARP proxy](https://damienbod.com)
+- [Secure the swiyu container using a YARP proxy](https://damienbod.com/2026/02/09/isolate-the-swiyu-public-beta-management-apis-using-yarp/)
 - [Planned: Secure the swiyu container using OAuth](https://damienbod.com)
 
 ## loa (Level of Authentication)
