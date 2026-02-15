@@ -1,3 +1,4 @@
+using Aspire.Hosting;
 using Projects;
 
 var builder = DistributedApplication.CreateBuilder(args);
@@ -33,6 +34,9 @@ var postGresJdbcIssuer = builder.AddParameter("postgresjdbcissuer");
 var postGresDbVerifier = builder.AddParameter("postgresdbverifier");
 var postGresJdbcVerifier = builder.AddParameter("postgresjdbcverifier");
 
+var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
+var idpJwksUri = builder.AddParameter("idpjwksuri");
+
 var cache = builder.AddRedis(CACHE);
 
 var issuerId = builder.AddParameter("issuerid");
@@ -44,6 +48,7 @@ var verifierDid = builder.AddParameter("verifierdid");
 var didVerifierMethod = builder.AddParameter("didverifiermethod");
 var verifierName = builder.AddParameter("verifiername");
 var verifierSigningKey = builder.AddParameter("verifiersigningkey", true);
+var verifierJwtIssuer = builder.AddParameter("verifierjwtissuer");
 
 /////////////////////////////////////////////////////////////////
 // Verifier OpenID Endpoint: Must be deployed to a public URL
@@ -53,6 +58,7 @@ var verifierSigningKey = builder.AddParameter("verifiersigningkey", true);
 // https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
 swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "latest")
+    //.WaitFor(identityProvider)
     .WithEnvironment("EXTERNAL_URL", verifierExternalUrl)
     .WithEnvironment("OPENID_CLIENT_METADATA_FILE", verifierOpenIdClientMetaDataFile)
     .WithEnvironment("VERIFIER_DID", verifierDid)
@@ -62,12 +68,18 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
+    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", verifierJwtIssuer)
     .WithHttpEndpoint(port: VERIFIER_PORT, targetPort: 8080, name: HTTP);
 
 swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints-proxy")
     .WaitFor(swiyuVerifier)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithExternalHttpEndpoints();
+
+var swiyuManagementClientId = builder.AddParameter("swiyumanagementclientid");
+var swiyuManagementClientSecret = builder.AddParameter("swiyumanagementclientsecret", true);
+var swiyuManagementAuthority = builder.AddParameter("swiyumanagementauthority");
+var swiyuManagementScope = builder.AddParameter("swiyumanagementscope");
 
 identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
     .WithExternalHttpEndpoints()
@@ -78,6 +90,10 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuOid4vpUrl", verifierExternalUrl)
     .WithEnvironment("ISSUER_ID", issuerId)
+    .WithEnvironment("SwiyuManagementClientId", swiyuManagementClientId)
+    .WithEnvironment("SwiyuManagementClientSecret", swiyuManagementClientSecret)
+    .WithEnvironment("SwiyuManagementAuthority", swiyuManagementAuthority)
+    .WithEnvironment("SwiyuManagementScope", swiyuManagementScope)
     .WaitFor(swiyuVerifier)
     .WaitFor(swiyuProxy);
 

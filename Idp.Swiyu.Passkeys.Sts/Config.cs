@@ -18,6 +18,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         [
             new ApiScope("scope2"),
+            new ApiScope("swiyu"),
         ];
 
     public static IEnumerable<ApiResource> GetApiResources()
@@ -27,6 +28,10 @@ public static class Config
             new ApiResource("dpop-api", "DPoP API")
             {
                 Scopes = { "scope2" }
+            },
+            new ApiResource("verifier-api", "Swiyu Verifier")
+            {
+                Scopes = { "swiyu" }
             }
         ];
     }
@@ -63,6 +68,16 @@ public static class Config
 
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "scope2" }
+            },
+            new Client
+            {
+                ClientId = "swiyu-client",
+                ClientName = "swiyu client", 
+       
+                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                ClientSecrets = { new Secret("SLlwqdedF4f289k$3eDa23ed0iTk4RaDtttk23d08nhzd".Sha256()) },
+
+                AllowedScopes = { "swiyu" }
             },
         ];
     }

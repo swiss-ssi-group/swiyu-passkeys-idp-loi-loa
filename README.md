@@ -12,7 +12,7 @@ Example fo Aspire implementing Level of Identification (LoI) and Level of Authen
 - [Force step up authentication in web applications](https://damienbod.com/2026/01/26/force-step-up-authentication-in-web-applications/)
 - [Use client assertions in ASP.NET Core using OpenID Connect, OAuth DPoP and OAuth PAR](https://damienbod.com/2026/02/02/use-client-assertions-in-asp-net-core-using-openid-connect-oauth-dpop-and-oauth-par/)
 - [Secure the swiyu container using a YARP proxy](https://damienbod.com/2026/02/09/isolate-the-swiyu-public-beta-management-apis-using-yarp/)
-- [Planned: Secure the swiyu container using OAuth](https://damienbod.com)
+- [Add Application security to the swiyu generic management verifier APIs using OAuth](https://damienbod.com)
 
 ## loa (Level of Authentication)
 - loa.400 : passkeys, (public/private key certificate authentication)
@@ -65,6 +65,8 @@ dotnet ef database update
   - https://github.com/swiyu-admin-ch/swiyu-verifier
 
 ## Links
+
+https://github.com/swiyu-admin-ch/swiyu-verifier/issues/223
 
 https://github.com/dotnet/aspnetcore/issues/64881
 

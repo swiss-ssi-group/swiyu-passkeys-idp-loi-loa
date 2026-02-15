@@ -3,6 +3,7 @@ using CertificateManager.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 
 namespace GenerateCertiticate;
 
@@ -39,6 +40,10 @@ class Program
             var pemPrivateKey = ecdsa!.ExportECPrivateKeyPem();
             File.WriteAllText("ecdsa384-private.pem", pemPrivateKey);
         }
+
+        var publicEcJwk = ExportEcJwk(ecdsaCert, "ec-swiyu-signing", true);
+        File.WriteAllText("ecdsa384-public.jwk", publicEcJwk);
+        Console.WriteLine(publicEcJwk);
 
         Console.WriteLine("created, keys are in the bin folder");
     }
@@ -141,4 +146,78 @@ class Program
 
         return certificate;
     }
+
+    public string ExportRsaJwk(X509Certificate2 cert, string? keyId = null)
+    {
+        using var rsa = cert.GetRSAPublicKey() ?? throw new InvalidOperationException("No RSA public key.");
+        var p = rsa.ExportParameters(false);
+        string n = Base64UrlEncode(p.Modulus!);
+        string e = Base64UrlEncode(p.Exponent!);
+
+        var jwk = new
+        {
+            kty = "RSA",
+            n,
+            e,
+            use = "sig",
+            alg = "RS256", // adjust to your signing algorithm
+            kid = keyId // optional
+        };
+
+        return JsonSerializer.Serialize(jwk, new JsonSerializerOptions { WriteIndented = true });
+
+        static string Base64UrlEncode(byte[] input)
+            => Convert.ToBase64String(input)
+                       .TrimEnd('=')
+                       .Replace('+', '-')
+                       .Replace('/', '_');
+    }
+    
+    public static string ExportEcJwk(X509Certificate2 cert, string? kid = null, bool pretty = true)
+    {
+        using var ecdsa = cert.GetECDsaPublicKey()
+            ?? throw new InvalidOperationException("Certificate does not contain an ECDSA public key.");
+
+        var p = ecdsa.ExportParameters(false);
+
+        string crv = p.Curve.Oid.FriendlyName switch
+        {
+            "nistP256" => "P-256",
+            "nistP384" => "P-384",
+            "nistP521" => "P-521",
+            _ => throw new NotSupportedException($"Unsupported EC curve: {p.Curve.Oid.FriendlyName} (OID: {p.Curve.Oid.Value})")
+        };
+
+        string x = Base64UrlEncode(p.Q.X!);
+        string y = Base64UrlEncode(p.Q.Y!);
+
+        // Choose a default alg consistent with curve; adjust if you sign with a different alg.
+        string alg = crv switch
+        {
+            "P-256" => "ES256",
+            "P-384" => "ES384",
+            "P-521" => "ES512",
+            _ => "ES256"
+        };
+
+        var jwk = new
+        {
+            kty = "EC",
+            crv,
+            x,
+            y,
+            use = "sig",
+            alg,
+            kid // optional but recommended
+        };
+
+        return JsonSerializer.Serialize(jwk, new JsonSerializerOptions { WriteIndented = pretty });
+    }
+
+    private static string Base64UrlEncode(byte[] input) =>
+        Convert.ToBase64String(input)
+               .TrimEnd('=')
+               .Replace('+', '-')
+               .Replace('/', '_');
 }
+

@@ -1,4 +1,8 @@
-﻿using System.Text;
+﻿using Duende.IdentityModel.Client;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.Json;
 using System.Web;
 
@@ -7,6 +11,7 @@ namespace Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 public class VerificationService
 {
     private readonly ILogger<VerificationService> _logger;
+    private readonly IConfiguration _configuration;
     private readonly string? _swiyuVerifierMgmtUrl;
     private readonly string? _issuerId;
     private readonly HttpClient _httpClient;
@@ -18,6 +23,7 @@ public class VerificationService
         _issuerId = configuration["ISSUER_ID"];
         _httpClient = httpClientFactory.CreateClient();
         _logger = loggerFactory.CreateLogger<VerificationService>();
+        _configuration = configuration;
     }
 
     /// <summary>
@@ -39,12 +45,16 @@ public class VerificationService
         var json = GetBetaIdVerificationPresentationBody(inputDescriptorsId,
             presentationDefinitionId, acceptedIssuerDid, "betaid-sdjwt");
 
+        // TODO sign the payload if JWT authentication is enabled on Swiyu  
+
         return await SendCreateVerificationPostRequest(json);
     }
 
-
     public async Task<VerificationManagementModel?> GetVerificationStatus(string verificationId)
     {
+        var accessToken = await VerificationServiceSecurityClient.RequestTokenAsync(_configuration);
+        _httpClient.SetBearerToken(accessToken);
+
         var idEncoded = HttpUtility.UrlEncode(verificationId);
         using HttpResponseMessage response = await _httpClient.GetAsync(
             $"{_swiyuVerifierMgmtUrl}/management/api/verifications/{idEncoded}");
@@ -97,9 +107,12 @@ public class VerificationService
     }
     private async Task<string> SendCreateVerificationPostRequest(string json)
     {
+        var accessToken = await VerificationServiceSecurityClient.RequestTokenAsync(_configuration);
+
         var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync(
-                    $"{_swiyuVerifierMgmtUrl}/management/api/verifications", jsonContent);
+        _httpClient.SetBearerToken(accessToken);
+        var response = await _httpClient.PostAsync($"{_swiyuVerifierMgmtUrl}/management/api/verifications", jsonContent);
+
         if (response.IsSuccessStatusCode)
         {
             var jsonResponse = await response.Content.ReadAsStringAsync();
