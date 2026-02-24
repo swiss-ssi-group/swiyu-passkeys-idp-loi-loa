@@ -1,5 +1,5 @@
 
-2026-02-16 Version 1.0.1
+2026-02-24 Version 1.0.1
 - Fixed issue with QR code generation using the correct deeplink URL.
 
 2026-02-16 Version 1.0.0
