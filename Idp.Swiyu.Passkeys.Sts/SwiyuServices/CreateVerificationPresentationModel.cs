@@ -14,4 +14,6 @@ public class CreateVerificationPresentationModel
     public object? presentation_definition { get; set; }
     [JsonPropertyName("verification_url")]
     public string verification_url { get; set; } = string.Empty;
+    [JsonPropertyName("verification_deeplink")]
+    public string verification_deeplink { get; set; } = string.Empty;
 }
