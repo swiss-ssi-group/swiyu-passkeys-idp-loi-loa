@@ -2,6 +2,7 @@
 ## 2026-02-27 1.0.2
 - Add nonce API for wallet calls
 - Update deeplinks
+- swiyu integration for identity verification updated
 
 ## 2026-02-24 Version 1.0.1
 - Fixed issue with QR code generation using the correct deeplink URL.
