@@ -1,6 +1,7 @@
 {
 	"credential_issuer": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io",
 	"credential_endpoint": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/oid4vci/api/credential",
+	"nonce_endpoint": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/oid4vci/api/nonce",
 	"version": "1.0",
 	"credential_response_encryption": {
 		"encryption_required": false,
