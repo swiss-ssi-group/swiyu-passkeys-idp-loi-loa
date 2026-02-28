@@ -1,4 +1,5 @@
 using Duende.IdentityModel;
+using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using Idp.Swiyu.Passkeys.Sts.Domain;
@@ -39,6 +40,9 @@ public class LoginModel : PageModel
 
     [BindProperty]
     public string? QrCodeUrl { get; set; } = string.Empty;
+
+    [BindProperty]
+    public string? DeepLink { get; set; } = string.Empty;
 
     [BindProperty]
     public byte[]? QrCodePng { get; set; } = [];
@@ -90,6 +94,8 @@ public class LoginModel : PageModel
         var qrCode = QrCode.EncodeText(verificationResponse!.verification_deeplink, QrCode.Ecc.Quartile);
         QrCodePng = qrCode.ToPng(20, 4, MagickColors.Black, MagickColors.White);
 
+        DeepLink = verificationResponse.verification_deeplink;
+
         VerificationId = verificationResponse.id;
 
         return Page();
@@ -131,6 +137,14 @@ public class LoginModel : PageModel
                     }
 
                     var additionalClaims = GetAdditionalClaims(exists);
+
+                    if(User.IsAuthenticated())
+                    {
+                        if(user.Email != exists.Email)
+                        {
+                            return Unauthorized();
+                        }
+                    }
                     // issue authentication cookie for user
                     await _signInManager.SignInWithClaimsAsync(user, null, additionalClaims);
 
