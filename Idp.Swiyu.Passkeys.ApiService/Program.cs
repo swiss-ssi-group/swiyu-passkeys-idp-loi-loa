@@ -14,6 +14,9 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddHybridCache();
+builder.Services.AddKeyedHybridCache(ServiceProviderKeys.ProofTokenReplayHybridCache);
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
