@@ -4,22 +4,7 @@
 }
 
 <div class="container my-5 swiyu-page">
-    <div class="row justify-content-center" id="verifiedDataButton">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary-card text-white">
-                    <h4 class="mb-0">@ViewData["Title"]</h4>
-                </div>
-                <div class="card-body">
-                    <p class="swiyu-register-hint">
-                        <span>Don't have an E-ID yet?</span>
-                        <a class="btn btn-link" asp-page="/Swiyu/Register">Register E-ID</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+   
     @if (Model.QrCodePng!.Length > 0)
     {
         <div class="row justify-content-center mt-4" id="qrCodeImage">
@@ -49,6 +34,22 @@
             <button style="display:none;" type="submit" id="buttonPollSwiyu" name="buttonPollSwiyu" class="btn btn-outline-dark">Start polling</button>
         </form>
     }
+
+    <div class="row justify-content-center" id="verifiedDataButton">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary-card text-white">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                </div>
+                <div class="card-body">
+                    <p class="swiyu-register-hint">
+                        <span>Don't have an E-ID yet?</span>
+                        <a class="btn btn-link" asp-page="/Swiyu/Register">Register E-ID</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts {
