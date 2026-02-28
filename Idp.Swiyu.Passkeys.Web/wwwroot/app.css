@@ -21,13 +21,18 @@ html, body {
 }
 
 a, .btn-link {
-    color: #006bb7;
+    color: var(--red-600);
 }
 
 .btn-primary {
     color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: var(--red-500);
+    border-color: var(--red-600);
+}
+
+.btn-primary:hover {
+    background-color: var(--red-600);
+    border-color: var(--red-700);
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
