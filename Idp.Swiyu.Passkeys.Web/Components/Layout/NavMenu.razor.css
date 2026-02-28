@@ -19,7 +19,8 @@
 
 .top-row {
     min-height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: var(--red-900);
+    border-bottom: 1px solid var(--red-800);
 }
 
 .navbar-brand {
@@ -70,7 +71,7 @@
     }
 
     .nav-item ::deep .nav-link {
-        color: #d7d7d7;
+        color: var(--text-muted-on-dark);
         background: none;
         border: none;
         border-radius: 4px;
@@ -79,26 +80,31 @@
         align-items: center;
         line-height: 3rem;
         width: 100%;
+        padding-left: 0.75rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .nav-item ::deep a {
-        color: #d7d7d7;
+        color: var(--text-muted-on-dark);
         text-decoration: none;
+        padding-left: 0.75rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
 .nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.37);
-    color: white;
+    background-color: var(--red-600);
+    color: var(--text-on-dark);
+    border-left: 3px solid var(--red-300);
 }
 
 .nav-item ::deep .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+    background-color: var(--red-700);
+    color: var(--text-on-dark);
 }
 
 .nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+    background-color: var(--red-700);
+    color: var(--text-on-dark);
 }
 
 .nav-scrollable {
