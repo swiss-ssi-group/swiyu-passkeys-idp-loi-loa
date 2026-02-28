@@ -119,25 +119,6 @@ internal static class HostingExtensions
 
         idsvrBuilder.AddJwtBearerClientAuthentication();
 
-        builder.Services.AddAuthentication()
-            .AddOpenIdConnect("oidc", "Sign-in with demo.duendesoftware.com", options =>
-            {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                options.SignOutScheme = IdentityServerConstants.SignoutScheme;
-                options.SaveTokens = true;
-
-                options.Authority = "https://demo.duendesoftware.com";
-                options.ClientId = "interactive.confidential";
-                options.ClientSecret = "secret";
-                options.ResponseType = "code";
-
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    NameClaimType = "name",
-                    RoleClaimType = "role"
-                };
-            });
-
         return builder.Build();
     }
 
