@@ -1,5 +1,23 @@
+:root {
+    --red-900: #4A0E1B;
+    --red-800: #5C0A1A;
+    --red-700: #7B1A2C;
+    --red-600: #A31D3C;
+    --red-500: #C62828;
+    --red-400: #E53935;
+    --red-300: #EF5350;
+    --red-200: #FFCDD2;
+    --red-100: #FFEBEE;
+    --red-50: #FFF5F5;
+    --text-on-dark: #FFFFFF;
+    --text-muted-on-dark: #FFD5DC;
+    --white: #FFFFFF;
+}
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--white);
+    color: var(--red-900);
 }
 
 a, .btn-link {
