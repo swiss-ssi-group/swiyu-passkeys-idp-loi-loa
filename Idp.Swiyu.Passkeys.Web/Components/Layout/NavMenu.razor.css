@@ -7,8 +7,10 @@
     position: absolute;
     top: 0.5rem;
     right: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.7%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.08);
+    transition: background-color 0.2s ease;
 }
 
 .navbar-toggler:checked {
@@ -17,7 +19,8 @@
 
 .top-row {
     min-height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: var(--red-900);
+    border-bottom: 1px solid var(--red-800);
 }
 
 .navbar-brand {
@@ -68,7 +71,7 @@
     }
 
     .nav-item ::deep .nav-link {
-        color: #d7d7d7;
+        color: var(--text-muted-on-dark);
         background: none;
         border: none;
         border-radius: 4px;
@@ -77,26 +80,31 @@
         align-items: center;
         line-height: 3rem;
         width: 100%;
+        padding-left: 0.75rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .nav-item ::deep a {
-        color: #d7d7d7;
+        color: var(--text-muted-on-dark);
         text-decoration: none;
+        padding-left: 0.75rem;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
 .nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.37);
-    color: white;
+    background-color: var(--red-600);
+    color: var(--text-on-dark);
+    border-left: 3px solid var(--red-300);
 }
 
 .nav-item ::deep .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+    background-color: var(--red-700);
+    color: var(--text-on-dark);
 }
 
 .nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
+    background-color: var(--red-700);
+    color: var(--text-on-dark);
 }
 
 .nav-scrollable {
