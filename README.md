@@ -63,8 +63,8 @@ dotnet ef database update
 - Net.Codecrete.QrCodeGenerator: https://github.com/manuelbl/QrCodeGenerator/
 - swiyu
   - https://github.com/swiyu-admin-ch/swiyu-verifier
+- [Duende](https://duendesoftware.com/)
 
-	- 
 ## Links
 
 https://github.com/swiyu-admin-ch/swiyu-verifier/issues/223
