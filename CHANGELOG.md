@@ -1,5 +1,5 @@
 
-## 2026-02-27 1.0.3
+## 2026-02-28 1.0.3
 - Small improvements
 - Support for deelinks in QR code generation for wallet calls
 - Coding style improvements and refactoring
