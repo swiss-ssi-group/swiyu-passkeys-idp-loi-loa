@@ -24,6 +24,14 @@ a, .btn-link {
     color: var(--red-600);
 }
 
+.display-none {
+    display: none !important;
+}
+
+.display-inline-block {
+    display: inline-block !important;
+}
+
 .btn-primary {
     color: #fff;
     background-color: var(--red-500);
@@ -354,105 +362,105 @@ main {
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.swiyu-deeplink:hover {
-  background-color: #e8f0fe;
-  color: #0b5ed7;
-  text-decoration: none;
+    .swiyu-deeplink:hover {
+        background-color: #e8f0fe;
+        color: #0b5ed7;
+        text-decoration: none;
+        /* ── swiyu page styles ── */
 
-/* ── swiyu page styles ── */
+        .bg-primary-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
 
-.bg-primary-card {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-}
+        .swiyu-page .card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+        }
 
-.swiyu-page .card {
-  border: none;
-  border-radius: 12px;
-  overflow: hidden;
-}
+        .swiyu-page .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: none;
+        }
 
-.swiyu-page .card-header {
-  padding: 1.25rem 1.5rem;
-  border-bottom: none;
-}
+            .swiyu-page .card-header h4 {
+                font-weight: 600;
+                font-size: 1.15rem;
+                letter-spacing: 0.01em;
+            }
 
-.swiyu-page .card-header h4 {
-  font-weight: 600;
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
-}
+        .swiyu-page .card-body {
+            padding: 1.5rem;
+        }
 
-.swiyu-page .card-body {
-  padding: 1.5rem;
-}
+        .swiyu-page .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 1rem 1.5rem;
+        }
 
-.swiyu-page .card-footer {
-  background-color: #f8f9fa;
-  border-top: 1px solid #e9ecef;
-  padding: 1rem 1.5rem;
-}
+        .swiyu-register-hint {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: #555;
+            flex-wrap: wrap;
+        }
 
-.swiyu-register-hint {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  color: #555;
-  flex-wrap: wrap;
-}
+            .swiyu-register-hint .btn-link {
+                font-weight: 600;
+                padding: 0;
+                vertical-align: baseline;
+            }
 
-.swiyu-register-hint .btn-link {
-  font-weight: 600;
-  padding: 0;
-  vertical-align: baseline;
-}
+        .swiyu-qr-card .card-body {
+            padding: 2rem 1.5rem;
+        }
 
-.swiyu-qr-card .card-body {
-  padding: 2rem 1.5rem;
-}
+        .swiyu-qr-card .card-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1.25rem;
+        }
 
-.swiyu-qr-card .card-title {
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 1.25rem;
-}
+        .swiyu-qr-wrapper {
+            background-color: #ffffff;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
 
-.swiyu-qr-wrapper {
-  background-color: #ffffff;
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
-  padding: 1.25rem;
-  display: inline-block;
-  margin-bottom: 1rem;
-}
+            .swiyu-qr-wrapper img {
+                display: block;
+                max-width: 260px;
+            }
 
-.swiyu-qr-wrapper img {
-  display: block;
-  max-width: 260px;
-}
+        .swiyu-deeplink {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.75rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #0d6efd;
+            text-decoration: none;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
 
-.swiyu-deeplink {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.75rem;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #0d6efd;
-  text-decoration: none;
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
+            .swiyu-deeplink:hover {
+                background-color: #e8f0fe;
+                color: #0b5ed7;
+                text-decoration: none;
+            }
 
-.swiyu-deeplink:hover {
-  background-color: #e8f0fe;
-  color: #0b5ed7;
-  text-decoration: none;
-}
-
-.swiyu-deeplink::before {
-  content: "🔗";
-  font-size: 1rem;
-}
-
+            .swiyu-deeplink::before {
+                content: "🔗";
+                font-size: 1rem;
+            }
+    }
+    
