@@ -16,7 +16,7 @@
                         Verify your identity by presenting your swiyu public Beta-ID credential.
                     </p>
                     <form method="post">
-                        <button type="submit" class="btn btn-dark swiyu-action-btn">
+                        <button style="display:none;" type="submit">
                             Verify your swiyu public Beta-ID
                         </button>
                     </form>
@@ -40,13 +40,13 @@
         </div>
     </div>
 
-    <div class="row justify-content-center mt-4 swiyu-hidden" id="verifiedDataCard">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm swiyu-verified-data-card">
-                <div class="card-header bg-primary-card text-white">
+    <div style="display:none;" id="verifiedDataCard">
+        <div>
+            <div>
+                <div>
                     <h4 class="mb-0">Verified swiyu public Beta-ID data</h4>
                 </div>
-                <div class="card-body">
+                <div>
                     <div id="verifiedData"></div>
                 </div>
             </div>
