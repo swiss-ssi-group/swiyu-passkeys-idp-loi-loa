@@ -50,13 +50,13 @@
 
                             <hr />
 
-                            <passkey-submit operation="@PasskeyOperation.Request" name="Input.Passkey" email-name="Input.Username" class="btn btn-outline-primary position-relative" formnovalidate>
+                            <passkey-submit operation="@PasskeyOperation.Request" name="Input.Passkey" email-name="Input.Username" class="btn btn-outline-primary col-sm-8 col-md-4" formnovalidate>
                               Log in with a passkey
                             </passkey-submit>
                           </form>
 
                           <div class="form-floating mt-3">
-                            <a class="btn btn-outline-primary col-sm-6"
+                            <a class="btn btn-outline-primary col-sm-8 col-md-4"
                                 asp-page="/Swiyu/Login"
                                 asp-route-returnUrl="@Model.Input.ReturnUrl">
                                 Log in with E-ID
