@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using EllipticCurve;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -19,8 +20,12 @@ public static class SignSwiyuManagementPayload
     {
         var now = DateTime.UtcNow;
 
-        var privatePem = File.ReadAllText(Path.Combine("", "ecdsa384-private.pem"));
-        var publicPem = File.ReadAllText(Path.Combine("", "ecdsa384-public.pem"));
+        //var privatePem = File.ReadAllText(Path.Combine("", "ecdsa384-private.pem"));
+        //var publicPem = File.ReadAllText(Path.Combine("", "ecdsa384-public.pem"));
+
+        var privatePem = configuration.GetValue<string>("WebDpopClientPrivatePem");
+        var publicPem = configuration.GetValue<string>("WebDpopClientPublicPem");
+
         var ecCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
         var ecCertificateKey = new ECDsaSecurityKey(ecCertificate.GetECDsaPrivateKey());
         var signingCredentials = new SigningCredentials(new X509SecurityKey(ecCertificate), "ES384");

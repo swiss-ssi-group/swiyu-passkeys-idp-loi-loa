@@ -1,8 +1,6 @@
 // Copyright (c) Duende Software. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Duende.IdentityModel;
-using Duende.IdentityServer;
 using Duende.IdentityServer.ResponseHandling;
 using Idp.Swiyu.Passkeys.Sts.Domain;
 using Idp.Swiyu.Passkeys.Sts.Domain.Models;
@@ -12,11 +10,14 @@ using Idp.Swiyu.Passkeys.Sts.SwiyuServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Filters;
+using System;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Idp.Swiyu.Passkeys.Sts;
 
@@ -62,6 +63,12 @@ internal static class HostingExtensions
     {
         builder.AddServiceDefaults();
 
+        var stsSigningPrivatePem = builder.Configuration.GetValue<string>("StsSigningPrivatePem");
+        var stsSigningPublicPem = builder.Configuration.GetValue<string>("StsSigningPublicPem");
+
+        var ecdsaCertificate = X509Certificate2.CreateFromPem(stsSigningPublicPem, stsSigningPrivatePem);
+        var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
+
         builder.Services.AddScoped<VerificationService>();
 
         builder.Services.AddHttpClient();
@@ -81,15 +88,20 @@ internal static class HostingExtensions
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        if (builder.Environment.IsDevelopment())
+        var url = new Uri(builder.Configuration["WebOidcAuthority"]!);
+
+        builder.Services.Configure<IdentityPasskeyOptions>(options =>
         {
-            builder.Services.Configure<IdentityPasskeyOptions>(options =>
+            options.ValidateOrigin = async (context) =>
             {
-                // Allow https://localhost:5001 origin.
-                options.ValidateOrigin = context => ValueTask.FromResult(
-                    context.Origin == "https://localhost:5001");
-            });
-        }
+                if (context.Origin == url.OriginalString)
+                {
+                    return true;
+                }
+
+                return false;
+            };
+        });
 
         builder.Services.AddTransient<IAuthorizeInteractionResponseGenerator, StepUpInteractionResponseGenerator>();
 
@@ -101,23 +113,25 @@ internal static class HostingExtensions
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
 
-                //options.AccessTokenJwtType = "jwt";
-
+                options.KeyManagement.Enabled = false;
                 // Use a large chunk size for diagnostic data in development where it will be redirected to a local file.
                 if (builder.Environment.IsDevelopment())
                 {
                     options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
                 }
             })
+            .AddSigningCredential(ecdsaCertificateKey, "ES384") // ecdsaCertificate
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients(builder.Environment))
+            .AddInMemoryClients(Config.Clients(builder.Environment, builder.Configuration))
             .AddInMemoryApiResources(Config.GetApiResources())
             .AddAspNetIdentity<ApplicationUser>()
             .AddLicenseSummary()
             .AddProfileService<ProfileService>();
 
         idsvrBuilder.AddJwtBearerClientAuthentication();
+
+        builder.Services.AddHealthChecks();
 
         return builder.Build();
     }
@@ -143,6 +157,9 @@ internal static class HostingExtensions
 
         app.MapRazorPages()
             .RequireAuthorization();
+
+        app.MapHealthChecks("/health")
+            .AllowAnonymous();
 
         return app;
     }

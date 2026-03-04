@@ -7,6 +7,7 @@ using Idp.Swiyu.Passkeys.Web.WeatherServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -14,10 +15,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.SetMinimumLevel(LogLevel.Debug);
+builder.Logging.AddConsole();
 
 // Add service defaults & Aspire client integrations.
 builder.AddServiceDefaults();
-builder.AddRedisOutputCache("cache");
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddOutputCache();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -26,11 +31,13 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<WeatherApiClient>();
 
-var oidcConfig = builder.Configuration.GetSection("OpenIDConnectSettings");
+//var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-private.pem"));
+//var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-public.pem"));
 
-var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-private.pem"));
-var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-public.pem"));
-var ecdsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
+var webDpopClientPrivatePem = builder.Configuration.GetValue<string>("WebDpopClientPrivatePem");
+var webDpopClientPublicPem = builder.Configuration.GetValue<string>("WebDpopClientPublicPem");
+
+var ecdsaCertificate = X509Certificate2.CreateFromPem(webDpopClientPublicPem, webDpopClientPrivatePem);
 var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
 
 builder.Services.AddAuthentication(options =>
@@ -48,10 +55,10 @@ builder.Services.AddAuthentication(options =>
 })
 .AddOpenIdConnect(options =>
 {
-    builder.Configuration.GetSection("OpenIDConnectSettings").Bind(options);
-
     options.Events = OidcEventHandlers.OidcEvents(builder.Configuration);
 
+    options.ClientId = builder.Configuration["WebOidcClientId"];
+    options.Authority = builder.Configuration["WebOidcAuthority"];
     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.ResponseType = OpenIdConnectResponseType.Code;
 
@@ -95,19 +102,17 @@ builder.Services.AddOpenIdConnectAccessTokenManagement(options =>
 
 builder.Services.AddUserAccessTokenHttpClient("dpop-api-client", configureClient: client =>
 {
-    client.BaseAddress = new("https+http://apiservice");
+    client.BaseAddress = new("https+http://api-service");
 });
 
 builder.Services.AddSecurityHeaderPolicies()
     .SetDefaultPolicy(SecurityHeadersDefinitions
-    .GetHeaderPolicyCollection(oidcConfig["Authority"],
+    .GetHeaderPolicyCollection(builder.Configuration["WebOidcAuthority"],
         builder.Environment.IsDevelopment()));
 
 builder.Services.AddAuthenticationCore();
 builder.Services.AddAuthorization();
 builder.Services.AddCascadingAuthenticationState();
-
-builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -128,8 +133,6 @@ app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
-app.UseOutputCache();
-
 app.MapStaticAssets();
 
 app.MapRazorComponents<App>()
@@ -138,7 +141,5 @@ app.MapRazorComponents<App>()
 app.MapDefaultEndpoints();
 
 app.MapLoginLogoutEndpoints();
-
-app.MapHealthChecks("/health");
 
 app.Run();

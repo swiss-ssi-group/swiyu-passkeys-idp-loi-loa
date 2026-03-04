@@ -17,8 +17,7 @@ public static class Config
 
     public static IEnumerable<ApiScope> ApiScopes =>
         [
-            new ApiScope("scope2"),
-            new ApiScope("swiyu"),
+            new ApiScope("scope2")
         ];
 
     public static IEnumerable<ApiResource> GetApiResources()
@@ -29,17 +28,14 @@ public static class Config
             {
                 Scopes = { "scope2" }
             },
-            new ApiResource("verifier-api", "Swiyu Verifier")
-            {
-                Scopes = { "swiyu" }
-            }
         ];
     }
 
-    public static IEnumerable<Client> Clients(IWebHostEnvironment environment)
+    public static IEnumerable<Client> Clients(IWebHostEnvironment environment, IConfiguration configuration)
     {
-        var publicPem = File.ReadAllText(Path.Combine(environment.ContentRootPath, "rsa256-public.pem"));
-        var rsaCertificate = X509Certificate2.CreateFromPem(publicPem);
+        var webClientUrl = configuration.GetValue<string>("WebClientUrl");
+        var stsOidcWebClientPublicPem = configuration.GetValue<string>("StsOidcWebClientPublicPem");
+        var rsaCertificate = X509Certificate2.CreateFromPem(stsOidcWebClientPublicPem);
 
         // interactive client using code flow + pkce + par + DPoP
         return [
@@ -62,23 +58,13 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
                 AlwaysIncludeUserClaimsInIdToken = true,
 
-                RedirectUris = { "https://localhost:7019/signin-oidc" },
-                FrontChannelLogoutUri = "https://localhost:7019/signout-oidc",
-                PostLogoutRedirectUris = { "https://localhost:7019/signout-callback-oidc" },
+                RedirectUris = { $"{webClientUrl}/signin-oidc" },
+                FrontChannelLogoutUri = $"{webClientUrl}/signout-oidc",
+                PostLogoutRedirectUris = { $"{webClientUrl}/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "scope2" }
-            },
-            new Client
-            {
-                ClientId = "swiyu-client",
-                ClientName = "swiyu client", 
-       
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                ClientSecrets = { new Secret("SLlwqdedF4f289k$3eDa23ed0iTk4RaDtttk23d08nhzd".Sha256()) },
-
-                AllowedScopes = { "swiyu" }
-            },
+            }
         ];
     }
 }

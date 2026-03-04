@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "fbb4e600-c270-48d3-b752-5cdd5e9a141d",
+		"name": "onboarding",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15636546"
+	},
+	"item": [
+		{
+			"name": "Create Swiyu DID space",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{SWIYU_IDENTIFIER_REGISTRY_URL}}/api/v1/identifier/business-entities/{{SWIYU_PARTNER_ID}}/identifier-entries",
+					"host": [
+						"{{SWIYU_IDENTIFIER_REGISTRY_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"identifier",
+						"business-entities",
+						"{{SWIYU_PARTNER_ID}}",
+						"identifier-entries"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload DID Log",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/jsonl+json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{YOUR_GENERATED_DIDLOG}}",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://identifier-reg-api.trust-infra.swiyu-int.admin.ch/api/v1/identifier/business-entities/{{SWIYU_PARTNER_ID}}/identifier-entries/{{IDENTIFIER_REGISTRY_ID}}",
+					"protocol": "https",
+					"host": [
+						"identifier-reg-api",
+						"trust-infra",
+						"swiyu-int",
+						"admin",
+						"ch"
+					],
+					"path": [
+						"api",
+						"v1",
+						"identifier",
+						"business-entities",
+						"{{SWIYU_PARTNER_ID}}",
+						"identifier-entries",
+						"{{IDENTIFIER_REGISTRY_ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm DID log",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://identifier-reg.trust-infra.swiyu-int.admin.ch/api/v1/did/{{IDENTIFIER_REGISTRY_ID}}/did.jsonl",
+					"protocol": "https",
+					"host": [
+						"identifier-reg",
+						"trust-infra",
+						"swiyu-int",
+						"admin",
+						"ch"
+					],
+					"path": [
+						"api",
+						"v1",
+						"did",
+						"{{IDENTIFIER_REGISTRY_ID}}",
+						"did.jsonl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initialize a status list",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Update Status list",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/statuslist+jwt",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Status list content according to https://www.ietf.org/archive/id/draft-ietf-oauth-status-list-02.html#name-status-list-request\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://status-reg-api.trust-infra.swiyu-int.admin.ch/api/v1/status/business-entities/{{SWIYU_PARTNER_ID}}/status-list-entries/{{STATUS_REGISTRY_ID}}",
+					"protocol": "https",
+					"host": [
+						"status-reg-api",
+						"trust-infra",
+						"swiyu-int",
+						"admin",
+						"ch"
+					],
+					"path": [
+						"api",
+						"v1",
+						"status",
+						"business-entities",
+						"{{SWIYU_PARTNER_ID}}",
+						"status-list-entries",
+						"{{STATUS_REGISTRY_ID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJKTDFNMS1NQjMwQVQ0VjhIQkI0X2V6M3M0YWpRc0NiN2ZZcmRRbnFlMUlzIn0.eyJleHAiOjE3NDk5MjU4NjIsImlhdCI6MTc0OTgzNTg2MiwianRpIjoib2ZydGNjOjQwZDVmYzJlLTJkODctNDgwMy04YWU0LTZmOTgyMDI4MGYyNSIsImlzcyI6Imh0dHBzOi8va2V5bWFuYWdlci1wcmQuYXBpLmFkbWluLmNoL2tleWNsb2FrL3JlYWxtcy9BUElHVyIsInN1YiI6InByb2RfZW1wbG95ZWVvbmJvYXJkaW5nLXBhbXNfZWI1MDU1MWQtNzUyMy00N2M2LWEyN2UtNjkyYWIzMzcxYTVmIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiMzNiNDY5MzYtZjg3NC00YjRkLTg5NzktZjRhMGNlYWE0ZDNkIiwic2lkIjoiYzFhYTRmOTktY2ZlZS00NWYxLThjZTMtNzc1ZTc0OTM0Y2Y1Iiwic2NvcGUiOiJvZmZsaW5lX2FjY2VzcyIsImVudmlyb25tZW50IjoicHJvZCIsImJwcm9sZXMiOnsiZWI1MDU1MWQtNzUyMy00N2M2LWEyN2UtNjkyYWIzMzcxYTVmIjpbInN3aXl1Y29yZWJ1c2luZXNzX0BzdGF0dXMiLCJzd2l5dWNvcmVidXNpbmVzc19AaWRlbnRpZmllciJdfSwiY2xpZW50SG9zdCI6IjEwLjIyMy42NS40NiIsImN0eCI6IkIyQiIsInN1YnNjcmliZWRBUElzIjpbeyJuYW1lIjoic3dpeXVjb3JlYnVzaW5lc3Nfc3RhdHVzIiwidmVyc2lvbiI6IjAuMC4xIn0seyJuYW1lIjoic3dpeXVjb3JlYnVzaW5lc3NfaWRlbnRpZmllciIsInZlcnNpb24iOiIwLjAuMSJ9XSwiY2xpZW50QWRkcmVzcyI6IjEwLjIyMy42NS40NiIsImNsaWVudF9pZCI6IjMzYjQ2OTM2LWY4NzQtNGI0ZC04OTc5LWY0YTBjZWFhNGQzZCJ9.hN9xB3mVyHBp-S4UnhrgRQl2W6M_ZdzL8TmfogvTv60ZwZvWZ0JDfCRU9zI1NyrQPsvWBA4QRauNMeicnm2UXq6HJVpDrCTdta3QD9LkalUVQjoOq8Yk58QYMkL8W_TPoORdar_OK80xR7lNXKHhk4eQgczp4kjq4rSf3pKVqVqVqk_NSyhWXKrdbYprL3kALYZpgU_WhBMPkk8ByKmAQ9Om783T3Pxl7DwNY-nuEV_OEsbV6VM-ML0Q-obomFxI5GcCucHA5D6z5U9YjVbo3NbmcbDiztvBbGzyuEusxaQJAM7XpRinR_z4btPCj6tt7WmcvJ5VlKV9lbG493a4_g",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

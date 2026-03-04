@@ -80,13 +80,13 @@
 
     private string GetPasskeysUrl()
     {
-        var authority = Configuration["OpenIDConnectSettings:Authority"] ?? "https://localhost:5001";
+        var authority = Configuration["WebOidcAuthority"] ?? "https://localhost:5001";
         return $"{authority}/Account/passkeys";
     }
 
     private string GetRegisterSwiyuUrl()
     {
-        var authority = Configuration["OpenIDConnectSettings:Authority"] ?? "https://localhost:5001";
+        var authority = Configuration["WebOidcAuthority"] ?? "https://localhost:5001";
         return $"{authority}/Swiyu/Register";
     }
 

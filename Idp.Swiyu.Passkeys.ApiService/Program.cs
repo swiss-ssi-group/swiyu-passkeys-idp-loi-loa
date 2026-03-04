@@ -20,7 +20,7 @@ builder.Services.AddKeyedHybridCache(ServiceProviderKeys.ProofTokenReplayHybridC
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
-        options.Authority = "https://localhost:5001";
+        options.Authority = builder.Configuration["WebOidcAuthority"];
         options.Audience = "dpop-api";
 
         options.TokenValidationParameters.ValidateAudience = true;
