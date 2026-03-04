@@ -1,4 +1,10 @@
 
+## 2026-03-04 1.0.4
+- Fixed Aspire deployment issues
+- Updated container configuration
+- Styled red
+- Fixed some user flow bugs
+
 ## 2026-02-28 1.0.3
 - Small improvements
 - Support for deelinks in QR code generation for wallet calls
