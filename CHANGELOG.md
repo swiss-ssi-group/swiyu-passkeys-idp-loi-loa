@@ -1,4 +1,7 @@
 
+## 2026-03-13 1.0.5
+- Updated packages
+
 ## 2026-03-04 1.0.4
 - Fixed Aspire deployment issues
 - Updated container configuration
