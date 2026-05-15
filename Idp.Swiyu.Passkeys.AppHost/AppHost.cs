@@ -80,7 +80,21 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     //.WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
     .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
 
-var sqlServer = builder.AddAzureSqlServer("sqlserver");
+var sqlServer = builder.AddAzureSqlServer("sqlserver")
+    .ConfigureInfrastructure(infra =>
+    {
+        var resources = infra.GetProvisionableResources();
+
+        var dbRes = resources.OfType<Azure.Provisioning.Sql.SqlDatabase>().Single();
+        dbRes.Sku = new Azure.Provisioning.Sql.SqlSku()
+        {
+        Tier = "Basic",
+        Name = "Basic",
+        Capacity = 5
+        };
+        dbRes.UseFreeLimit = false;
+    });
+
 var database = sqlServer.AddDatabase("database", "IdpSwiyuPasskeysSts");
 
 var migrationService = builder.AddProject<Idp_Swiyu_Passkeys_Sts_Domain_Migrations>("migrations")
