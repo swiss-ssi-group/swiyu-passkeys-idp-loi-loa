@@ -1,5 +1,9 @@
 
-## 2026-05-08 1.0.5
+## 2026-05-15 1.0.7
+- Updated packages
+- Fix database deployment
+
+## 2026-05-08 1.0.6
 - Updated packages
 - 
 ## 2026-03-13 1.0.5
