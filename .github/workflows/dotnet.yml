@@ -26,3 +26,82 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+
+      - name: Generate SBOM (SPDX 3)
+        run: |
+          curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+          chmod +x $RUNNER_TEMP/sbom-tool
+          $RUNNER_TEMP/sbom-tool generate \
+            -b ./ \
+            -bc ./ \
+            -pn swiyupasskeysidploiloa \
+            -pv "1.0.0" \
+            -ps damienbod \
+            -mi SPDX:3.0
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: ./_manifest/
+
+      - name: Get OAuth2 access token
+        # Required secret: OAUTH_CLIENT_SECRET
+        # Add this secret in the repository Settings > Secrets and variables > Actions
+        id: get_token
+        env:
+          OAUTH_CLIENT_SECRET: ${{ secrets.OAUTH_CLIENT_SECRET }}
+        run: |
+          TOKEN_RESPONSE=$(curl -s -X POST \
+            "https://organisational-mgmt.kindmushroom-418fb40d.switzerlandnorth.azurecontainerapps.io/api/connect/token" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "grant_type=client_credentials" \
+            --data-urlencode "client_id=3c0143a0-632d-4de2-9fdf-b513e8ca275f" \
+            --data-urlencode "scope=swiyu-passkeys-idp-loi-loa" \
+            --data-urlencode "client_secret=${OAUTH_CLIENT_SECRET}")
+          ACCESS_TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.access_token // empty')
+          if [ -z "$ACCESS_TOKEN" ] || [ "$ACCESS_TOKEN" = "null" ]; then
+            echo "Failed to obtain access token. Response: $(echo "$TOKEN_RESPONSE" | jq 'del(.access_token)')"
+            exit 1
+          fi
+          echo "::add-mask::$ACCESS_TOKEN"
+          echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Upload SBOM to dependency risk API
+        # Endpoint determined from:
+        # https://organisational-mgmt.kindmushroom-418fb40d.switzerlandnorth.azurecontainerapps.io/openapi/v1/openapi.json
+        # SbomType is set to "Spdx3x" to match the SPDX 3.1 format generated above.
+        # Note: --rawfile and @file are used instead of shell variables to avoid hitting
+        # the OS ARG_MAX limit when the SBOM JSON is large (fixes "Argument list too long").
+        env:
+          ACCESS_TOKEN: ${{ steps.get_token.outputs.access_token }}
+        run: |
+          SBOM_FILE=./_manifest/spdx_3.0/manifest.spdx.json
+          if [ ! -s "$SBOM_FILE" ]; then
+            echo "SBOM file not found or empty: $SBOM_FILE"
+            exit 1
+          fi
+          # Use --rawfile to read the SBOM from disk rather than passing its content
+          # as a command-line argument, which would exceed ARG_MAX for large SBOMs.
+          # --rawfile (like --arg) binds the file content as a JSON string, matching
+          # the API contract where Sbom is a string field, not an embedded JSON object.
+          jq -n \
+            --arg solutionName "swiyu-passkeys-idp-loi-loa" \
+            --argjson organisationId 7 \
+            --arg sbomId "swiyu-passkeys-idp-loi-loa" \
+            --arg sbomType "Spdx3x" \
+            --rawfile sbom "$SBOM_FILE" \
+            '{SolutionName: $solutionName, OrganisationId: $organisationId, SbomId: $sbomId, SbomType: $sbomType, Sbom: $sbom}' \
+            > /tmp/sbom_payload.json
+          HTTP_STATUS=$(curl -s -o /tmp/sbom_upload_response.json -w "%{http_code}" -X POST \
+            "https://organisational-mgmt.kindmushroom-418fb40d.switzerlandnorth.azurecontainerapps.io/api/sbom" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+            --data @/tmp/sbom_payload.json)
+          echo "HTTP Status: $HTTP_STATUS"
+          cat /tmp/sbom_upload_response.json
+          if [ "$HTTP_STATUS" -lt 200 ] || [ "$HTTP_STATUS" -ge 300 ]; then
+            echo "SBOM upload failed with HTTP status $HTTP_STATUS"
+            exit 1
+          fi
