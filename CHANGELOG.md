@@ -1,5 +1,5 @@
 
-## 2026-05-15 1.0.8
+## 2026-05-24 1.0.8
 - Updated packages
 - Add SBOM and CVE validation, monitoring and reporting for security vulnerabilities
 
