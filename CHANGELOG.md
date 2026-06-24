@@ -1,4 +1,8 @@
 
+## 2026-05-15 1.0.8
+- Updated packages
+- Add SBOM and CVE validation, monitoring and reporting for security vulnerabilities
+
 ## 2026-05-15 1.0.7
 - Updated packages
 - Fix database deployment
