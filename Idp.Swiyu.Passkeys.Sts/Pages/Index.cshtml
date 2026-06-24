@@ -26,15 +26,4 @@
           Click <a href="~/account/passkeys">here</a> to manage your passkeys.
         </li>
     </ul>
-
-    @if (Model.License != null)
-    {
-        <h2>License</h2>
-        <dl>
-            <dt>Serial Number</dt>
-            <dd>@Model.License.SerialNumber</dd>
-            <dt>Expiration</dt>
-            <dd>@Model.License.Expiration!.Value.ToLongDateString()</dd>
-        </dl>
-    }
 </div>

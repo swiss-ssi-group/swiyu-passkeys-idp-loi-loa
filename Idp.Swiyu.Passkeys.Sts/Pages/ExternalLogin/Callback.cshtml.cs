@@ -96,9 +96,10 @@ public class Callback : PageModel
         var returnUrl = result.Properties.Items["returnUrl"] ?? "~/";
 
         // check if external login is in the context of an OIDC request
-        var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+        var context = await _interaction.GetAuthorizationContextAsync(returnUrl, HttpContext.RequestAborted);
         await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.Id, user.UserName, true,
-            context?.Client.ClientId));
+            context?.Client.ClientId), HttpContext.RequestAborted);
+
         Telemetry.Metrics.UserLogin(context?.Client.ClientId, provider!);
 
         if (context != null)

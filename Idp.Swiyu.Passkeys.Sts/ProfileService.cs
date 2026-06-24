@@ -14,7 +14,7 @@ public class ProfileService : IProfileService
     {
         _httpContextAccessor = httpContextAccessor;
     }
-    public Task GetProfileDataAsync(ProfileDataRequestContext context)
+    public Task GetProfileDataAsync(ProfileDataRequestContext context, CancellationToken ct)
     {
         // context.Subject is the user for whom the result is being made
         // context.Subject.Claims is the claims collection from the user's session cookie at login time
@@ -43,7 +43,7 @@ public class ProfileService : IProfileService
         return Task.CompletedTask;
     }
 
-    public Task IsActiveAsync(IsActiveContext context)
+    public Task IsActiveAsync(IsActiveContext context, CancellationToken ct)
     {
         context.IsActive = true;
         return Task.CompletedTask;

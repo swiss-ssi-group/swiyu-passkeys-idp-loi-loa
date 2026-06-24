@@ -12,16 +12,16 @@ public class StepUpInteractionResponseGenerator : AuthorizeInteractionResponseGe
 {
     public StepUpInteractionResponseGenerator(
         IdentityServerOptions options,
-        IClock clock,
+        TimeProvider clock,
         ILogger<AuthorizeInteractionResponseGenerator> logger,
         IConsentService consent,
         IProfileService profile) : base(options, clock, logger, consent, profile)
     {
     }
 
-    protected override async Task<InteractionResponse> ProcessLoginAsync(ValidatedAuthorizeRequest request)
+    protected override async Task<InteractionResponse> ProcessLoginAsync(ValidatedAuthorizeRequest request, CancellationToken ct)
     {
-        var result = await base.ProcessLoginAsync(request);
+        var result = await base.ProcessLoginAsync(request, ct);
 
         if (!result.IsLogin && !result.IsError)
         {

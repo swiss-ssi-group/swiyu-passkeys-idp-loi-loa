@@ -79,7 +79,7 @@ public class LoginModel : PageModel
         if (returnUrl != null)
         {
             // check if we are in the context of an authorization request
-            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl, HttpContext.RequestAborted);
 
             ReturnUrl = returnUrl;
         }
@@ -116,7 +116,7 @@ public class LoginModel : PageModel
             verificationClaims = _verificationService.GetVerifiedClaims(verificationModel);
 
             // check if we are in the context of an authorization request
-            var context = await _interaction.GetAuthorizationContextAsync(ReturnUrl);
+            var context = await _interaction.GetAuthorizationContextAsync(ReturnUrl, HttpContext.RequestAborted);
 
             if (ModelState.IsValid)
             {

@@ -20,5 +20,5 @@ public class AllModel : PageModel
         _backchannelAuthenticationInteraction = backchannelAuthenticationInteractionService;
 
     public async Task OnGet() =>
-        Logins = await _backchannelAuthenticationInteraction.GetPendingLoginRequestsForCurrentUserAsync();
+        Logins = await _backchannelAuthenticationInteraction.GetPendingLoginRequestsForCurrentUserAsync(HttpContext.RequestAborted);
 }
