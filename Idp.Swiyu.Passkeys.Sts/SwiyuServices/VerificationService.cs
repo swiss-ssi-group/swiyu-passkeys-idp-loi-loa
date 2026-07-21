@@ -68,6 +68,11 @@ public class VerificationService
                 _logger.LogError("GetVerificationStatus no data returned from Swiyu");
                 return null;
             }
+            else if(jsonResponse.Contains("FAILED"))
+            {
+                _logger.LogInformation("GetVerificationStatus verificationId FAILED: {jsonResponse}", jsonResponse);
+                return null;
+            }
 
             //  state: PENDING, SUCCESS, FAILED
             return JsonSerializer.Deserialize<VerificationManagementModel>(jsonResponse);
