@@ -136,7 +136,7 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WaitFor(swiyuProxy)
     .WithHttpHealthCheck("/health");
 
-var apiService = builder.AddProject<Projects.Idp_Swiyu_Passkeys_ApiService>(API_SERVICE)
+var apiService = builder.AddProject<Idp_Swiyu_Passkeys_ApiService>(API_SERVICE)
     .WithReference(identityProvider)
     .WaitFor(identityProvider)
     .WithHttpHealthCheck("/health")
