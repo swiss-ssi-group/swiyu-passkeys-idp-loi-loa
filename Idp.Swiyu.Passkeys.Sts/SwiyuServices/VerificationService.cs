@@ -132,6 +132,8 @@ public class VerificationService
     }
 
     /// <summary>
+    /// > **Note:** The verifier accepts both `dc+sd-jwt` (current spec, SD-JWT VC Draft 06+, per [draft-ietf-oauth-sd-jwt-vc-09 §A.2.1](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-sd-jwt-vc-09#name-application-dcsd-jwt)) 
+    /// and `vc+sd-jwt` (legacy SD-JWT VC drafts ≤ 05) on the credential's `typ` header.
     /// There will be private companies having a need to do identification routines (e.g. KYC or before issuing another credential), 
     /// asking for given_name, family_name, birth_date and birth_place.
     /// 
