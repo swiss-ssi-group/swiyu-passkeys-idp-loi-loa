@@ -66,7 +66,8 @@ var verifierJwtIssuer = builder.AddParameter("verifierjwtissuer");
 // Add security to management API, disabled
 // https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
-swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "latest")
+/// FROM ghcr.io/swiyu-admin-ch/swiyu-verifier@sha256:c4d945c00d1c5ed9035003c7ca68ef7c28329b0764a8aed04c847aac61f34f49
+swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.0.1") // "sha256-393db2ef19cd335dd84b22c12c6dab1e4c285459ff283113b4590364bedf06a9")
     .WithEnvironment("EXTERNAL_URL", verifierExternalUrl)
     .WithEnvironment("OPENID_CLIENT_METADATA_FILE", verifierOpenIdClientMetaDataFile)
     .WithEnvironment("VERIFIER_DID", verifierDid)
