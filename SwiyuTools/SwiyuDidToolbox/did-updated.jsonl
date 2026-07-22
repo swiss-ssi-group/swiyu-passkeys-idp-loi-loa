@@ -1,0 +1,3 @@
+Parameter -d should be a regular file containing a valid DID log (found did.jsonl)
+
+For detailed usage, run: didtoolbox -h
