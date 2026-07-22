@@ -38,11 +38,11 @@ public class VerificationService
 
         // from "betaid-sdjwt"
         var acceptedIssuerDid = "did:tdw:QmPEZPhDFR4nEYSFK5bMnvECqdpf1tPTPJuWs9QrMjCumw:identifier-reg.trust-infra.swiyu-int.admin.ch:api:v1:did:9a5559f0-b81c-4368-a170-e7b4ae424527";
-
+                            
         var inputDescriptorsId = Guid.NewGuid().ToString();
         var presentationDefinitionId = "00000000-0000-0000-0000-000000000000"; // Guid.NewGuid().ToString();
 
-        var json = GetBetaIdVerificationPresentationBody(inputDescriptorsId,
+        var json = GetBetaIdVerificationPresentationBodyV4(inputDescriptorsId,
             presentationDefinitionId, acceptedIssuerDid, "betaid-sdjwt");
 
         // TODO sign the payload if JWT authentication is enabled on Swiyu  
@@ -140,7 +140,47 @@ public class VerificationService
     /// { "path": ["$.family_name"] },
     /// { "path": ["$.birth_place"] },
     /// </summary>
-    private static string GetBetaIdVerificationPresentationBody(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
+    private static string GetBetaIdVerificationPresentationBodyV4(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
+    {
+        var json = $$"""
+             {
+                 "accepted_issuer_dids": [ "{{acceptedIssuerDid}}" ],
+                 "jwt_secured_authorization_request": true,
+                 "response_mode": "direct_post",
+                 "verification_purpose": {
+                   "scope": "ch.identity",
+                   "purpose_name": {
+                     "default": "Identity verification"
+                   },
+                   "purpose_description": {
+                     "default": "Used to verify the identity of an individual"
+                   }
+                 },
+                 "dcql_query": {
+                   "credentials": [
+                     {
+                       "id": "{{presentationDefinitionId}}",
+                       "format": "dc+sd-jwt",
+                       "meta": {
+                         "vct_values": ["betaid-sdjwt"]
+                       },
+                       "claims": [
+                         { "path": [ "$.birth_date" ] },
+             		     { "path": [ "$.given_name" ] },
+             		     { "path": [ "$.family_name" ] },
+             		     { "path": [ "$.birth_place" ] }
+                       ],
+                       "require_cryptographic_holder_binding": true
+                     }
+                   ]
+                 }
+             }
+             """;
+
+        return json;
+    }
+
+    private static string GetBetaIdVerificationPresentationBodyV3(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
     {
         var json = $$"""
              {
