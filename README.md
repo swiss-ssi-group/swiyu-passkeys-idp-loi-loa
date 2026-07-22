@@ -4,6 +4,8 @@
 
 Example fo Aspire implementing Level of Identification (LoI) and Level of Authentication (LoA) using swiyu passkeys authentication in Duende IdentityServer with ASP.NET Core Identity.
 
+https://identity-provider.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/
+
 ## Blogs
 - [Digital authentication and identity validation](https://damienbod.com/2025/12/20/digital-authentication-and-identity-validation/)
 - [Set the amr claim when using passkeys authentication in ASP.NET Core](https://damienbod.com/2026/01/05/set-the-amr-claim-when-using-passkeys-authentication-in-asp-net-core/)
