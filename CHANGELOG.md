@@ -1,4 +1,10 @@
 
+## 2026-07-23 1.0.9
+- Updated packages
+- Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.0.1" 
+- Updated to didtoolbox-java 2.2.1
+- Using new OpenID scheme
+
 ## 2026-05-24 1.0.8
 - Updated packages
 - Add SBOM and CVE validation, monitoring and reporting for security vulnerabilities
