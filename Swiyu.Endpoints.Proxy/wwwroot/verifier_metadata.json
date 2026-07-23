@@ -6,8 +6,8 @@
   "client_name#de-CH": "damienbod Verifizier",
   "client_name#de": "damienbod Verifizierer (Fallback DE)",
   "client_name": "damienbod Verifier (Base)",
-  "logo_uri": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/logo.png",
-  "logo_uri#fr": "https://swiyu-endpoints-proxy.redpebble-62dbc6b1.switzerlandnorth.azurecontainerapps.io/logo.png",
+  "logo_uri": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/logo.png",
+  "logo_uri#fr": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/logo.png",
   "vp_formats": {
     "jwt_vp": {
       "alg": [
