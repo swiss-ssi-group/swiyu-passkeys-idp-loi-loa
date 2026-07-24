@@ -13,6 +13,8 @@ IResourceBuilder<ContainerResource>? swiyuVerifier = null;
 IResourceBuilder<ProjectResource>? swiyuProxy = null;
 IResourceBuilder<ProjectResource>? identityProvider = null;
 
+IResourceBuilder<ContainerResource>? swiyuIssuer = null;
+
 // E-ID database
 var postGresUser = builder.AddParameter("postgresuser");
 var postGresPassword = builder.AddParameter("postgrespassword", secret: true);
@@ -80,6 +82,50 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", verifierJwtIssuer)
     //.WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
     .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
+    // Testing only, not required for IDP
+
+// Issuer
+var swiyuRefreshToken = builder.AddParameter("swiyurefreshtoken", secret: true);
+var swiyuAccessToken = builder.AddParameter("swiyuaccesstoken", secret: true);
+
+/////////////////////////////////////////////////////////////////
+// Issuer OpenID Endpoint: Must be deployed to a public URL
+/////////////////////////////////////////////////////////////////
+// Issuer Management Endpoint: TODO Add JWT security issuer
+// Add security to management API, disabled
+// https://github.com/swiyu-admin-ch/swiyu-issuer?tab=readme-ov-file#security
+/////////////////////////////////////////////////////////////////
+swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu-issuer", "latest")
+    .WithEnvironment("EXTERNAL_URL", issuerExternalUrl)
+    .WithEnvironment("SPRING_APPLICATION_NAME", issuerName)
+    .WithEnvironment("ISSUER_ID", issuerId)
+
+    .WithEnvironment("DID_STATUS_LIST_VERIFICATION_METHOD", issuerDidSdJwtVerficiationMethod)
+    .WithEnvironment("STATUS_LIST_KEY", issuerSdJwtKey)
+    .WithEnvironment("SWIYU_PARTNER_ID", businessPartnerId)
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_CUSTOMER_KEY", swiyuCustomerKey)
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_CUSTOMER_SECRET", swiyuCustomerSecret)
+
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_ACCESS_TOKEN", swiyuAccessToken)
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN", swiyuRefreshToken)
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_TOKEN_URL", "https://keymanager-prd.api.admin.ch/keycloak/realms/APIGW/protocol/openid-connect/token")
+
+    .WithEnvironment("DID_SDJWT_VERIFICATION_METHOD", issuerDidSdJwtVerficiationMethod)
+    .WithEnvironment("SDJWT_KEY", issuerSdJwtKey)
+    .WithEnvironment("OPENID_CONFIG_FILE", issuerOpenIdConfigFile)
+    .WithEnvironment("METADATA_CONFIG_FILE", issuerMetaDataConfigFile)
+    .WithEnvironment("TOKEN_TTL", issuerTokenTtl)
+
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_API_URL", "https://status-reg-api.trust-infra.swiyu-int.admin.ch")
+    .WithEnvironment("LOGGING_LEVEL_CH_ADMIN_BJ_SWIYU", "DEBUG")
+    .WithEnvironment("SWIYU_STATUS_REGISTRY_AUTH_ENABLE_REFRESH_TOKEN_FLOW", "true")
+
+    .WithEnvironment("POSTGRES_USER", postGresUser)
+    .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
+    .WithEnvironment("POSTGRES_DB", postGresDbIssuer)
+    .WithEnvironment("POSTGRES_JDBC", postGresJdbcIssuer)
+    //.WithHttpEndpoint(port: 8082, targetPort: 8080, name: HTTP); // local development
+    .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment
 
 var sqlServer = builder.AddAzureSqlServer("sqlserver")
     .ConfigureInfrastructure(infra =>

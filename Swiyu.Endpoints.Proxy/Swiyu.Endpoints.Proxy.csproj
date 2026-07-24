@@ -12,10 +12,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\Idp.Swiyu.Passkeys.ServiceDefaults\Idp.Swiyu.Passkeys.ServiceDefaults.csproj" />
   </ItemGroup>
 

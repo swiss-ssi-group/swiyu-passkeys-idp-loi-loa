@@ -38,9 +38,9 @@ public class VerificationService
 
         // from "betaid-sdjwt"
         var acceptedIssuerDid = "did:tdw:QmPEZPhDFR4nEYSFK5bMnvECqdpf1tPTPJuWs9QrMjCumw:identifier-reg.trust-infra.swiyu-int.admin.ch:api:v1:did:9a5559f0-b81c-4368-a170-e7b4ae424527";
-                            
+
         var inputDescriptorsId = Guid.NewGuid().ToString();
-        var presentationDefinitionId = "eidCredential"; // "00000000-0000-0000-0000-000000000000"; // Guid.NewGuid().ToString();
+        var presentationDefinitionId = "00000000-0000-0000-0000-000000000000"; // Guid.NewGuid().ToString();
 
         var json = GetBetaIdVerificationPresentationBodyV4(inputDescriptorsId,
             presentationDefinitionId, acceptedIssuerDid, "betaid-sdjwt");
@@ -146,7 +146,7 @@ public class VerificationService
     {
         var json = $$"""
              {
-                 "accepted_issuer_dids": [ "{{acceptedIssuerDid}}" ],
+                 "accepted_issuer_dids": [ "{{acceptedIssuerDid}}", "did:webvh:QmQNMXCBYHLsH5zJeE1hC6tn7GpQFfvqJaWPqwpn7pafcy:identifier-reg-a.trust-infra.swiyu-int.admin.ch:api:v1:did:3d20b010-8d39-4cdd-b5cd-a6356b4e1218" ],
                  "jwt_secured_authorization_request": true,
                  "response_mode": "direct_post",
                  "verification_purpose": {
@@ -164,7 +164,7 @@ public class VerificationService
                        "id": "{{presentationDefinitionId}}",
                        "format": "dc+sd-jwt",
                        "meta": {
-                         "vct_values": ["betaid-sdjwt"]
+                         "vct_values": ["betaid-sdjwt", "urn:vct:ch.admin.bcs.betaid"]
                        },
                        "claims": [
                          { "path": [ "$.birth_date" ] },
