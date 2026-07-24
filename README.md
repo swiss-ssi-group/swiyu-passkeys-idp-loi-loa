@@ -69,6 +69,8 @@ dotnet ef database update
 
 ## Links
 
+https://portal.trust-infra.swiyu-int.admin.ch/ui/business-partners
+
 https://github.com/swiyu-admin-ch/swiyu-verifier/issues/223
 
 https://github.com/dotnet/aspnetcore/issues/64881
