@@ -146,7 +146,7 @@ public class VerificationService
     {
         var json = $$"""
              {
-                 "accepted_issuer_dids": [ "{{acceptedIssuerDid}}", "did:webvh:QmQNMXCBYHLsH5zJeE1hC6tn7GpQFfvqJaWPqwpn7pafcy:identifier-reg-a.trust-infra.swiyu-int.admin.ch:api:v1:did:3d20b010-8d39-4cdd-b5cd-a6356b4e1218" ],
+                 "accepted_issuer_dids": [ "{{acceptedIssuerDid}}" ],
                  "jwt_secured_authorization_request": true,
                  "response_mode": "direct_post",
                  "verification_purpose": {
@@ -164,7 +164,7 @@ public class VerificationService
                        "id": "{{presentationDefinitionId}}",
                        "format": "dc+sd-jwt",
                        "meta": {
-                         "vct_values": ["betaid-sdjwt", "urn:vct:ch.admin.bcs.betaid"]
+                         "vct_values": ["betaid-sdjwt"]
                        },
                        "claims": [
                          { "path": [ "$.birth_date" ] },
