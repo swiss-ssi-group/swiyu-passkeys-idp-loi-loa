@@ -2,7 +2,7 @@
   "credential_issuer": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io",
   "credential_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/credential",
   "nonce_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/nonce",
-  "deferred_credential_endpoint": "${EXTERNAL_URL}/oid4vci/api/deferred_credential",
+  "deferred_credential_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/deferred_credential",
   "version": "1.0",
   "display": [
     {
@@ -71,10 +71,12 @@
       ],
       "vct": "damienbod-vc",
       "credential_metadata": {
-        "claims": {
-          "lastName": {
-            "mandatory": false,
-            "value_type": "string",
+        "claims": [
+          {
+            "path": [
+              "family_name"
+            ],
+            "mandatory": true,
             "display": [
               {
                 "locale": "de-CH",
@@ -82,43 +84,55 @@
               },
               {
                 "locale": "fr-CH",
-                "name": "Nom de famille"
+                "name": "Nom"
               },
               {
                 "locale": "it-CH",
                 "name": "Cognome"
               },
               {
-                "locale": "en-US",
-                "name": "Last name"
+                "locale": "rm-CH",
+                "name": "Num"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Surname"
               }
             ]
           },
-          "firstName": {
-            "mandatory": false,
-            "value_type": "string",
+          {
+            "path": [
+              "given_name"
+            ],
+            "mandatory": true,
             "display": [
               {
                 "locale": "de-CH",
-                "name": "Vorname"
+                "name": "Vorname(n)"
               },
               {
                 "locale": "fr-CH",
-                "name": "Prénom"
+                "name": "Prénom(s)"
               },
               {
                 "locale": "it-CH",
-                "name": "Nome"
+                "name": "Nome(i)"
               },
               {
-                "locale": "en-US",
-                "name": "First name"
+                "locale": "rm-CH",
+                "name": "Prenum(s)"
+              },
+              {
+                "locale": "en-GB",
+                "name": "Given name(s)"
               }
             ]
           },
-          "birthDate": {
+          {
+            "path": [
+              "birth_date"
+            ],
             "mandatory": true,
-            "value_type": "string",
             "display": [
               {
                 "locale": "de-CH",
@@ -142,12 +156,12 @@
               }
             ]
           }
-        }
+        ]
       },
       "order": [
-        "firstName",
-        "lastName",
-        "birthDate"
+        "family_name",
+        "given_name",
+        "birth_date"
       ]
     }
   }
