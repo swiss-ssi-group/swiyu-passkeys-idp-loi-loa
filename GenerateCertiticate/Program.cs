@@ -33,16 +33,16 @@ class Program
         }
 
         var pemPublicKey = _iec.PemExportPublicKeyCertificate(ecdsaCert);
-        File.WriteAllText("ecdsa384-public.pem", pemPublicKey);
+        File.WriteAllText("ecdsa256-public.pem", pemPublicKey);
 
         using (ECDsa? ecdsa = ecdsaCert.GetECDsaPrivateKey())
         {
             var pemPrivateKey = ecdsa!.ExportECPrivateKeyPem();
-            File.WriteAllText("ecdsa384-private.pem", pemPrivateKey);
+            File.WriteAllText("ecdsa256-private.pem", pemPrivateKey);
         }
 
         var publicEcJwk = ExportEcJwk(ecdsaCert, "ec-swiyu-signing", true);
-        File.WriteAllText("ecdsa384-public.jwk", publicEcJwk);
+        File.WriteAllText("ecdsa256-public.jwk", publicEcJwk);
         Console.WriteLine(publicEcJwk);
 
         Console.WriteLine("created, keys are in the bin folder");
@@ -140,8 +140,8 @@ class Program
             x509KeyUsageFlags,
             new ECDsaConfiguration
             {
-                KeySize = 384,
-                HashAlgorithmName = HashAlgorithmName.SHA384
+                KeySize = 256,
+                HashAlgorithmName = HashAlgorithmName.SHA256
             });
 
         return certificate;
