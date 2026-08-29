@@ -9,8 +9,8 @@ builder.Services.AddSingleton<SwiyuLoggingTransformProvider>();
 builder.Services.AddReverseProxy()
     .LoadFromMemory(YarpConfigurations.GetVerifierRoutes(),
         YarpConfigurations.GetVerifierClusters(
-            builder.Configuration["SwiyuVerifierMgmtUrl"]!))
-    .AddTransforms<SwiyuLoggingTransformProvider>();
+            builder.Configuration["SwiyuVerifierMgmtUrl"]!));
+ //   .AddTransforms<SwiyuLoggingTransformProvider>();
 
 var app = builder.Build();
 
