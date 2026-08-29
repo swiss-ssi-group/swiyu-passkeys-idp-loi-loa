@@ -134,9 +134,9 @@ var sqlServer = builder.AddAzureSqlServer("sqlserver")
         var dbRes = resources.OfType<Azure.Provisioning.Sql.SqlDatabase>().Single();
         dbRes.Sku = new Azure.Provisioning.Sql.SqlSku()
         {
-        Tier = "Basic",
-        Name = "Basic",
-        Capacity = 5
+            Tier = "Basic",
+            Name = "Basic",
+            Capacity = 5
         };
         dbRes.UseFreeLimit = false;
     });
