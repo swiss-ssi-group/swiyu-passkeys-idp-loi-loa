@@ -3,6 +3,7 @@
 
 using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
+using Idp.Swiyu.Passkeys.ServiceDefaults;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Idp.Swiyu.Passkeys.Sts;
@@ -34,7 +35,7 @@ public static class Config
     public static IEnumerable<Client> Clients(IWebHostEnvironment environment, IConfiguration configuration)
     {
         var webClientUrl = configuration.GetValue<string>("WebClientUrl");
-        var stsOidcWebClientPublicPem = configuration.GetValue<string>("StsOidcWebClientPublicPem");
+        var stsOidcWebClientPublicPem = ConfigConverter.GetPemFromBase64Config("StsOidcWebClientPublicPemBase64", configuration);
         var rsaCertificate = X509Certificate2.CreateFromPem(stsOidcWebClientPublicPem);
 
         // interactive client using code flow + pkce + par + DPoP
