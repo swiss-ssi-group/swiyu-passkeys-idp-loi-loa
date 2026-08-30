@@ -1,22 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Text;
+﻿using System.Text;
 
 namespace GenerateCertiticate;
 
 public static class ConfigConverter
 {
-    public static string GetPemFromBase64Config(string config, IConfiguration configuration)
-    {
-        var base64String = configuration.GetValue<string>(config);
-
-        if (string.IsNullOrEmpty(base64String))
-        {
-            throw new ArgumentException($"PEM Configuration value for '{config}' is missing or empty.");
-        }
-
-        return Encoding.UTF8.GetString(Convert.FromBase64String(base64String));
-    }
-
     public static string GetPemFromBase64(string base64String)
     {
         return Encoding.UTF8.GetString(Convert.FromBase64String(base64String));

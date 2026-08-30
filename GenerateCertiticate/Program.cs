@@ -25,24 +25,29 @@ class Program
 
         var pemPublicRsaKey = _iec.PemExportPublicKeyCertificate(rsaCert);
         File.WriteAllText("rsa256-public.pem", pemPublicRsaKey);
+        File.WriteAllText("rsa256-public.pem.base64", ConfigConverter.CreateBase64FromPem(pemPublicRsaKey));
 
         using (RSA? rsa = rsaCert.GetRSAPrivateKey())
         {
             var pemPrivateRsaKey = rsa!.ExportRSAPrivateKeyPem();
             File.WriteAllText("rsa256-private.pem", pemPrivateRsaKey);
+            File.WriteAllText("rsa256-private.pem.base64", ConfigConverter.CreateBase64FromPem(pemPrivateRsaKey));
         }
 
         var pemPublicKey = _iec.PemExportPublicKeyCertificate(ecdsaCert);
         File.WriteAllText("ecdsa256-public.pem", pemPublicKey);
+        File.WriteAllText("ecdsa256-public.pem.base64", ConfigConverter.CreateBase64FromPem(pemPublicKey));
 
         using (ECDsa? ecdsa = ecdsaCert.GetECDsaPrivateKey())
         {
             var pemPrivateKey = ecdsa!.ExportECPrivateKeyPem();
             File.WriteAllText("ecdsa256-private.pem", pemPrivateKey);
+            File.WriteAllText("ecdsa256-private.pem.base64", ConfigConverter.CreateBase64FromPem(pemPrivateKey));
         }
 
         var publicEcJwk = ExportEcJwk(ecdsaCert, "ec-swiyu-signing", true);
         File.WriteAllText("ecdsa256-public.jwk", publicEcJwk);
+        File.WriteAllText("ecdsa256-public.jwk.base64", ConfigConverter.CreateBase64FromPem(publicEcJwk));
         Console.WriteLine(publicEcJwk);
 
         Console.WriteLine("created, keys are in the bin folder");
