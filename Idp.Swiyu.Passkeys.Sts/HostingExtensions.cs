@@ -121,7 +121,7 @@ internal static class HostingExtensions
                     options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
                 }
             })
-            .AddSigningCredential(ecdsaCertificateKey, "ES384") // ecdsaCertificate
+            .AddSigningCredential(ecdsaCertificateKey, "ES256") // ecdsaCertificate
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients(builder.Environment, builder.Configuration))
