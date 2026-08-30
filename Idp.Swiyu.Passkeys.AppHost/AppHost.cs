@@ -24,14 +24,14 @@ var postGresJdbcIssuer = builder.AddParameter("postgresjdbcissuer");
 var postGresDbVerifier = builder.AddParameter("postgresdbverifier");
 var postGresJdbcVerifier = builder.AddParameter("postgresjdbcverifier");
 
-var stsOidcWebClientPublicPem = builder.AddParameter("StsOidcWebClientPublicPem");
-var webOidcClientPrivatePem = builder.AddParameter("WebOidcClientPrivatePem", secret: true);
-var webOidcClientPublicPem = builder.AddParameter("WebOidcClientPublicPem");
-var webDpopClientPrivatePem = builder.AddParameter("WebDpopClientPrivatePem", secret: true);
-var webDpopClientPublicPem = builder.AddParameter("WebDpopClientPublicPem");
+var stsOidcWebClientPublicPemBase64 = builder.AddParameter("StsOidcWebClientPublicPemBase64");
+var webOidcClientPrivatePemBase64 = builder.AddParameter("WebOidcClientPrivatePemBase64", secret: true);
+var webOidcClientPublicPemBase64 = builder.AddParameter("WebOidcClientPublicPemBase64");
+var webDpopClientPrivatePemBase64 = builder.AddParameter("WebDpopClientPrivatePemBase64", secret: true);
+var webDpopClientPublicPemBase64 = builder.AddParameter("WebDpopClientPublicPemBase64");
 
-var stsSigningPrivatePem = builder.AddParameter("StsSigningPrivatePem", secret: true);
-var stsSigningPublicPem = builder.AddParameter("StsSigningPublicPem");
+var stsSigningPrivatePemBase64 = builder.AddParameter("StsSigningPrivatePemBase64", secret: true);
+var stsSigningPublicPemBase64 = builder.AddParameter("StsSigningPublicPemBase64");
 
 // Issuer
 var issuerExternalUrl = builder.AddParameter("issuerexternalurl");
@@ -55,7 +55,7 @@ var verifierOpenIdClientMetaDataFile = builder.AddParameter("verifieropenidclien
 var verifierDid = builder.AddParameter("verifierdid");
 var didVerifierMethod = builder.AddParameter("didverifiermethod");
 var verifierName = builder.AddParameter("verifiername");
-var verifierSigningKey = builder.AddParameter("verifiersigningkey", true);
+var verifierSigningKey = builder.AddParameter("verifiersigningkey", secret: true);
 
 var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
 var idpJwksUri = builder.AddParameter("idpjwksuri");
@@ -175,9 +175,9 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WithEnvironment("SwiyuManagementScope", swiyuManagementScope)
     .WithEnvironment("WebClientUrl", webClientUrl)
     .WithEnvironment("WebOidcAuthority", webOidcAuthority)
-    .WithEnvironment("StsOidcWebClientPublicPem", stsOidcWebClientPublicPem)
-    .WithEnvironment("StsSigningPrivatePem", stsSigningPrivatePem)
-    .WithEnvironment("StsSigningPublicPem", stsSigningPublicPem)
+    .WithEnvironment("StsOidcWebClientPublicPemBase64", stsOidcWebClientPublicPemBase64)
+    .WithEnvironment("StsSigningPrivatePemBase64", stsSigningPrivatePemBase64)
+    .WithEnvironment("StsSigningPublicPemBase64", stsSigningPublicPemBase64     )
     .WaitFor(swiyuVerifier)
     .WaitFor(swiyuProxy)
     .WithHttpHealthCheck("/health");
@@ -194,10 +194,10 @@ builder.AddProject<Projects.Idp_Swiyu_Passkeys_Web>(WEB_CLIENT)
     .WaitFor(apiService)
     .WithEnvironment("WebOidcAuthority", webOidcAuthority)
     .WithEnvironment("WebOidcClientId", webOidcClientId)
-    .WithEnvironment("WebOidcClientPrivatePem", webOidcClientPrivatePem)
-    .WithEnvironment("WebOidcClientPublicPem", webOidcClientPublicPem)
-    .WithEnvironment("WebDpopClientPrivatePem", webDpopClientPrivatePem)
-    .WithEnvironment("WebDpopClientPublicPem", webDpopClientPublicPem)
+    .WithEnvironment("WebOidcClientPrivatePemBase64", webOidcClientPrivatePemBase64)
+    .WithEnvironment("WebOidcClientPublicPemBase64", webOidcClientPublicPemBase64)
+    .WithEnvironment("WebDpopClientPrivatePemBase64", webDpopClientPrivatePemBase64)
+    .WithEnvironment("WebDpopClientPublicPemBase64", webDpopClientPublicPemBase64)
     .WithHttpHealthCheck("/health")
     .WaitFor(identityProvider)
     .WithReference(identityProvider);
