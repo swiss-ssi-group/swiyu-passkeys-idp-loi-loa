@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Duende.IdentityServer.ResponseHandling;
+using Idp.Swiyu.Passkeys.ServiceDefaults;
 using Idp.Swiyu.Passkeys.Sts.Domain;
 using Idp.Swiyu.Passkeys.Sts.Domain.Models;
 using Idp.Swiyu.Passkeys.Sts.Passkeys;
@@ -63,8 +64,8 @@ internal static class HostingExtensions
     {
         builder.AddServiceDefaults();
 
-        var stsSigningPrivatePem = builder.Configuration.GetValue<string>("StsSigningPrivatePem");
-        var stsSigningPublicPem = builder.Configuration.GetValue<string>("StsSigningPublicPem");
+        var stsSigningPrivatePem = ConfigConverter.GetPemFromBase64Config("StsSigningPrivatePemBase64", builder.Configuration);
+        var stsSigningPublicPem = ConfigConverter.GetPemFromBase64Config("StsSigningPublicPemBase64", builder.Configuration);
 
         var ecdsaCertificate = X509Certificate2.CreateFromPem(stsSigningPublicPem, stsSigningPrivatePem);
         var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());
@@ -120,7 +121,7 @@ internal static class HostingExtensions
                     options.Diagnostics.ChunkSize = 1024 * 1024 * 10; // 10 MB
                 }
             })
-            .AddSigningCredential(ecdsaCertificateKey, "ES384") // ecdsaCertificate
+            .AddSigningCredential(ecdsaCertificateKey, "ES256") // ecdsaCertificate
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients(builder.Environment, builder.Configuration))

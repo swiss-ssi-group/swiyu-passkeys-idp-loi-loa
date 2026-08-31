@@ -1,7 +1,8 @@
 
-## 2026-08-29 1.0.10
+## 2026-08-31 1.0.10
 - Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0" 
 - Updated packages
+- Fix multi-line parameters, Aspire deployments and user secrets do not support this
 
 ## 2026-07-23 1.0.9
 - Updated packages

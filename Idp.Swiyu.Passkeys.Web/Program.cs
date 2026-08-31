@@ -1,13 +1,13 @@
 using Duende.AccessTokenManagement.DPoP;
 using Duende.AccessTokenManagement.OpenIdConnect;
 using Duende.IdentityModel;
+using Idp.Swiyu.Passkeys.ServiceDefaults;
 using Idp.Swiyu.Passkeys.Web;
 using Idp.Swiyu.Passkeys.Web.Components;
 using Idp.Swiyu.Passkeys.Web.WeatherServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -31,11 +31,8 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<WeatherApiClient>();
 
-//var privatePem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-private.pem"));
-//var publicPem = File.ReadAllText(Path.Combine(builder.Environment.ContentRootPath, "ecdsa384-public.pem"));
-
-var webDpopClientPrivatePem = builder.Configuration.GetValue<string>("WebDpopClientPrivatePem");
-var webDpopClientPublicPem = builder.Configuration.GetValue<string>("WebDpopClientPublicPem");
+var webDpopClientPrivatePem = ConfigConverter.GetPemFromBase64Config("WebDpopClientPrivatePemBase64", builder.Configuration);
+var webDpopClientPublicPem = ConfigConverter.GetPemFromBase64Config("WebDpopClientPublicPemBase64", builder.Configuration);
 
 var ecdsaCertificate = X509Certificate2.CreateFromPem(webDpopClientPublicPem, webDpopClientPrivatePem);
 var ecdsaCertificateKey = new ECDsaSecurityKey(ecdsaCertificate.GetECDsaPrivateKey());

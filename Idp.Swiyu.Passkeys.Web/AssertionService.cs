@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Duende.IdentityModel;
+using Idp.Swiyu.Passkeys.ServiceDefaults;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,10 +19,8 @@ public static class AssertionService
         var clientId = configuration.GetValue<string>("WebOidcClientId");
         var authority = configuration.GetValue<string>("WebOidcAuthority");
 
-        var privatePem = configuration.GetValue<string>("WebOidcClientPrivatePem");
-        var publicPem = configuration.GetValue<string>("WebOidcClientPublicPem");
-        //var privatePem = File.ReadAllText(Path.Combine("", "rsa256-oidc-private.pem"));
-        //var publicPem = File.ReadAllText(Path.Combine("", "rsa256-oidc-public.pem"));
+        var privatePem = ConfigConverter.GetPemFromBase64Config("WebOidcClientPrivatePemBase64", configuration);
+        var publicPem = ConfigConverter.GetPemFromBase64Config("WebOidcClientPublicPemBase64", configuration);
 
         var rsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
         var rsaCertificateKey = new RsaSecurityKey(rsaCertificate.GetRSAPrivateKey());
@@ -55,11 +54,8 @@ public static class AssertionService
         var clientId = configuration.GetValue<string>("WebOidcClientId");
         var authority = configuration.GetValue<string>("WebOidcAuthority");
 
-        //var privatePem = File.ReadAllText(Path.Combine("", "rsa256-oidc-private.pem"));
-        //var publicPem = File.ReadAllText(Path.Combine("", "rsa256-oidc-public.pem"));
-
-        var privatePem = configuration.GetValue<string>("WebOidcClientPrivatePem");
-        var publicPem = configuration.GetValue<string>("WebOidcClientPublicPem");
+        var privatePem = ConfigConverter.GetPemFromBase64Config("WebOidcClientPrivatePemBase64", configuration);
+        var publicPem = ConfigConverter.GetPemFromBase64Config("WebOidcClientPublicPemBase64", configuration    );
 
         var rsaCertificate = X509Certificate2.CreateFromPem(publicPem, privatePem);
         var rsaCertificateKey = new RsaSecurityKey(rsaCertificate.GetRSAPrivateKey());

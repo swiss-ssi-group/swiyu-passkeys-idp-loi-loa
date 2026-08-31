@@ -21,29 +21,50 @@ class Program
         _iec = sp.GetService<ImportExportCertificate>()!;
 
         var rsaCert = CreateRsaCertificate("localhost", 10);
-        var ecdsaCert = CreateECDsaCertificate("localhost", 10);
+
+        bool use384BitKey = false; // Set to true for 384-bit ECDSA key, false for 256-bit
+        var ecdsaCert256 = CreateECDsaCertificate("localhost", 10, use384BitKey);
+
+        use384BitKey = true;
+        var ecdsaCert384 = CreateECDsaCertificate("localhost", 10, use384BitKey);
 
         var pemPublicRsaKey = _iec.PemExportPublicKeyCertificate(rsaCert);
         File.WriteAllText("rsa256-public.pem", pemPublicRsaKey);
+        File.WriteAllText("rsa256-public.pem.base64", ConfigConverter.CreateBase64FromPem(pemPublicRsaKey));
 
         using (RSA? rsa = rsaCert.GetRSAPrivateKey())
         {
             var pemPrivateRsaKey = rsa!.ExportRSAPrivateKeyPem();
             File.WriteAllText("rsa256-private.pem", pemPrivateRsaKey);
+            File.WriteAllText("rsa256-private.pem.base64", ConfigConverter.CreateBase64FromPem(pemPrivateRsaKey));
         }
 
-        var pemPublicKey = _iec.PemExportPublicKeyCertificate(ecdsaCert);
+        var pemPublicKey = _iec.PemExportPublicKeyCertificate(ecdsaCert256);
         File.WriteAllText("ecdsa256-public.pem", pemPublicKey);
+        File.WriteAllText("ecdsa256-public.pem.base64", ConfigConverter.CreateBase64FromPem(pemPublicKey));
 
-        using (ECDsa? ecdsa = ecdsaCert.GetECDsaPrivateKey())
+        using (ECDsa? ecdsa = ecdsaCert256.GetECDsaPrivateKey())
         {
             var pemPrivateKey = ecdsa!.ExportECPrivateKeyPem();
             File.WriteAllText("ecdsa256-private.pem", pemPrivateKey);
+            File.WriteAllText("ecdsa256-private.pem.base64", ConfigConverter.CreateBase64FromPem(pemPrivateKey));
         }
 
-        var publicEcJwk = ExportEcJwk(ecdsaCert, "ec-swiyu-signing", true);
+        var publicEcJwk = ExportEcJwk(ecdsaCert256, "ec-swiyu-signing", true);
         File.WriteAllText("ecdsa256-public.jwk", publicEcJwk);
+        File.WriteAllText("ecdsa256-public.jwk.base64", ConfigConverter.CreateBase64FromPem(publicEcJwk));
         Console.WriteLine(publicEcJwk);
+
+        var pemPublicKey384 = _iec.PemExportPublicKeyCertificate(ecdsaCert384);
+        File.WriteAllText("ecdsa384-public.pem", pemPublicKey384);
+        File.WriteAllText("ecdsa384-public.pem.base64", ConfigConverter.CreateBase64FromPem(pemPublicKey384));
+
+        using (ECDsa? ecdsa = ecdsaCert384.GetECDsaPrivateKey())
+        {
+            var pemPrivateKey = ecdsa!.ExportECPrivateKeyPem();
+            File.WriteAllText("ecdsa384-private.pem", pemPrivateKey);
+            File.WriteAllText("ecdsa384-private.pem.base64", ConfigConverter.CreateBase64FromPem(pemPrivateKey));
+        }
 
         Console.WriteLine("created, keys are in the bin folder");
     }
@@ -98,7 +119,7 @@ class Program
         return certificate;
     }
 
-    public static X509Certificate2 CreateECDsaCertificate(string dnsName, int validityPeriodInYears)
+    public static X509Certificate2 CreateECDsaCertificate(string dnsName, int validityPeriodInYears, bool use384BitKey)
     {
         var basicConstraints = new BasicConstraints
         {
@@ -127,6 +148,21 @@ class Program
             // OidLookup.TimeStamping 
         };
 
+        var ecConfig = new ECDsaConfiguration
+        {
+            KeySize = 256,
+            HashAlgorithmName = HashAlgorithmName.SHA256
+        };
+
+        if (use384BitKey)
+        {
+            ecConfig = new ECDsaConfiguration
+            {
+                KeySize = 384,
+                HashAlgorithmName = HashAlgorithmName.SHA384
+            };
+        }
+
         var certificate = _cc!.NewECDsaSelfSignedCertificate(
             new DistinguishedName { CommonName = dnsName },
             basicConstraints,
@@ -138,11 +174,8 @@ class Program
             subjectAlternativeName,
             enhancedKeyUsages,
             x509KeyUsageFlags,
-            new ECDsaConfiguration
-            {
-                KeySize = 256,
-                HashAlgorithmName = HashAlgorithmName.SHA256
-            });
+            ecConfig
+        );
 
         return certificate;
     }
