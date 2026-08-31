@@ -46,7 +46,7 @@ var issuerTokenTtl = builder.AddParameter("issuertokenttl");
 var issuerName = builder.AddParameter("issuername");
 var businessPartnerId = builder.AddParameter("businesspartnerid", secret: true);
 var swiyuCustomerKey = builder.AddParameter("swiyucustomerkey", secret: true);
-var swiyuCustomerSecret = builder.AddParameter("swiyucustomerSecret", secret: true);
+var swiyuCustomerSecret = builder.AddParameter("swiyucustomersecret", secret: true);
 //var swiyuRefreshToken = builder.AddParameter("swiyurefreshtoken", secret: true);
 //var swiyuAccessToken = builder.AddParameter("swiyuaccesstoken", secret: true);
 
