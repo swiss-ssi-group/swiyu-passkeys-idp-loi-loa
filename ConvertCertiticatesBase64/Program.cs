@@ -21,10 +21,10 @@ class Program
         _iec = sp.GetService<ImportExportCertificate>()!;
 
         var assertKeyPrivatePem = File.ReadAllText(Path.Combine("../../../../SwiyuTools/SwiyuDidToolbox/.didtoolbox", "assert-key-01"));
-        File.WriteAllText("assert-key-01.pem.base64", ConfigConverter.CreateBase64FromPem(assertKeyPrivatePem));
+        File.WriteAllText("assert-key-01-issuer.pem.base64", ConfigConverter.CreateBase64FromPem(assertKeyPrivatePem));
 
         var authKeyPrivatePem = File.ReadAllText(Path.Combine("../../../../SwiyuTools/SwiyuDidToolbox/.didtoolbox", "auth-key-01"));
-        File.WriteAllText("auth-key-01.pem.base64", ConfigConverter.CreateBase64FromPem(authKeyPrivatePem));
+        File.WriteAllText("auth-key-01-verifier.pem.base64", ConfigConverter.CreateBase64FromPem(authKeyPrivatePem));
 
         Console.WriteLine("Converted, keys are in the bin folder");
     }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Projects;
+using System.Text;
 
 const string HTTP = "http";
 const string IDENTITY_PROVIDER = "identity-provider";
@@ -37,7 +38,7 @@ var stsSigningPublicPemBase64 = builder.AddParameter("StsSigningPublicPemBase64"
 var issuerExternalUrl = builder.AddParameter("issuerexternalurl");
 var issuerId = builder.AddParameter("issuerid");
 var issuerDidSdJwtVerficiationMethod = builder.AddParameter("issuerdidsdjwtverificationmethod");
-var issuerSdJwtKey = builder.AddParameter("issuersdjwtkey", secret: true);
+var issuerSdJwtKeyBase64 = builder.AddParameter("issuersdjwtkeybase64", secret: true);
 var issuerOpenIdConfigFile = builder.AddParameter("issueropenidconfigfile");
 var issuerMetaDataConfigFile = builder.AddParameter("issuermetadataconfigfile");
 var issuerTokenTtl = builder.AddParameter("issuertokenttl");
@@ -55,11 +56,14 @@ var verifierOpenIdClientMetaDataFile = builder.AddParameter("verifieropenidclien
 var verifierDid = builder.AddParameter("verifierdid");
 var didVerifierMethod = builder.AddParameter("didverifiermethod");
 var verifierName = builder.AddParameter("verifiername");
-var verifierSigningKey = builder.AddParameter("verifiersigningkey", secret: true);
+var verifierSigningKeyBase64 = builder.AddParameter("verifiersigningkeybase64", secret: true);
 
 var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
 var idpJwksUri = builder.AddParameter("idpjwksuri");
 var verifierJwtIssuer = builder.AddParameter("verifierjwtissuer");
+
+var verifierSigningKeyBase64Value = await verifierSigningKeyBase64.Resource.GetValueAsync(default);
+var verifierSigningKey = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
 
 /////////////////////////////////////////////////////////////////
 // Verifier OpenID Endpoint: Must be deployed to a public URL
@@ -86,6 +90,9 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
 // Issuer
 var swiyuRefreshToken = builder.AddParameter("swiyurefreshtoken", secret: true);
 var swiyuAccessToken = builder.AddParameter("swiyuaccesstoken", secret: true);
+
+var issuerSdJwtKeyBase64Value = await issuerSdJwtKeyBase64.Resource.GetValueAsync(default);
+var issuerSdJwtKey = Encoding.UTF8.GetString(Convert.FromBase64String((issuerSdJwtKeyBase64Value ?? string.Empty)));
 
 /////////////////////////////////////////////////////////////////
 // Issuer OpenID Endpoint: Must be deployed to a public URL
