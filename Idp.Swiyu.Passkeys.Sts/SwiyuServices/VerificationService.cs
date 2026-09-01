@@ -1,7 +1,4 @@
 ﻿using Duende.IdentityModel.Client;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
 using System.Web;
@@ -148,7 +145,7 @@ public class VerificationService
              {
                  "accepted_issuer_dids": [ "{{acceptedIssuerDid}}" ],
                  "jwt_secured_authorization_request": true,
-                 "response_mode": "direct_post",
+                 "response_mode": "direct_post.jwt",
                  "verification_purpose": {
                    "scope": "ch.identity",
                    "purpose_name": {
