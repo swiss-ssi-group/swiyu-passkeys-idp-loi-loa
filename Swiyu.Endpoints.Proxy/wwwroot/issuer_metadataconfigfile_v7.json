@@ -1,8 +1,8 @@
 {
   "credential_issuer": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io",
   "credential_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/credential",
-  "nonce_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/nonce",
   "deferred_credential_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/deferred_credential",
+  "nonce_endpoint": "https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/oid4vci/api/nonce",
   "version": "1.0",
   "display": [
     {

@@ -12,7 +12,7 @@ public class VerificationServiceSecurityClient
         // 1. Client client credentials client
         var app = ConfidentialClientApplicationBuilder
             .Create(configuration["SwiyuManagementClientId"])
-            .WithClientSecret(configuration["SwiyuManagementClientSecret"])
+            .WithClientSecret(configuration["SwiyuManagementClientSecretEntra"])
             .WithAuthority(configuration["SwiyuManagementAuthority"])
             .Build();
 
