@@ -156,6 +156,7 @@ var migrationService = builder.AddProject<Idp_Swiyu_Passkeys_Sts_Domain_Migratio
 swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints-proxy")
     .WaitFor(swiyuVerifier)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
+    .WithEnvironment("SwiyuIssuerMgmtUrl", swiyuIssuer.GetEndpoint(HTTP))
     .WithExternalHttpEndpoints();
 
 var swiyuManagementClientId = builder.AddParameter("SwiyuManagementClientId");

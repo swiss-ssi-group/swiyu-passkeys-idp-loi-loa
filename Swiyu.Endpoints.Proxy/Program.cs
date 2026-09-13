@@ -3,10 +3,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+// Deploy the issuer, this is just a workaround to save Azure costs
 builder.Services.AddReverseProxy()
-    .LoadFromMemory(YarpConfigurations.GetVerifierRoutes(),
-        YarpConfigurations.GetVerifierClusters(
+    .LoadFromMemory(YarpConfigurations.GetAllRoutes(),
+        YarpConfigurations.GetAllClusters(builder.Configuration["SwiyuIssuerMgmtUrl"]!,
             builder.Configuration["SwiyuVerifierMgmtUrl"]!));
+
+//builder.Services.AddReverseProxy()
+//    .LoadFromMemory(YarpConfigurations.GetVerifierRoutes(),
+//        YarpConfigurations.GetVerifierClusters(
+//            builder.Configuration["SwiyuVerifierMgmtUrl"]!));
 
 var app = builder.Build();
 
