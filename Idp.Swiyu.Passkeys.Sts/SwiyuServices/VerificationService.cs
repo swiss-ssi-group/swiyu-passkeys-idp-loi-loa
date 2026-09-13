@@ -107,6 +107,7 @@ public class VerificationService
 
         return claims;
     }
+
     private async Task<string> SendCreateVerificationPostRequest(string json)
     {
         var accessToken = await VerificationServiceSecurityClient.RequestTokenAsync(_configuration);

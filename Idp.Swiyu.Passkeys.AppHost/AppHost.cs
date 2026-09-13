@@ -60,7 +60,7 @@ var verifierSigningKeyBase64 = builder.AddParameter("verifiersigningkeybase64", 
 
 var idpWellKnownEndpoint = builder.AddParameter("idpwellknownendpoint");
 var idpJwksUri = builder.AddParameter("idpjwksuri");
-var verifierJwtIssuer = builder.AddParameter("verifierjwtissuer");
+var swiyuMgmtJwtIssuer = builder.AddParameter("verifierjwtissuer");
 
 var verifierSigningKeyBase64Value = await verifierSigningKeyBase64.Resource.GetValueAsync(default);
 var verifierSigningKey = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
@@ -68,8 +68,6 @@ var verifierSigningKey = Encoding.UTF8.GetString(Convert.FromBase64String((verif
 /////////////////////////////////////////////////////////////////
 // Verifier OpenID Endpoint: Must be deployed to a public URL
 /////////////////////////////////////////////////////////////////
-// Verifier Management Endpoint: TODO Add JWT security verifier
-// Add security to management API, disabled
 // https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
 swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0")
@@ -82,7 +80,7 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
-    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", verifierJwtIssuer)
+    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", swiyuMgmtJwtIssuer)
     //.WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
     .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
     // Testing only, not required for IDP
@@ -125,6 +123,7 @@ swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu
     .WithEnvironment("SWIYU_STATUS_REGISTRY_API_URL", "https://status-reg-api.trust-infra.swiyu-int.admin.ch")
     .WithEnvironment("LOGGING_LEVEL_CH_ADMIN_BJ_SWIYU", "DEBUG")
     .WithEnvironment("SWIYU_STATUS_REGISTRY_AUTH_ENABLE_REFRESH_TOKEN_FLOW", "true")
+    .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", swiyuMgmtJwtIssuer)
 
     .WithEnvironment("POSTGRES_USER", postGresUser)
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
