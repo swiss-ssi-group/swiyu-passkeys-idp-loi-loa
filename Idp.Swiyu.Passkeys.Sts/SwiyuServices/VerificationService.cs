@@ -40,7 +40,7 @@ public class VerificationService
         var presentationDefinitionId = "00000000-0000-0000-0000-000000000000"; // Guid.NewGuid().ToString();
 
         var json = GetBetaIdVerificationPresentationBodyV4(inputDescriptorsId,
-            presentationDefinitionId, acceptedIssuerDid, "betaid-sdjwt");
+            presentationDefinitionId, acceptedIssuerDid);
 
         // TODO sign the payload if JWT authentication is enabled on Swiyu  
 
@@ -140,7 +140,7 @@ public class VerificationService
     /// { "path": ["$.family_name"] },
     /// { "path": ["$.birth_place"] },
     /// </summary>
-    private static string GetBetaIdVerificationPresentationBodyV4(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid, string vcType)
+    private static string GetBetaIdVerificationPresentationBodyV4(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid)
     {
         var json = $$"""
              {
