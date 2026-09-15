@@ -44,6 +44,62 @@ The solution uses a web application which authenticates using OpenID Connect, OA
 - [swiyu](https://swiyu-admin-ch.github.io/cookbooks/onboarding-base-and-trust-registry/)
 - [Duende](https://duendesoftware.com/)
 
+## Configuration
+
+Set for your env:
+
+```json
+{
+  "Parameters:WebOidcClientPublicPemBase64": "",
+  "Parameters:WebOidcClientPrivatePemBase64": "",
+  "Parameters:WebOidcClientId": "webclient",
+  "Parameters:WebOidcAuthority": "https://localhost:5001",
+  "Parameters:WebDpopClientPublicPemBase64": "",
+  "Parameters:WebDpopClientPrivatePemBase64": "",
+  "Parameters:WebClientUrl": "https://localhost:7019",
+  "Parameters:verifiersigningkeybase64": "",
+  "Parameters:verifieropenidclientmetadatafile": "",
+  "Parameters:verifiername": "",
+  "Parameters:verifierjwtissuer": "",
+  "Parameters:verifierexternalurl": "",
+  "Parameters:verifierdid": "",
+  "Parameters:swiyurefreshtoken": "",
+  "Parameters:SwiyuManagementScope": "",
+  "Parameters:SwiyuManagementClientSecretEntra": "",
+  "Parameters:SwiyuManagementClientId": "",
+  "Parameters:SwiyuManagementAuthority": "",
+  "Parameters:swiyucustomersecret": "",
+  "Parameters:swiyucustomerkey": "",
+  "Parameters:swiyuaccesstoken": "",
+  "Parameters:StsSigningPublicPemBase64": "",
+  "Parameters:StsSigningPrivatePemBase64": "",
+  "Parameters:StsOidcWebClientPublicPemBase64": "",
+  "Parameters:sqlserver-password": "",
+  "Parameters:postgresuser": "",
+  "Parameters:postgrespassword": "",
+  "Parameters:postgresjdbcverifier": "",
+  "Parameters:postgresjdbcissuer": "",
+  "Parameters:postgresdbverifier": "",
+  "Parameters:postgresdbissuer": "",
+  "Parameters:issuertokenttl": "600",
+  "Parameters:issuersdjwtkeybase64": "",
+  "Parameters:issueropenidconfigfile": "",
+  "Parameters:issuername": "",
+  "Parameters:issuermetadataconfigfile": "",
+  "Parameters:issuerid": "",
+  "Parameters:issuerexternalurl": "",
+  "Parameters:issuerdidsdjwtverificationmethod": "",
+  "Parameters:idpwellknownendpoint": "/.well-known/openid-configuration",
+  "Parameters:idpjwksuri": "/.well-known/openid-configuration/jwks",
+  "Parameters:didverifiermethod": "",
+  "Parameters:businesspartnerid": "",
+  "Aspire:VersionCheck:LastCheckDate": "",
+  "AppHost:OtlpApiKey": "",
+  "AppHost:McpApiKey": "",
+  "AppHost:DashboardApiKey": ""
+}
+```
+
 ## Podman
 
 https://podman-desktop.io/docs/troubleshooting/troubleshooting-podman
