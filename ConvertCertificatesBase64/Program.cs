@@ -1,11 +1,7 @@
 ﻿using CertificateManager;
-using CertificateManager.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
 
-namespace ConvertCertiticatesBase64;
+namespace ConvertCertificatesBase64;
 
 class Program
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace GenerateCertiticate;
+namespace GenerateCertificate;
 
 public static class ConfigConverter
 {

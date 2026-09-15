@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ConvertCertiticatesBase64;
+namespace ConvertCertificatesBase64;
 
 public static class ConfigConverter
 {

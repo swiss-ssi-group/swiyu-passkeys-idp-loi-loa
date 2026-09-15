@@ -6,7 +6,7 @@
   </Folder>
   <Folder Name="/Tools/">
     <Project Path="ConvertCertificatesBase64/ConvertCertificatesBase64.csproj" />
-    <Project Path="GenerateCertiticate/GenerateCertiticate.csproj" />
+    <Project Path="GenerateCertificate/GenerateCertificate.csproj" />
   </Folder>
   <Project Path="Idp.Swiyu.Passkeys.ApiService/Idp.Swiyu.Passkeys.ApiService.csproj" />
   <Project Path="Idp.Swiyu.Passkeys.AppHost/Idp.Swiyu.Passkeys.AppHost.csproj" />
