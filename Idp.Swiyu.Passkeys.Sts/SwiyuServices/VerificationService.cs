@@ -165,10 +165,10 @@ public class VerificationService
                          "vct_values": ["urn:vct:ch.admin.bcs.betaid"]
                        },
                        "claims": [
-                         { "path": [ "$.birth_date" ] },
-             		     { "path": [ "$.given_name" ] },
-             		     { "path": [ "$.family_name" ] },
-             		     { "path": [ "$.birth_place" ] }
+                              { "path": [ "birth_date" ] },
+                              { "path": [ "given_name" ] },
+                              { "path": [ "family_name" ] },
+                              { "path": [ "birth_place" ] }
                        ],
                        "require_cryptographic_holder_binding": true
                      }
