@@ -162,7 +162,7 @@ public class VerificationService
                        "id": "{{presentationDefinitionId}}",
                        "format": "dc+sd-jwt",
                        "meta": {
-                         "vct_values": ["urn:vct:ch.admin.bcs-intg.betaid"]
+                         "vct_values": ["urn:vct:ch.admin.bcs.betaid"]
                        },
                        "claims": [
                          { "path": [ "$.birth_date" ] },
