@@ -5,7 +5,7 @@
     <File Path="README_VOT_RFC_8485.md" />
   </Folder>
   <Folder Name="/Tools/">
-    <Project Path="ConvertCertiticatesBase64/ConvertCertiticatesBase64.csproj" />
+    <Project Path="ConvertCertificatesBase64/ConvertCertificatesBase64.csproj" />
     <Project Path="GenerateCertiticate/GenerateCertiticate.csproj" />
   </Folder>
   <Project Path="Idp.Swiyu.Passkeys.ApiService/Idp.Swiyu.Passkeys.ApiService.csproj" />
