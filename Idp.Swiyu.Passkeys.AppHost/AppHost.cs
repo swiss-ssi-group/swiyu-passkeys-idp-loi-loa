@@ -81,8 +81,9 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_DB", postGresDbVerifier)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcVerifier)
     .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", swiyuMgmtJwtIssuer)
-    .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
-    //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
+    .WithEnvironment("VERIFICATION_EXPIRY_MUST_BE_PRESENT", "false")
+    //.WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
+    .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
     // Testing only, not required for IDP
 
 // Issuer
@@ -129,8 +130,8 @@ swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu
     .WithEnvironment("POSTGRES_PASSWORD", postGresPassword)
     .WithEnvironment("POSTGRES_DB", postGresDbIssuer)
     .WithEnvironment("POSTGRES_JDBC", postGresJdbcIssuer)
-    .WithHttpEndpoint(port: 8082, targetPort: 8080, name: HTTP); // local development
-    //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment
+    //.WithHttpEndpoint(port: 8082, targetPort: 8080, name: HTTP); // local development
+    .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment
 
 var sqlServer = builder.AddAzureSqlServer("sqlserver")
     .ConfigureInfrastructure(infra =>
