@@ -1,4 +1,11 @@
 
+## 2026-09-15 2.0.0
+- Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0" 
+- Swiyu Wallet working with version 1.18
+- Updated packages
+- Fix multi-line parameters, Aspire deployments and user secrets do not support this
+- All Nuget packages updated to latest versions, 10.0.12
+
 ## 2026-08-31 1.0.10
 - Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0" 
 - Updated packages
