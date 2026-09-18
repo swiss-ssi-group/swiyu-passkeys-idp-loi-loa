@@ -38,11 +38,9 @@ public class VerificationService
         // from "betaid-sdjwt"
         var acceptedIssuerDid = "did:tdw:QmPEZPhDFR4nEYSFK5bMnvECqdpf1tPTPJuWs9QrMjCumw:identifier-reg.trust-infra.swiyu-int.admin.ch:api:v1:did:9a5559f0-b81c-4368-a170-e7b4ae424527";
 
-        var inputDescriptorsId = Guid.NewGuid().ToString();
         var presentationDefinitionId = SWIYU_BETA_ID;
 
-        var json = GetBetaIdVerificationPresentationBodyV4(inputDescriptorsId,
-            presentationDefinitionId, acceptedIssuerDid);
+        var json = GetBetaIdVerificationPresentationBodyV4(presentationDefinitionId, acceptedIssuerDid);
 
         // TODO sign the payload if JWT authentication is enabled on Swiyu  
 
@@ -199,7 +197,7 @@ public class VerificationService
     /// { "path": ["$.family_name"] },
     /// { "path": ["$.birth_place"] },
     /// </summary>
-    private static string GetBetaIdVerificationPresentationBodyV4(string inputDescriptorsId, string presentationDefinitionId, string acceptedIssuerDid)
+    private static string GetBetaIdVerificationPresentationBodyV4(string presentationDefinitionId, string acceptedIssuerDid)
     {
         var json = $$"""
              {
