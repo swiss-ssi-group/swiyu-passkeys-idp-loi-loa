@@ -13,6 +13,8 @@ public class VerificationService
     private readonly string? _issuerId;
     private readonly HttpClient _httpClient;
 
+    private const string SWIYU_BETA_ID = "swiyu-beta-id";
+
     public VerificationService(IHttpClientFactory httpClientFactory,
         ILoggerFactory loggerFactory, IConfiguration configuration)
     {
@@ -37,7 +39,7 @@ public class VerificationService
         var acceptedIssuerDid = "did:tdw:QmPEZPhDFR4nEYSFK5bMnvECqdpf1tPTPJuWs9QrMjCumw:identifier-reg.trust-infra.swiyu-int.admin.ch:api:v1:did:9a5559f0-b81c-4368-a170-e7b4ae424527";
 
         var inputDescriptorsId = Guid.NewGuid().ToString();
-        var presentationDefinitionId = "00000000-0000-0000-0000-000000000000"; // Guid.NewGuid().ToString();
+        var presentationDefinitionId = SWIYU_BETA_ID;
 
         var json = GetBetaIdVerificationPresentationBodyV4(inputDescriptorsId,
             presentationDefinitionId, acceptedIssuerDid);
@@ -93,19 +95,76 @@ public class VerificationService
     /// <returns></returns>
     public VerificationClaims GetVerifiedClaims(VerificationManagementModel verificationManagementModel)
     {
-        var json = verificationManagementModel.wallet_response!.credential_subject_data!.ToString();
+        var json = verificationManagementModel.wallet_response?.credential_subject_data?.ToString();
 
-        var jsonElement = JsonDocument.Parse(json!).RootElement;
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            throw new ArgumentException("Missing credential_subject_data in wallet_response.");
+        }
+
+        using var document = JsonDocument.Parse(json);
+        var root = document.RootElement;
+
+        if (root.ValueKind != JsonValueKind.Object)
+        {
+            throw new ArgumentException("credential_subject_data must be a JSON object.");
+        }
+
+        var hasCredentialEntries =
+            TryGetCredentialEntries(root, verificationManagementModel.id, out var credentialEntries) ||
+            TryGetCredentialEntries(root, SWIYU_BETA_ID, out credentialEntries) ||
+            TryGetFirstCredentialEntries(root, out credentialEntries);
+
+        if (!hasCredentialEntries)
+        {
+            throw new ArgumentException($"No credential_subject_data found for verification id '{verificationManagementModel.id}'.");
+        }
+
+        var claimSource = credentialEntries[0];
 
         var claims = new VerificationClaims
         {
-            BirthDate = jsonElement.GetProperty("birth_date").ToString(),
-            BirthPlace = jsonElement.GetProperty("birth_place").ToString(),
-            FamilyName = jsonElement.GetProperty("family_name").ToString(),
-            GivenName = jsonElement.GetProperty("given_name").ToString()
+            BirthDate = claimSource.GetProperty("birth_date").GetString()!,
+            BirthPlace = claimSource.GetProperty("birth_place").GetString()!,
+            FamilyName = claimSource.GetProperty("family_name").GetString()!,
+            GivenName = claimSource.GetProperty("given_name").GetString()!
         };
 
         return claims;
+    }
+
+    private static bool TryGetCredentialEntries(JsonElement root, string? key, out JsonElement credentialEntries)
+    {
+        credentialEntries = default;
+
+        if (string.IsNullOrWhiteSpace(key) || !root.TryGetProperty(key, out var entries))
+        {
+            return false;
+        }
+
+        if (entries.ValueKind != JsonValueKind.Array || entries.GetArrayLength() == 0)
+        {
+            return false;
+        }
+
+        credentialEntries = entries;
+        return true;
+    }
+
+    private static bool TryGetFirstCredentialEntries(JsonElement root, out JsonElement credentialEntries)
+    {
+        credentialEntries = default;
+
+        foreach (var property in root.EnumerateObject())
+        {
+            if (property.Value.ValueKind == JsonValueKind.Array && property.Value.GetArrayLength() > 0)
+            {
+                credentialEntries = property.Value;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private async Task<string> SendCreateVerificationPostRequest(string json)
