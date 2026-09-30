@@ -1,4 +1,7 @@
 
+## 2026-09-30 2.0.1
+- Updated packages
+
 ## 2026-09-15 2.0.0
 - Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0" 
 - Swiyu Wallet working with version 1.18
