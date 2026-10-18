@@ -127,6 +127,8 @@ dotnet ef database update
 
 ## Links
 
+https://github.com/swiyu-admin-ch/eidch-android-wallet/releases
+
 https://github.com/swiyu-admin-ch/swiyu-generic-test-wallet
 
 https://portal.trust-infra.swiyu-int.admin.ch/ui/business-partners

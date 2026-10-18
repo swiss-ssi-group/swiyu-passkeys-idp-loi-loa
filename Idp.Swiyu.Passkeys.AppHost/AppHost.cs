@@ -183,7 +183,7 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WithEnvironment("WebOidcAuthority", webOidcAuthority)
     .WithEnvironment("StsOidcWebClientPublicPemBase64", stsOidcWebClientPublicPemBase64)
     .WithEnvironment("StsSigningPrivatePemBase64", stsSigningPrivatePemBase64)
-    .WithEnvironment("StsSigningPublicPemBase64", stsSigningPublicPemBase64     )
+    .WithEnvironment("StsSigningPublicPemBase64", stsSigningPublicPemBase64)
     .WaitFor(swiyuVerifier)
     .WaitFor(swiyuProxy)
     .WithHttpHealthCheck("/health");
