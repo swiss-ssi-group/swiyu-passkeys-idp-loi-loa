@@ -1,4 +1,7 @@
 
+## 2026-10-22 2.0.2
+- Updated packages
+- 
 ## 2026-09-30 2.0.1
 - Updated packages
 
