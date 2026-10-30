@@ -161,7 +161,7 @@ https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63-3.pdf
 
 ## SSI
 
-https://www.eid.admin.ch/en/public-beta-e
+https://swiyu.admin.ch
 
 https://learn.microsoft.com/en-us/dotnet/aspire/get-started/aspire-overview
 
