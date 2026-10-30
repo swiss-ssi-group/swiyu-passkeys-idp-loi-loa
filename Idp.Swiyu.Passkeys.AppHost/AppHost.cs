@@ -68,7 +68,7 @@ var verifierSigningKey = Encoding.UTF8.GetString(Convert.FromBase64String((verif
 /////////////////////////////////////////////////////////////////
 // https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
-swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "4.2.0")
+swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.0.1")
     .WithEnvironment("EXTERNAL_URL", verifierExternalUrl)
     .WithEnvironment("OPENID_CLIENT_METADATA_FILE", verifierOpenIdClientMetaDataFile)
     .WithEnvironment("VERIFIER_DID", verifierDid)
@@ -98,7 +98,7 @@ var issuerSdJwtKey = Encoding.UTF8.GetString(Convert.FromBase64String((issuerSdJ
 // Add security to management API, disabled
 // https://github.com/swiyu-admin-ch/swiyu-issuer?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
-swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu-issuer", "4.2.0")
+swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu-issuer", "5.0.1")
     .WithEnvironment("EXTERNAL_URL", issuerExternalUrl)
     .WithEnvironment("SPRING_APPLICATION_NAME", issuerName)
     .WithEnvironment("ISSUER_ID", issuerId)
