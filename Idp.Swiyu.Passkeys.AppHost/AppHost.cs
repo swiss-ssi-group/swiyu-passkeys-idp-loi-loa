@@ -37,7 +37,11 @@ var stsSigningPublicPemBase64 = builder.AddParameter("StsSigningPublicPemBase64"
 var ISSUER_EXTERNAL_URL = builder.AddParameter("issuerexternalurl");
 var ISSUER_ID = builder.AddParameter("issuerid");
 var ISSUER_DID_SDJWT_VERIFICATION_METHOD = builder.AddParameter("issuerdidsdjwtverificationmethod");
+
 var ISSUER_SDJWT_KEY_BASE64 = builder.AddParameter("issuersdjwtkeybase64", secret: true);
+var issuerSdJwtKeyBase64Value = await ISSUER_SDJWT_KEY_BASE64.Resource.GetValueAsync(default);
+var ISSUER_SDJWT_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((issuerSdJwtKeyBase64Value ?? string.Empty)));
+
 var ISSUER_OPENID_CONFIG_FILE = builder.AddParameter("issueropenidconfigfile");
 var ISSUER_METADATA_CONFIG_FILE = builder.AddParameter("issuermetadataconfigfile");
 var TOKEN_TTL = builder.AddParameter("issuertokenttl");
@@ -53,14 +57,15 @@ var VERIFIER_OPENID_CLIENT_METADATA_FILE = builder.AddParameter("verifieropenidc
 var VERIFIER_DID = builder.AddParameter("verifierdid");
 var DID_VERIFICATION_METHOD = builder.AddParameter("didverifiermethod");
 var VERIFIER_NAME = builder.AddParameter("verifiername");
+
 var VERIFIER_SIGNING_KEY_BASE64 = builder.AddParameter("verifiersigningkeybase64", secret: true);
+var verifierSigningKeyBase64Value = await VERIFIER_SIGNING_KEY_BASE64.Resource.GetValueAsync(default);
+var VERIFIER_SIGNING_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
 
 var IDP_WELL_KNOWN_ENDPOINT = builder.AddParameter("idpwellknownendpoint");
 var IDP_JWKS_URI = builder.AddParameter("idpjwksuri");
 var SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI = builder.AddParameter("verifierjwtissuer");
 
-var verifierSigningKeyBase64Value = await VERIFIER_SIGNING_KEY_BASE64.Resource.GetValueAsync(default);
-var VERIFIER_SIGNING_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
 
 /////////////////////////////////////////////////////////////////
 // Verifier OpenID Endpoint: Must be deployed to a public URL
@@ -79,16 +84,13 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_JDBC", VERIFIER_POSTGRES_JDBC)
     .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI)
     .WithEnvironment("VERIFICATION_EXPIRY_MUST_BE_PRESENT", "false")
-    .WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
-    //.WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
+    //.WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
+    .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
     // Testing only, not required for IDP
 
 // Issuer
 var SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN = builder.AddParameter("swiyurefreshtoken", secret: true);
 var SWIYU_STATUS_REGISTRY_ACCESS_TOKEN = builder.AddParameter("swiyuaccesstoken", secret: true);
-
-var issuerSdJwtKeyBase64Value = await ISSUER_SDJWT_KEY_BASE64.Resource.GetValueAsync(default);
-var ISSUER_SDJWT_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((issuerSdJwtKeyBase64Value ?? string.Empty)));
 
 /////////////////////////////////////////////////////////////////
 // Issuer OpenID Endpoint: Must be deployed to a public URL
