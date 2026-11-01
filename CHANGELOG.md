@@ -1,4 +1,8 @@
 
+## 2026-11-01 2.1.0
+- Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.0.1" 
+- Updated packages
+
 ## 2026-10-22 2.0.2
 - Updated packages
 - 
