@@ -58,6 +58,13 @@ var VERIFIER_SIGNING_KEY_BASE64 = builder.AddParameter("VerifierSigningKeyBase64
 var verifierSigningKeyBase64Value = await VERIFIER_SIGNING_KEY_BASE64.Resource.GetValueAsync(default);
 var VERIFIER_SIGNING_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
 
+// Trust Registry credentials from the API self-service portal (swiyucorebusiness_trust).
+var SWIYU_TMS_AUTHORING_URL = "https://trust-reg-api.trust-infra.swiyu-int.admin.ch";
+var SWIYU_TMS_OAUTH_TOKEN_URL = "https://keymanager-prd.api.admin.ch/keycloak/realms/APIGW/protocol/openid-connect/token";
+var SWIYU_TMS_OAUTH_CLIENT_ID = builder.AddParameter("SwiyuCustomerKey", secret: true);
+var SWIYU_TMS_OAUTH_CLIENT_SECRET = builder.AddParameter("SwiyuCustomerSecret", secret: true);
+var SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN = builder.AddParameter("SwiyuBootstrapRefreshToken", secret: true);
+
 //var IDP_WELL_KNOWN_ENDPOINT = builder.AddParameter("idpwellknownendpoint");
 //var IDP_JWKS_URI = builder.AddParameter("idpjwksuri");
 //"Parameters:idpwellknownendpoint": "/.well-known/openid-configuration",
@@ -87,12 +94,19 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", VERIFIER_POSTGRES_PASSWORD)
     .WithEnvironment("POSTGRES_DB", VERIFIER_POSTGRES_DB)
     .WithEnvironment("POSTGRES_JDBC", VERIFIER_POSTGRES_JDBC)
+
+    .WithEnvironment("SWIYU_TMS_AUTHORING_URL", SWIYU_TMS_AUTHORING_URL)
+    .WithEnvironment("SWIYU_TMS_OAUTH_TOKEN_URL", SWIYU_TMS_OAUTH_TOKEN_URL)
+    .WithEnvironment("SWIYU_TMS_OAUTH_CLIENT_ID", SWIYU_TMS_OAUTH_CLIENT_ID)
+    .WithEnvironment("SWIYU_TMS_OAUTH_CLIENT_SECRET", SWIYU_TMS_OAUTH_CLIENT_SECRET)
+    .WithEnvironment("SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN", SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN)
+
     .WithEnvironment("SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI", SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI)
     .WithEnvironment("VERIFICATION_EXPIRY_MUST_BE_PRESENT", "false")
     //.WithHttpEndpoint(port: 8084, targetPort: 8080, name: HTTP);  // local development
     .WithHttpEndpoint(port: 80, targetPort: 8080, name: HTTP); // for deployment 
-    // Testing only, not required for IDP
 
+// Testing only, not required for IDP
 /////////////////////////////////////////////////////////////////
 // Issuer OpenID Endpoint: Must be deployed to a public URL
 /////////////////////////////////////////////////////////////////
