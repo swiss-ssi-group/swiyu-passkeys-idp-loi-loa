@@ -61,9 +61,9 @@ var VERIFIER_SIGNING_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((ver
 // Trust Registry credentials from the API self-service portal (swiyucorebusiness_trust).
 var SWIYU_TMS_AUTHORING_URL = "https://trust-reg-api.trust-infra.swiyu-int.admin.ch";
 var SWIYU_TMS_OAUTH_TOKEN_URL = "https://keymanager-prd.api.admin.ch/keycloak/realms/APIGW/protocol/openid-connect/token";
-var SWIYU_TMS_OAUTH_CLIENT_ID = builder.AddParameter("SwiyuCustomerKey", secret: true);
-var SWIYU_TMS_OAUTH_CLIENT_SECRET = builder.AddParameter("SwiyuCustomerSecret", secret: true);
-var SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN = builder.AddParameter("SwiyuBootstrapRefreshToken", secret: true);
+var SWIYU_TMS_OAUTH_CLIENT_ID = SWIYU_STATUS_REGISTRY_CUSTOMER_KEY;
+var SWIYU_TMS_OAUTH_CLIENT_SECRET = SWIYU_STATUS_REGISTRY_CUSTOMER_SECRET;
+var SWIYU_TMS_BOOTSTRAP_REFRESH_TOKEN = SWIYU_STATUS_REGISTRY_BOOTSTRAP_REFRESH_TOKEN;
 
 //var IDP_WELL_KNOWN_ENDPOINT = builder.AddParameter("idpwellknownendpoint");
 //var IDP_JWKS_URI = builder.AddParameter("idpjwksuri");
