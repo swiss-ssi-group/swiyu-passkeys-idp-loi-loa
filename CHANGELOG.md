@@ -1,7 +1,10 @@
 
-## 2026-11-01 2.1.0
+## 2026-11-02 2.1.0
 - Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.0.1" 
 - Updated packages
+- Updated configuration definitions
+- Using java didtoolbox 2.2.1 for SD-JWT and OpenID Connect EAP
+- Using Swiyu Sandbox for identity verification and KYC processes
 
 ## 2026-10-22 2.0.2
 - Updated packages
