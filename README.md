@@ -54,7 +54,7 @@ Set for your env:
 {
   "Parameters:WebOidcClientPublicPemBase64": "",
   "Parameters:WebOidcClientPrivatePemBase64": "",
-  ""Parameters:WebOidcClientId": "webclient",
+  "Parameters:WebOidcClientId": "webclient",
   "Parameters:WebOidcAuthority": "https://localhost:5001",
   "Parameters:WebDpopClientPublicPemBase64": "",
   "Parameters:WebDpopClientPrivatePemBase64": "",
