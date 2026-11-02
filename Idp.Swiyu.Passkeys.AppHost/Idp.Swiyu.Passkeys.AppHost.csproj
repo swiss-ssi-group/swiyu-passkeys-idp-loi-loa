@@ -27,6 +27,8 @@
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.6.4" />
 
     <PackageReference Include="Aspire.Hosting.Azure.AppContainers" Version="13.6.4" />
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.14" />
   </ItemGroup>
 
 </Project>
