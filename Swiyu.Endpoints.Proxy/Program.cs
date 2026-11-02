@@ -26,6 +26,6 @@ app.Run();
 
 // Proxy Endpoints:
 // https://localhost:7009/.well-known/openid-configuration
-// https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/.well-known/openid-configuration
+// https://swiyu-endpoints-proxy.calmmeadow-53af0554.switzerlandnorth.azurecontainerapps.io/.well-known/openid-configuration
 
-// https://swiyu-endpoints-proxy.livelysand-4f5c661d.switzerlandnorth.azurecontainerapps.io/issuer_openidconfigfile_v7.json
+// https://swiyu-endpoints-proxy.calmmeadow-53af0554.switzerlandnorth.azurecontainerapps.io/issuer_openidconfigfile_v7.json
