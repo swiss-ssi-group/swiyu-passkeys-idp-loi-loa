@@ -58,6 +58,9 @@ var VERIFIER_SIGNING_KEY_BASE64 = builder.AddParameter("VerifierSigningKeyBase64
 var verifierSigningKeyBase64Value = await VERIFIER_SIGNING_KEY_BASE64.Resource.GetValueAsync(default);
 var VERIFIER_SIGNING_KEY = Encoding.UTF8.GetString(Convert.FromBase64String((verifierSigningKeyBase64Value ?? string.Empty)));
 
+var VERIFIER_SWIYU_TRUST_REGISTRY_API_URL = "https://trust-reg.trust-infra.swiyu-int.admin.ch";
+var VERIFIER_SWIYU_TRUST_ISSUER_DID = VERIFIER_DID;
+
 // Trust Registry credentials from the API self-service portal (swiyucorebusiness_trust).
 var SWIYU_TMS_AUTHORING_URL = "https://trust-reg-api.trust-infra.swiyu-int.admin.ch";
 var SWIYU_TMS_OAUTH_TOKEN_URL = "https://keymanager-prd.api.admin.ch/keycloak/realms/APIGW/protocol/openid-connect/token";
@@ -94,6 +97,9 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
     .WithEnvironment("POSTGRES_PASSWORD", VERIFIER_POSTGRES_PASSWORD)
     .WithEnvironment("POSTGRES_DB", VERIFIER_POSTGRES_DB)
     .WithEnvironment("POSTGRES_JDBC", VERIFIER_POSTGRES_JDBC)
+
+    .WithEnvironment("SWIYU_TRUST_REGISTRY_API_URL", VERIFIER_SWIYU_TRUST_REGISTRY_API_URL)
+    .WithEnvironment("SWIYU_TRUST_ISSUER_DID", VERIFIER_SWIYU_TRUST_ISSUER_DID)
 
     .WithEnvironment("SWIYU_TMS_AUTHORING_URL", SWIYU_TMS_AUTHORING_URL)
     .WithEnvironment("SWIYU_TMS_OAUTH_TOKEN_URL", SWIYU_TMS_OAUTH_TOKEN_URL)
