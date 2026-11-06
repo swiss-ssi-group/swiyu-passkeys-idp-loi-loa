@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "Idp.Swiyu.Passkeys.AppHost/Idp.Swiyu.Passkeys.AppHost.csproj"
+  }
+}
