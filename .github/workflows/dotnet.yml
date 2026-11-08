@@ -29,7 +29,7 @@ jobs:
 
     - name: Generate SBOM (SPDX 3)
       run: |
-          curl -Lo $RUNNER_TEMP/sbom-tool https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
+          curl --fail --location --retry 5 --retry-delay 2 --output "$RUNNER_TEMP/sbom-tool" https://github.com/microsoft/sbom-tool/releases/latest/download/sbom-tool-linux-x64
           chmod +x $RUNNER_TEMP/sbom-tool
           $RUNNER_TEMP/sbom-tool generate \
             -b ./ \
