@@ -87,7 +87,7 @@ var stsSigningPublicPemBase64 = builder.AddParameter("StsSigningPublicPemBase64"
 /////////////////////////////////////////////////////////////////
 // https://github.com/swiyu-admin-ch/swiyu-verifier?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
-swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.0.1")
+swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.1.0")
     .WithEnvironment("EXTERNAL_URL", VERIFIER_EXTERNAL_URL)
     .WithEnvironment("OPENID_CLIENT_METADATA_FILE", VERIFIER_OPENID_CLIENT_METADATA_FILE)
     .WithEnvironment("VERIFIER_DID", VERIFIER_DID)
@@ -120,7 +120,7 @@ swiyuVerifier = builder.AddContainer("swiyu-verifier", "ghcr.io/swiyu-admin-ch/s
 // Add security to management API, disabled
 // https://github.com/swiyu-admin-ch/swiyu-issuer?tab=readme-ov-file#security
 /////////////////////////////////////////////////////////////////
-swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu-issuer", "5.0.1")
+swiyuIssuer = builder.AddContainer("swiyu-issuer", "ghcr.io/swiyu-admin-ch/swiyu-issuer", "5.1.0")
     .WithEnvironment("EXTERNAL_URL", ISSUER_EXTERNAL_URL)
     .WithEnvironment("SPRING_APPLICATION_NAME", ISSUER_SPRING_APPLICATION_NAME)
     .WithEnvironment("ISSUER_ID", ISSUER_ID)

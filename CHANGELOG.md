@@ -1,5 +1,9 @@
 
 
+
+## 2026-11-11 2.3.0
+- Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.1.0" 
+
 ## 2026-11-11 2.2.0
 - Update .NET 11
 
