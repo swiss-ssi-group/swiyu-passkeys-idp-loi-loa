@@ -1,5 +1,6 @@
 
-
+## 2026-11-21 2.3.1
+- Updated Aspire 17.0.0
 
 ## 2026-11-16 2.3.0
 - Updated to "ghcr.io/swiyu-admin-ch/swiyu-verifier", "5.1.0" 
