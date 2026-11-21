@@ -1,5 +1,8 @@
 {
   "appHost": {
     "path": "Idp.Swiyu.Passkeys.AppHost/Idp.Swiyu.Passkeys.AppHost.csproj"
+  },
+  "sdk": {
+    "version": "17.0.0"
   }
 }
