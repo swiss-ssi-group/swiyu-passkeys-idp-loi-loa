@@ -1,4 +1,4 @@
-<Project Sdk="Aspire.AppHost.Sdk/17.0.0">
+﻿<Project Sdk="Aspire.AppHost.Sdk/17.0.0">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -17,14 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Dotnet" Version="17.0.0" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="17.0.0" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="17.0.0" />
-
     <PackageReference Include="Aspire.Hosting.Azure.Sql" Version="17.0.0" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="17.0.0" />
-
     <PackageReference Include="Aspire.Hosting.Azure.AppContainers" Version="17.0.0" />
-
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="11.0.0" />
   </ItemGroup>
 

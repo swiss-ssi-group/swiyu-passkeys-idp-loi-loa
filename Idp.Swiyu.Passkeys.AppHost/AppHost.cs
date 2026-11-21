@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Aspire.Hosting.Dotnet;
 using Projects;
 using System.Text;
 
@@ -11,8 +12,8 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 // management & public endpoints
 IResourceBuilder<ContainerResource>? swiyuVerifier = null;
-IResourceBuilder<ProjectResource>? swiyuProxy = null;
-IResourceBuilder<ProjectResource>? identityProvider = null;
+IResourceBuilder<DotnetProjectResource>? swiyuProxy = null;
+IResourceBuilder<DotnetProjectResource>? identityProvider = null;
 IResourceBuilder<ContainerResource>? swiyuIssuer = null;
 
 // Issuer configuration parameters
@@ -176,11 +177,11 @@ var sqlServer = builder.AddAzureSqlServer("sqlserver")
 
 var database = sqlServer.AddDatabase("database", "IdpSwiyuPasskeysSts");
 
-var migrationService = builder.AddProject<Idp_Swiyu_Passkeys_Sts_Domain_Migrations>("migrations")
+var migrationService = builder.AddDotnetProject("migrations", "..\\Idp.Swiyu.Passkeys.Sts.Domain.Migrations\\Idp.Swiyu.Passkeys.Sts.Domain.Migrations.csproj")
     .WithReference(database)
     .WaitFor(sqlServer);
 
-swiyuProxy = builder.AddProject<Projects.Swiyu_Endpoints_Proxy>("swiyu-endpoints-proxy")
+swiyuProxy = builder.AddDotnetProject("swiyu-endpoints-proxy", "..\\Swiyu.Endpoints.Proxy\\Swiyu.Endpoints.Proxy.csproj")
     .WaitFor(swiyuVerifier)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuIssuerMgmtUrl", swiyuIssuer.GetEndpoint(HTTP))
@@ -196,7 +197,7 @@ var webClientUrl = builder.AddParameter("WebClientUrl");
 var webOidcClientId = builder.AddParameter("WebOidcClientId");
 var webOidcAuthority = builder.AddParameter("WebOidcAuthority");
 
-identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_PROVIDER)
+identityProvider = builder.AddDotnetProject(IDENTITY_PROVIDER, "..\\Idp.Swiyu.Passkeys.Sts\\Idp.Swiyu.Passkeys.Sts.csproj")
     .WithExternalHttpEndpoints()
     .WithReference(database)
     .WaitForCompletion(migrationService)
@@ -216,13 +217,13 @@ identityProvider = builder.AddProject<Projects.Idp_Swiyu_Passkeys_Sts>(IDENTITY_
     .WaitFor(swiyuProxy)
     .WithHttpHealthCheck("/health");
 
-var apiService = builder.AddProject<Idp_Swiyu_Passkeys_ApiService>(API_SERVICE)
+var apiService = builder.AddDotnetProject(API_SERVICE, "..\\Idp.Swiyu.Passkeys.ApiService\\Idp.Swiyu.Passkeys.ApiService.csproj")
     .WithReference(identityProvider)
     .WaitFor(identityProvider)
     .WithHttpHealthCheck("/health")
     .WithEnvironment("WebOidcAuthority", webOidcAuthority);
 
-builder.AddProject<Projects.Idp_Swiyu_Passkeys_Web>(WEB_CLIENT)
+builder.AddDotnetProject(WEB_CLIENT, "..\\Idp.Swiyu.Passkeys.Web\\Idp.Swiyu.Passkeys.Web.csproj")
     .WithExternalHttpEndpoints()
     .WithReference(apiService)
     .WaitFor(apiService)
