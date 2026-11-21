@@ -177,11 +177,11 @@ var sqlServer = builder.AddAzureSqlServer("sqlserver")
 
 var database = sqlServer.AddDatabase("database", "IdpSwiyuPasskeysSts");
 
-var migrationService = builder.AddDotnetProject("migrations", "..\\Idp.Swiyu.Passkeys.Sts.Domain.Migrations\\Idp.Swiyu.Passkeys.Sts.Domain.Migrations.csproj")
+var migrationService = builder.AddDotnetProject("migrations", "../Idp.Swiyu.Passkeys.Sts.Domain.Migrations/Idp.Swiyu.Passkeys.Sts.Domain.Migrations.csproj")
     .WithReference(database)
     .WaitFor(sqlServer);
 
-swiyuProxy = builder.AddDotnetProject("swiyu-endpoints-proxy", "..\\Swiyu.Endpoints.Proxy\\Swiyu.Endpoints.Proxy.csproj")
+swiyuProxy = builder.AddDotnetProject("swiyu-endpoints-proxy", "../Swiyu.Endpoints.Proxy/Swiyu.Endpoints.Proxy.csproj")
     .WaitFor(swiyuVerifier)
     .WithEnvironment("SwiyuVerifierMgmtUrl", swiyuVerifier.GetEndpoint(HTTP))
     .WithEnvironment("SwiyuIssuerMgmtUrl", swiyuIssuer.GetEndpoint(HTTP))
@@ -197,7 +197,7 @@ var webClientUrl = builder.AddParameter("WebClientUrl");
 var webOidcClientId = builder.AddParameter("WebOidcClientId");
 var webOidcAuthority = builder.AddParameter("WebOidcAuthority");
 
-identityProvider = builder.AddDotnetProject(IDENTITY_PROVIDER, "..\\Idp.Swiyu.Passkeys.Sts\\Idp.Swiyu.Passkeys.Sts.csproj")
+identityProvider = builder.AddDotnetProject(IDENTITY_PROVIDER, "../Idp.Swiyu.Passkeys.Sts/Idp.Swiyu.Passkeys.Sts.csproj")
     .WithExternalHttpEndpoints()
     .WithReference(database)
     .WaitForCompletion(migrationService)
@@ -217,13 +217,13 @@ identityProvider = builder.AddDotnetProject(IDENTITY_PROVIDER, "..\\Idp.Swiyu.Pa
     .WaitFor(swiyuProxy)
     .WithHttpHealthCheck("/health");
 
-var apiService = builder.AddDotnetProject(API_SERVICE, "..\\Idp.Swiyu.Passkeys.ApiService\\Idp.Swiyu.Passkeys.ApiService.csproj")
+var apiService = builder.AddDotnetProject(API_SERVICE, "../Idp.Swiyu.Passkeys.ApiService/Idp.Swiyu.Passkeys.ApiService.csproj")
     .WithReference(identityProvider)
     .WaitFor(identityProvider)
     .WithHttpHealthCheck("/health")
     .WithEnvironment("WebOidcAuthority", webOidcAuthority);
 
-builder.AddDotnetProject(WEB_CLIENT, "..\\Idp.Swiyu.Passkeys.Web\\Idp.Swiyu.Passkeys.Web.csproj")
+builder.AddDotnetProject(WEB_CLIENT, "../Idp.Swiyu.Passkeys.Web/Idp.Swiyu.Passkeys.Web.csproj")
     .WithExternalHttpEndpoints()
     .WithReference(apiService)
     .WaitFor(apiService)
